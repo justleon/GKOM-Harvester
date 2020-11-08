@@ -11,6 +11,7 @@ Członkowie zespołu:
 Lista zadań (issues):
 * [ ]  schemat i zdjęcie obiektu do zamodelowania
 
+Stworzenie sceny i skyboxa, zamodelowanie wierzchołków modelu, nałożenie tekstur, oświetlenie, utworzenie elementów ruchomych, obsługa interakcji użytkownika (ruch kamery i pozycji obserwatora)
 
 Podział zadań: 
 - Łukasz Pokorzyński:
