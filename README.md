@@ -1,35 +1,52 @@
-Projekt GKOM 20Z
+# Projekt GKOM 20Z
+__Temat projektu:__ Kombajn (Harvester)
 
-Temat projektu: Kombajn (Harvester)
-
-Członkowie zespołu:
+### Członkowie zespołu:
 - Łukasz Pokorzyński
 - Adam Steciuk
 - Jakub Strawa
 - Jarosław Zabuski
 
-Lista zadań (issues):
-* [ ] schemat i zdjęcie obiektu do zamodelowania
-* [ ] Stworzenie sceny i skyboxa 
-* [ ] zamodelowanie wierzchołków modelu 
-* [ ] nałożenie tekstur 
-* [ ] oświetlenie
-* [ ] utworzenie elementów ruchomych
-* [ ] obsługa interakcji użytkownika (ruch kamery i pozycji obserwatora)
+### Lista zadań (issues):
+* Stworzenie sceny i skyboxa 
+* Stworzenie modelu kombajnu
+    * Koła
+    * Nagarniacz, podajnik, zespół tnący
+    * Kabina
+    * Karoseria
+    * Elementy dodatkowe
+* Utworzenie elementów ruchomych
+* Obsługa interakcji użytkownika
+    * Ruch kamery i pozycji obserwatora
+    * Interakcja z kombajnem
+* Nałożenie tekstur 
+* Oświetlenie
 
-Podział zadań: 
+### Podział zadań: 
 - Łukasz Pokorzyński:
 - Adam Steciuk:
 - Jakub Strawa:
 - Jarosław Zabuski:
 
-Punkty kontrolne (milestones):
-* [ ] podział ról i zadań, wstępne omówienie projektu
-* [ ] utworzenie sceny i skyboxa
-* [ ] przygotowanie pełnego modelu kombajnu
-* [ ] przygotowanie tekstur
-* [ ] dodanie wszystkich elementów ruchomych
-* [ ] dodane oświetlenia
-* [ ] dodanie interakcji od użytkownika
-* [ ] oddanie gotowego projektu na spotkaniu nr 7
+### Punkty kontrolne (milestones):
+* [ ] Przygotowanie repozytorium (plik README)
+* [ ] Podział ról i zadań, wstępne omówienie projektu
+* [ ] Zamodelowanie otoczenia
+    * [ ] Podłoże
+    * [ ] Tło
+* [ ] Zamodelowanie obiektów
+    * [ ] Kombajn
+    * [ ] Otoczenie
+        * [ ] Obiekty środowiska
+        * [ ] Ozdoby
+* [ ] Zamodelowanie kamery i jej ruchu
+* [ ] Zaprogramowanie ruchu obiektów
+* [ ] Dodanie interakcji od użytkownika
+    * [ ] Tryb kamery swobodnej i przypietej do kombajnu
+    * [ ] Poruszanie kombajnem
+* [ ] Teksturowanie obiektów
+* [ ] Dodanie oświetlenia
+* [ ] Dodanie cieniowania
+* [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
+### Przykład kombajnu:
