@@ -50,4 +50,4 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
 ### Przykład kombajnu:
-    ![alt text](kombajn1.png "Kombajn")
+![alt text](kombajn1.png "Kombajn")
