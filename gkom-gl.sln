@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Include", "Include", "{44FD14EF-F7FA-42CC-B618-E71A16B4EFF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{BFED2AB6-2C7D-40B6-9DC6-3B904D142C1C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GKOM_Project", "GKOM_Proj\GKOM_Proj.vcxproj", "{B00CDD07-BE64-4A86-8B73-FAC569267C9A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B00CDD07-BE64-4A86-8B73-FAC569267C9A}.Debug|x86.ActiveCfg = Debug|Win32
+		{B00CDD07-BE64-4A86-8B73-FAC569267C9A}.Debug|x86.Build.0 = Debug|Win32
+		{B00CDD07-BE64-4A86-8B73-FAC569267C9A}.Release|x86.ActiveCfg = Release|Win32
+		{B00CDD07-BE64-4A86-8B73-FAC569267C9A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D22FDFC-DF01-4F0A-9951-9F530CAFE79E}
+	EndGlobalSection
+EndGlobal
