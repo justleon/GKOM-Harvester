@@ -7,6 +7,9 @@ __Temat projektu:__ Kombajn (Harvester)
 - Jakub Strawa
 - Jarosław Zabuski
 
+### Przykład kombajnu:
+![alt text](Images/kombajn1.png "Kombajn")
+
 ### Lista zadań (issues):
 * Stworzenie sceny i skyboxa 
 * Stworzenie modelu kombajnu
@@ -23,13 +26,13 @@ __Temat projektu:__ Kombajn (Harvester)
 * Oświetlenie
 
 ### Podział zadań: 
-- Łukasz Pokorzyński:
-- Adam Steciuk:
-- Jakub Strawa:
-- Jarosław Zabuski:
+- Łukasz Pokorzyński: prymitywy graficzne, modelowanie kombajnu, kamera, pliki odpowiedzialne za ładowanie shaderów
+- Adam Steciuk: prymitywy graficzne, zamodelowanie sceny i skyboxa, przygotowanie tekstur (obrazów), kamera
+- Jakub Strawa: prymitywy graficzne, modelowanie kombajnu, elementy ruchome
+- Jarosław Zabuski: nagarniacz, podajnik, zespół tnący; oświetlenie
 
 ### Punkty kontrolne (milestones):
-* [ ] Przygotowanie repozytorium (plik README)
+* [X] Przygotowanie repozytorium (plik README)
 * [ ] Podział ról i zadań, wstępne omówienie projektu
 * [ ] Zamodelowanie otoczenia
     * [ ] Podłoże
@@ -49,5 +52,5 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Dodanie cieniowania
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
-### Przykład kombajnu:
-![alt text](kombajn1.png "Kombajn")
+### Aktualny stan projektu (10.11.20r):
+![alt text](Images/project.gif "Projekt")
