@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="VertexArray.cpp" />
@@ -98,6 +99,7 @@
     <None Include="shaders\vertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
     <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="headers\VertexArray.h" />

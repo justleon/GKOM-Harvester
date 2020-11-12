@@ -5,6 +5,7 @@
 #include "headers/IndexBuffer.h"
 #include "headers/VertexArray.h"
 #include "headers/ShaderProgram.h"
+#include "headers/Camera.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -16,9 +17,21 @@ using namespace std;
 
 const GLuint WIDTH = 800, HEIGHT = 800;
 
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void processInput(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 GLuint LoadMipmapTexture(GLuint texId, const char* fname);
+
+//camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+float lastX = WIDTH / 2.0f;
+float lastY = HEIGHT / 2.0f;
+bool firstMouse = true;
+
+float deltaTime = 0.0f;	// Time between current frame and last frame
+float lastFrame = 0.0f; // Time of last frame
 
 ostream& operator<<(ostream& os, const glm::mat4& mx)
 {
@@ -33,12 +46,6 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 
 int main()
 {
-	/*{
-		glm::mat4 trans;
-		cout << trans << endl;
-		trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		cout << trans << endl;
-	}*/
 	if (glfwInit() != GL_TRUE)
 	{
 		cout << "GLFW initialization failed" << endl;
@@ -55,13 +62,17 @@ int main()
 		if (window == nullptr)
 			throw exception("GLFW window not created");
 		glfwMakeContextCurrent(window);
-		glfwSetKeyCallback(window, key_callback);
 
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK)
 			throw exception("GLEW Initialization failed");
 
 		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+		glfwSetCursorPosCallback(window, mouse_callback);
+		glfwSetScrollCallback(window, scroll_callback);
+
+		// tell GLFW to capture our mouse
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		// Let's check what are maximum parameters counts
 		GLint nrAttributes;
@@ -127,6 +138,19 @@ int main()
 			20, 22, 23,
 		};
 
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
+
 		// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 		VertexArray vertexArray;								//VAO
 		VertexBufferLayout layout;
@@ -160,8 +184,11 @@ int main()
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
-			// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-			glfwPollEvents();
+			processInput(window);
+
+			float currentFrame = glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
 
 			// Clear the colorbuffer
 			glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
@@ -175,23 +202,36 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, texture1);
 			shaderProgram.setUniformInt("Texture1", 1);
 
-			glm::mat4 trans;
-			static GLfloat rot_angle = 15.0f;
-			trans = glm::rotate(trans, (float)glfwGetTime() * glm::radians(rot_angle), glm::vec3(1.0, 0.3, 0.5));
-			shaderProgram.setUniformMat4("transform", trans);
 
 			// Draw our first box
 			shaderProgram.Use();
 
-			//glBindVertexArray(VAO);
 			vertexArray.Bind();
-			glDrawElements(GL_TRIANGLES, _countof(indices), GL_UNSIGNED_INT, 0);
+
+			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			glm::mat4 view = camera.GetViewMatrix();
+
+			shaderProgram.setUniformMat4("view", view);
+			shaderProgram.setUniformMat4("projection", projection);
+
+			for (unsigned int i = 0; i < 10; i++)
+			{
+				glm::mat4 model = glm::mat4(1.0f);
+				model = glm::translate(model, cubePositions[i]);
+				float angle = 20.0f * (i+1);
+				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+				shaderProgram.setUniformMat4("model", model);
+
+				glDrawElements(GL_TRIANGLES, _countof(indices), GL_UNSIGNED_INT, 0);
+			}
+
 			glBindVertexArray(0);
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
+			// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+			glfwPollEvents();
 		}
-		//glDeleteVertexArrays(1, &VAO);
 	}
 	catch (exception ex)
 	{
@@ -200,13 +240,6 @@ int main()
 	glfwTerminate();
 
 	return 0;
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	cout << key << endl;
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -230,6 +263,44 @@ GLuint LoadMipmapTexture(GLuint texId, const char* fname)
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	return texture;
+}
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+	lastX = xpos;
+	lastY = ypos;
+
+	camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.ProcessMouseScroll(yoffset);
 }
 
 /* Alternative to abstractions
