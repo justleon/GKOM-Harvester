@@ -16,7 +16,7 @@
 
 using namespace std;
 
-const GLuint WIDTH = 800, HEIGHT = 800;
+const GLuint WIDTH = 1280, HEIGHT = 800;
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -44,6 +44,19 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 	}
 	return os;
 }
+
+glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+};
 
 int main()
 {
@@ -98,8 +111,6 @@ int main()
 
 		glEnable(GL_DEPTH_TEST);
 
-		Cube testCube(0.0f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f });
-
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -121,7 +132,6 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, texture1);
 			shaderProgram.setUniformInt("Texture1", 1);
 
-
 			// Draw our first box
 			shaderProgram.Use();
 
@@ -130,21 +140,16 @@ int main()
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
-
-			/*
+			
 			for (unsigned int i = 0; i < 10; i++)
 			{
-				glm::mat4 model = glm::mat4(1.0f);
-				model = glm::translate(model, cubePositions[i]);
-				float angle = 20.0f * (i+1);
-				model = glm::rotate(model, currentFrame * glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-				shaderProgram.setUniformMat4("model", model);
-
-				glDrawElements(GL_TRIANGLES, indicesBuffer.GetCount(), GL_UNSIGNED_INT, 0);
+				Transformation transformationMatrix(cubePositions[i],
+					20.0f * (i + 1) * currentFrame,
+					{ 1.0f, 0.3f, 0.5f },
+					{ 1.0f, 1.0f, 1.0f });
+				Cube testCube(1.0f, transformationMatrix);
+				testCube.draw(shaderProgram);
 			}
-			*/
-
-			testCube.draw(shaderProgram);
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
@@ -225,33 +230,3 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
 }
-
-/* Alternative to abstractions
-GLuint VBO, EBO, VAO;
-glGenVertexArrays(1, &VAO);
-glBindVertexArray(VAO);
-
-glGenBuffers(1, &VBO)
-glBindBuffer(GL_ARRAY_BUFFER, VBO);
-glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-glGenBuffers(1, &EBO);
-glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-// vertex geometry data
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
-glEnableVertexAttribArray(0);
-
-// vertex color data
-glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-glEnableVertexAttribArray(1);
-
-// vertex texture coordinates
-glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-glEnableVertexAttribArray(2);
-
-glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
-glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
-*/

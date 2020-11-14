@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
