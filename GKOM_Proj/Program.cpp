@@ -6,6 +6,7 @@
 #include "headers/VertexArray.h"
 #include "headers/ShaderProgram.h"
 #include "headers/Camera.h"
+#include "headers/Cube.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -84,90 +85,6 @@ int main()
 		// Build, compile and link shader program
 		ShaderProgram shaderProgram("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
 
-		// Set up vertex data 
-		GLfloat vertices[] = {
-			// coordinates			// color			// texture
-			 0.5f,  0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-			 0.5f, -0.5f,  0.5f,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-
-			 0.5f,  0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-			 0.5f,  0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-			 0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-			 0.5f, -0.5f,  0.5f,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-
-			 0.5f,  0.5f, -0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-			 0.5f, -0.5f, -0.5f,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-
-			-0.5f,  0.5f, -0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-			-0.5f, -0.5f, -0.5f,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-
-			 0.5f,  0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-			 0.5f,  0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f,	1.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-
-			 0.5f, -0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-			 0.5f, -0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f,	1.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		};
-
-		GLuint indices[] = {
-			0, 1, 2,
-			0, 2, 3,
-
-			4, 5, 6,
-			4, 6, 7,
-
-			8, 9, 10,
-			8, 10, 11,
-
-			12, 13, 14,
-			12, 14, 15,
-
-			16, 17, 18,
-			16, 18, 19,
-
-			20, 21, 22,
-			20, 22, 23,
-		};
-
-		glm::vec3 cubePositions[] = {
-			glm::vec3(0.0f,  0.0f,  0.0f),
-			glm::vec3(2.0f,  5.0f, -15.0f),
-			glm::vec3(-1.5f, -2.2f, -2.5f),
-			glm::vec3(-3.8f, -2.0f, -12.3f),
-			glm::vec3(2.4f, -0.4f, -3.5f),
-			glm::vec3(-1.7f,  3.0f, -7.5f),
-			glm::vec3(1.3f, -2.0f, -2.5f),
-			glm::vec3(1.5f,  2.0f, -2.5f),
-			glm::vec3(1.5f,  0.2f, -1.5f),
-			glm::vec3(-1.3f,  1.0f, -1.5f)
-		};
-
-		// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-		VertexArray vertexArray;								//VAO
-		VertexBufferLayout layout;
-		VertexBuffer vertexBuffer(vertices, sizeof(vertices));	//VBO
-		IndexBuffer indicesBuffer(indices, sizeof(indices));	//EBO
-
-		// vertex geometry data
-		layout.addFloat(3);
-		// vertex color data
-		layout.addFloat(3);
-		// vertex texture coordinates
-		layout.addFloat(2);
-		vertexArray.LinkBuffer(vertexBuffer, layout);
-
-		vertexBuffer.Unbind();
-		vertexArray.Unbind();
-
 		// Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -180,6 +97,8 @@ int main()
 		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE1, "textures/weiti.png");
 
 		glEnable(GL_DEPTH_TEST);
+
+		Cube testCube(0.0f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f });
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -206,26 +125,26 @@ int main()
 			// Draw our first box
 			shaderProgram.Use();
 
-			vertexArray.Bind();
-
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
 
+			/*
 			for (unsigned int i = 0; i < 10; i++)
 			{
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model, cubePositions[i]);
 				float angle = 20.0f * (i+1);
-				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+				model = glm::rotate(model, currentFrame * glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 				shaderProgram.setUniformMat4("model", model);
 
-				glDrawElements(GL_TRIANGLES, _countof(indices), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, indicesBuffer.GetCount(), GL_UNSIGNED_INT, 0);
 			}
+			*/
 
-			glBindVertexArray(0);
+			testCube.draw(shaderProgram);
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
@@ -278,6 +197,10 @@ void processInput(GLFWwindow* window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		camera.ProcessKeyboard(UP, deltaTime);
+	if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
