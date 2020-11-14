@@ -87,7 +87,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -100,7 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Camera.h" />
+    <ClInclude Include="headers\Cube.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
+    <ClInclude Include="headers\ObjectInterface.h" />
+    <ClInclude Include="headers\ObjectPrimitive.h" />
     <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexBufferLayout.h" />
