@@ -20,7 +20,7 @@ std::unique_ptr<VertexBuffer> Pyramid::initVertices()
 		// coordinates						// color			// texture
 		0.0f,		halfSize,	0,			0.0f, 0.0f, 1.0f,	0.5f,  1.0f, //F
 
-		-halfSize,	-halfSize,  -halfSize,	1.0f, 0.0f, 0.0f,	0.0f,  0.0f, //D
+		-halfSize,	-halfSize,  -halfSize,	1.0f, 0.0f, 0.0f,	0.0f,  0.0f, //D 
 		halfSize,	-halfSize,  -halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f, //E
 		
 		halfSize,	-halfSize,  -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f, //E
