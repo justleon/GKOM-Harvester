@@ -7,6 +7,7 @@
 #include "headers/ShaderProgram.h"
 #include "headers/Camera.h"
 #include "headers/Cube.h"
+#include "headers/Pyramid.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -147,9 +148,10 @@ int main()
 					20.0f * (i + 1) * currentFrame,
 					{ 1.0f, 0.3f, 0.5f },
 					{ 1.0f, 1.0f, 1.0f });
-				Cube testCube(1.0f, transformationMatrix);
+				Pyramid testCube(1.0f, transformationMatrix);
 				testCube.draw(shaderProgram);
 			}
+
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
