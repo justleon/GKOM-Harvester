@@ -9,6 +9,7 @@
 #include "headers/Cube.h"
 #include "headers/Pyramid.h"
 #include "headers/Cylinder.h"
+#include "headers/Sphere.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -189,6 +190,13 @@ int main()
 			Cylinder cylinder(0.07f, trans5);
 			cylinder.draw(shaderProgram);
 
+
+			Transformation trans6({ 1.0f, 1.0f, 1.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Sphere sphere(0.5f, trans6);
+			sphere.draw(shaderProgram);
 
 
 

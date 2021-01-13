@@ -92,6 +92,7 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="headers\ObjectPrimitive.h" />
     <ClInclude Include="headers\Pyramid.h" />
     <ClInclude Include="headers\ShaderProgram.h" />
+    <ClInclude Include="headers\Sphere.h" />
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexBufferLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
