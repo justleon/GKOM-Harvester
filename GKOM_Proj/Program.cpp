@@ -10,6 +10,7 @@
 #include "headers/Pyramid.h"
 #include "headers/Cylinder.h"
 #include "headers/Sphere.h"
+#include "headers/Wheel.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -195,8 +196,15 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Sphere sphere(0.5f, trans6);
-			sphere.draw(shaderProgram);
+			Sphere spheretest(0.5f, trans6);
+			spheretest.draw(shaderProgram);
+
+			Transformation trans7({ -0.5f, 1.0f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Wheel wheeltest(0.5f, trans7);
+			wheeltest.draw(shaderProgram);
 
 
 

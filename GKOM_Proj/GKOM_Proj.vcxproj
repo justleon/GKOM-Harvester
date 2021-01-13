@@ -98,6 +98,7 @@
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag" />
@@ -116,6 +117,7 @@
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexBufferLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
+    <ClInclude Include="headers\Wheel.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg" />
