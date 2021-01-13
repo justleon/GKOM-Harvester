@@ -8,6 +8,7 @@
 #include "headers/Camera.h"
 #include "headers/Cube.h"
 #include "headers/Pyramid.h"
+#include "headers/Cylinder.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -141,7 +142,7 @@ int main()
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
-			
+			/*
 			for (unsigned int i = 0; i < 10; i++)
 			{
 				Transformation transformationMatrix(cubePositions[i],
@@ -149,8 +150,46 @@ int main()
 					{ 1.0f, 0.3f, 0.5f },
 					{ 1.0f, 1.0f, 1.0f });
 				Pyramid testCube(1.0f, transformationMatrix);
-				testCube.draw(shaderProgram);
+				testCube.draw(shaderProgram);	
 			}
+			*/
+			
+			Transformation trans1({ 0.0f, -0.5f, 0.0f },
+				0.0f,
+				{ 1.0f, 0.5f, 0.0f },
+				{ 10.0f, 0.05f, 10.0f });
+			Cube platform(2.0f, trans1);
+			platform.draw(shaderProgram);
+
+			Transformation trans2({ -0.5f, 0.0f, 0.0f },
+				0.0f,
+				{ 1.0f, 0.0f, 0.0f },
+				{ 0.1f, 0.5f, 2.5f });
+			Cube hoeHolder(0.5f, trans2);
+			hoeHolder.draw(shaderProgram);
+
+			Transformation trans3({ -0.16f, 0.06f, 0.0f },
+				15.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.9f, 0.1f, 0.25f });
+			Cube hoeHolder2(0.8f, trans3);
+			hoeHolder2.draw(shaderProgram);
+
+			Transformation trans4({ 0.2f, 0.15f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.3f, 0.3f, 0.5f });
+			Cylinder hoeHolder3(0.6f, trans4);
+			hoeHolder3.draw(shaderProgram);
+
+			Transformation trans5({ -0.7f, 0.0f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 17.0f });
+			Cylinder cylinder(0.07f, trans5);
+			cylinder.draw(shaderProgram);
+
+
 
 
 			// Swap the screen buffers
