@@ -47,10 +47,11 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Dodanie interakcji od użytkownika
     * [ ] Tryb kamery swobodnej i przypietej do kombajnu
     * [ ] Poruszanie kombajnem
+    * [X] Użytkownik określa długość oraz ilość niektórych elementów
 * [ ] Teksturowanie obiektów
 * [ ] Dodanie oświetlenia
 * [ ] Dodanie cieniowania
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
 ### Aktualny stan projektu (14.01.21r):
-![alt text](Images/projekt.png "Projekt")
+![alt text](Images/projekt1.png "Projekt")

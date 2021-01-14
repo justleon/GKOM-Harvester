@@ -128,18 +128,28 @@ int main()
 
 		glEnable(GL_DEPTH_TEST);
 
-		//liczba okre�la ilo�� bok�w w m��carce oraz d�ugo�� boku
-		int numberOfSidesInMechanism = 7;
+		//zmienna określa ilość boków w młócarce
+		int numberOfSidesInMechanism = 6;
+		if (numberOfSidesInMechanism < 3) numberOfSidesInMechanism = 3;
+		//zmienna określa ilość elementów w młócarce
+		int numberOfMechanisms = 5;
+		if (numberOfMechanisms < 2) numberOfMechanisms = 2;
+		float distanceBetweenMechanisms = 1.0f / (numberOfMechanisms - 1);
 
 		float angle = 360.0 / numberOfSidesInMechanism;
 		float angleInDegrees = 360.0 / numberOfSidesInMechanism;
 		//konwersja na radiany
-		angle *= (3.1415f/180.0f);
-		float sideLengthInMechanism = sqrtf(2*(1-cosf(angle)))*0.07f;
+		angle *= (3.1415f / 180.0f);
+		float sideLengthInMechanism = sqrtf(2 * (1 - cosf(angle))) * 0.07f;
 		cout << "Side length: " << sideLengthInMechanism << endl;
 
-		float heightInMechanism = 0.07f * cosf(angle/2.0f);
+		float heightInMechanism = 0.07f * cosf(angle / 2.0f);
 		cout << "Height: " << heightInMechanism << endl;
+
+		//zmienna okreśła długość rury zbożowej
+		float lengthOfWheatPipe = 0.8f;
+
+		if (lengthOfWheatPipe < 0.2f) lengthOfWheatPipe = 0.4f;
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -184,7 +194,7 @@ int main()
 			}
 
 			//pod�o�e
-			Transformation trans1({ 0.0f, -0.5f, 0.0f },
+			Transformation trans1({ 0.0f, -0.19f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.5f, 0.0f },
 				{ 10.0f, 0.05f, 10.0f });
@@ -338,19 +348,36 @@ int main()
 			Cylinder placeholder9(0.5f, trans21);
 			placeholder9.draw(shaderProgram);
 
-			//rura wydechowa zbo�owa the base
-			Transformation trans22({ 2.4f, 1.2f, 0.36f },
+			//rura wydechowa zbożowa podstawa 1
+			Transformation trans222({ 2.5f, 1.0f, 0.0f },
 				90.0f,
-				{ 0.0f, 0.5f, 0.0f },
-				{ 0.20f, 0.22f, 0.6f });
+				{ 2.0f, 0.0f, 0.0f },
+				{ 0.15f, 0.15f, 0.4f });
+			Cylinder cylinderPlaceholder1(1.0f, trans222);
+			cylinderPlaceholder1.draw(shaderProgram);
+
+			//rura wydechowa zbożowa łącznik
+			Transformation trans223({ 2.5f, 1.2f, 0.0f },
+				90.0f,
+				{ 2.0f, 0.0f, 0.0f },
+				{ 0.2f, 0.2f, 0.2f });
+			Sphere spherePlaceholder1(1.0f, trans223);
+			spherePlaceholder1.draw(shaderProgram);
+
+			//trans22 i trans23 do animacji obrotu rury zbożowej
+			//rura wydechowa zbo�owa the base
+			Transformation trans22({ 2.5f + (lengthOfWheatPipe/2.0f), 1.2f, 0.0f },
+				90.0f,
+				{ 0.0f, 2.0f, 0.0f },
+				{ 0.15f, 0.15f, lengthOfWheatPipe });
 			Cylinder placeholder10(1.0f, trans22);
 			placeholder10.draw(shaderProgram);
 
 			//rura wydechowa zbo�owa the exit
-			Transformation trans23({ 2.59f, 1.1f, 0.32f },
+			Transformation trans23({ 2.5f + lengthOfWheatPipe, 1.175f, 0.0f },
 				90.0f,
-				{ -0.5f, 0.5f, 0.5f },
-				{ 0.20f, 0.16f, 0.20f });
+				{ 2.0f, 0.0f, 0.0f },
+				{ 0.20f, 0.2f, 0.20f });
 			Cylinder placeholder11(1.0f, trans23);
 			placeholder11.draw(shaderProgram);
 
@@ -482,23 +509,47 @@ int main()
 			Cylinder placeholder27(0.3f, trans39);
 			placeholder27.draw(shaderProgram);
 
-			//transformacja m��carki
+			//transformacja wykaszarki
 			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ sideLengthInMechanism, 0.01f, 0.01f });
 
-			float posX = -0.8f, posY = heightInMechanism;
+			float posX = -0.8f, posY = heightInMechanism, posZ = -0.5f;
 
-			for (int i = 0; i < numberOfSidesInMechanism; i++) 
+			//obliczenie pozycji wykaszarki/młócarki
+			for (int j = 0; j < numberOfMechanisms; j++)
 			{
-				
-				transformationMlocarka.pos[0] = ((posX + 0.8f)*cosf(angle*i)) - (posY*sinf(angle*i)) - 0.8f;
-				transformationMlocarka.pos[1] = ((posX + 0.8f) * sinf(angle*i)) + (posY*cosf(angle*i));
-				transformationMlocarka.angle = angleInDegrees*i;
-				//m��carka generowana proceduralnie
-				Cube mlocarkaElement1(1.0f, transformationMlocarka);
-				mlocarkaElement1.draw(shaderProgram);
+				transformationMlocarka.pos[2] = posZ + j * distanceBetweenMechanisms;
+				for (int i = 0; i < numberOfSidesInMechanism; i++)
+				{
+
+					transformationMlocarka.pos[0] = ((posX + 0.8f) * cosf(angle * i)) - (posY * sinf(angle * i)) - 0.8f;
+					transformationMlocarka.pos[1] = ((posX + 0.8f) * sinf(angle * i)) + (posY * cosf(angle * i));
+					transformationMlocarka.angle = angleInDegrees * i;
+					//młócarka generowana proceduralnie
+					Cube mlocarkaElement1(1.0f, transformationMlocarka);
+					mlocarkaElement1.draw(shaderProgram);
+
+				}
+			}
+
+			posX -= (sideLengthInMechanism / 2.0f);
+			posZ = 0.0f;
+
+			Transformation transformationMlocarkaPoprzeczka({ posX, heightInMechanism, 0.0f },
+				angleInDegrees / 2.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.01f, 0.01f, 1.01f });
+
+			for (int i = 0; i < numberOfSidesInMechanism; i++)
+			{
+				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 0.8f) * cosf(angle * i)) - (posY * sinf(angle * i)) - 0.8f;
+				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 0.8f) * sinf(angle * i)) + (posY * cosf(angle * i));
+				transformationMlocarkaPoprzeczka.angle += i * angleInDegrees;
+				//element poprzeczny generowany proceduralnie
+				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka);
+				mlocarkaElementPoprzeczka.draw(shaderProgram);
 			}
 			
 
