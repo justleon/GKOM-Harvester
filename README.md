@@ -1,4 +1,4 @@
-# Projekt GKOM 20Z
+﻿# Projekt GKOM 20Z
 __Temat projektu:__ Kombajn (Harvester)
 
 ### Członkowie zespołu:
@@ -33,16 +33,16 @@ __Temat projektu:__ Kombajn (Harvester)
 
 ### Punkty kontrolne (milestones):
 * [X] Przygotowanie repozytorium (plik README)
-* [ ] Podział ról i zadań, wstępne omówienie projektu
+* [X] Podział ról i zadań, wstępne omówienie projektu
 * [ ] Zamodelowanie otoczenia
-    * [ ] Podłoże
+    * [X] Podłoże
     * [ ] Tło
 * [ ] Zamodelowanie obiektów
-    * [ ] Kombajn
+    * [X] Kombajn
     * [ ] Otoczenie
         * [ ] Obiekty środowiska
         * [ ] Ozdoby
-* [ ] Zamodelowanie kamery i jej ruchu
+* [X] Zamodelowanie kamery i jej ruchu
 * [ ] Zaprogramowanie ruchu obiektów
 * [ ] Dodanie interakcji od użytkownika
     * [ ] Tryb kamery swobodnej i przypietej do kombajnu
@@ -52,5 +52,5 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Dodanie cieniowania
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
-### Aktualny stan projektu (10.11.20r):
-![alt text](Images/project.gif "Projekt")
+### Aktualny stan projektu (14.01.21r):
+![alt text](Images/projekt.png "Projekt")

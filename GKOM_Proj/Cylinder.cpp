@@ -18,9 +18,9 @@ std::unique_ptr<VertexBuffer> Cylinder::initVertices()
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
 		// coordinates										// color			// texture
-		0.0f,		0.0f,	halfSize,						0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //cylinder upper center
+		0.0f,		0.0f,	halfSize,						0.0f, 0.0f, 1.0f,	1.0f,  1.0f, //cylinder upper center
 
-		0.0f,		halfSize,	halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		0.0f,		halfSize,	halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
 		0.25f * size,	0.432f * size,  halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		0.432f * size,	0.25f * size,  halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
 		halfSize,	0.0f,  halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
@@ -31,22 +31,22 @@ std::unique_ptr<VertexBuffer> Cylinder::initVertices()
 		-0.432f * size, -0.25f * size,  halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
 		-halfSize,	0.0f,	halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		-0.432f * size,	0.25f * size,	halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.25f * size,  0.432f * size,  halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.25f * size,  0.432f * size,  halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
 
-		0.0f,		halfSize,	-halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		0.25f * size,	0.432f * size,  -halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		0.432f * size,	0.25f * size,  -halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		halfSize,	0.0f,  -halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.432f * size,	-0.25f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.25f * size,	-0.432f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.0f,	-halfSize,	-halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.25f * size,	-0.432f * size,	-halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.432f * size, -0.25f * size,  -halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize,	0.0f,	-halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.432f * size,	0.25f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.25f * size,  0.432f * size,  -halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.0f,		halfSize,	-halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		0.25f * size,	0.432f * size,  -halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		0.432f * size,	0.25f * size,  -halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		halfSize,	0.0f,  -halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.432f * size,	-0.25f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.25f * size,	-0.432f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.0f,	-halfSize,	-halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-0.25f * size,	-0.432f * size,	-halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.432f * size, -0.25f * size,  -halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-halfSize,	0.0f,	-halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.432f * size,	0.25f * size,	-halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.25f * size,  0.432f * size,  -halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
 
-		0.0f,		0.0f,	-halfSize,						0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //cylinder lower center
+		0.0f,		0.0f,	-halfSize,						0.0f, 0.0f, 1.0f,	1.0f,  0.0f, //cylinder lower center
 	};
 	return std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
 }
