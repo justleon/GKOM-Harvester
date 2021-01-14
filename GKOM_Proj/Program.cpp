@@ -128,6 +128,19 @@ int main()
 
 		glEnable(GL_DEPTH_TEST);
 
+		//liczba okreœla iloœæ boków w m³ócarce oraz d³ugoœæ boku
+		int numberOfSidesInMechanism = 6;
+
+		float angle = 360.0 / numberOfSidesInMechanism;
+		float angleInDegrees = 360.0 / numberOfSidesInMechanism;
+		//konwersja na radiany
+		angle *= (3.1415f/180.0f);
+		float sideLengthInMechanism = sqrtf(2*(1-cosf(angle)))*0.07f;
+		cout << "Side length: " << sideLengthInMechanism << endl;
+
+		float heightInMechanism = 0.07f * cosf(angle/2.0f);
+		cout << "Height: " << heightInMechanism << endl;
+
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -206,8 +219,8 @@ int main()
 			Transformation trans5({ -0.8f, 0.0f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 17.0f });
-			Cylinder cylinder(0.07f, trans5);
+				{ 1.0f, 1.0f, 40.0f });
+			Cylinder cylinder(0.03f, trans5);
 			cylinder.draw(shaderProgram);
 
 			//test sfery
@@ -266,6 +279,26 @@ int main()
 			Cylinder rightCornerNagarniacz(0.25f, trans12);
 			rightCornerNagarniacz.draw(shaderProgram);
 
+			//transformacja m³ócarki
+			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ sideLengthInMechanism, 0.01f, 0.01f });
+
+			float posX = -0.8f, posY = heightInMechanism;
+
+			for (int i = 0; i < numberOfSidesInMechanism; i++) 
+			{
+				
+				transformationMlocarka.pos[0] = ((posX + 0.8f)*cosf(angle*i)) - (posY*sinf(angle*i)) - 0.8f;
+				transformationMlocarka.pos[1] = ((posX + 0.8f) * sinf(angle*i)) + (posY*cosf(angle*i));
+				cout << "New coords x:  " << posX << " y: " << posY << endl;
+				transformationMlocarka.angle = angleInDegrees*i;
+				//m³ócarka generowana proceduralnie
+				Cube mlocarkaElement1(1.0f, transformationMlocarka);
+				mlocarkaElement1.draw(shaderProgram);
+			}
+			
 
 
 			// Swap the screen buffers
