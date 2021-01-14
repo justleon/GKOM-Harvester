@@ -129,7 +129,7 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		//liczba okreœla iloœæ boków w m³ócarce oraz d³ugoœæ boku
-		int numberOfSidesInMechanism = 6;
+		int numberOfSidesInMechanism = 7;
 
 		float angle = 360.0 / numberOfSidesInMechanism;
 		float angleInDegrees = 360.0 / numberOfSidesInMechanism;
@@ -200,15 +200,15 @@ int main()
 			hoeHolder.draw(shaderProgram);
 
 			//wysiêgnik
-			Transformation trans3({ -0.16f, 0.06f, 0.0f },
-				15.0f,
+			Transformation trans3({ -0.20f, 0.12f, 0.0f },
+				35.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.9f, 0.1f, 0.25f });
 			Cube hoeHolder2(0.8f, trans3);
 			hoeHolder2.draw(shaderProgram);
 
 			//cylinder trzymaj¹cy wysiêgnik
-			Transformation trans4({ 0.2f, 0.15f, 0.0f },
+			Transformation trans4({ 0.12f, 0.35f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.3f, 0.3f, 0.5f });
@@ -232,7 +232,7 @@ int main()
 			spheretest.draw(shaderProgram);
 
 			//test ko³a
-			Transformation trans7({ -0.5f, 1.0f, 0.0f },
+			Transformation trans7({ -0.5f, 1.0f, 1.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
@@ -242,7 +242,7 @@ int main()
 			//uchwyt na zêby
 			Transformation trans8({ -0.65f, -0.11f, 0.0f },
 				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
+				{ 0.0f, 0.0f, 1.0f },
 				{ 0.35f, 0.025f, 1.7f });
 			Cube hoeteethholderbottom(0.7f, trans8);
 			hoeteethholderbottom.draw(shaderProgram);
@@ -278,6 +278,170 @@ int main()
 				{ 1.0f, 0.95f, 0.23f });
 			Cylinder rightCornerNagarniacz(0.25f, trans12);
 			rightCornerNagarniacz.draw(shaderProgram);
+
+
+
+
+			//big box nadwozie placeholder
+			Transformation trans13({ 1.14f, 0.86f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 4.0f, 2.0f, 2.0f });
+			Cube placeholder1(0.5f, trans13);
+			placeholder1.draw(shaderProgram);
+
+			//pod³oga w kabinie
+			Transformation trans14({ -0.1f, 0.8f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 0.15f, 1.0f });
+			Cube placeholder2(0.5f, trans14);
+			placeholder2.draw(shaderProgram);
+
+			//chyba lewy przedni prêt kabiny 
+			Transformation trans15({ -0.44f, 1.4f, 0.26f },
+				18.0f,
+				{ 0.15f, 0.0f, 0.5f },
+				{ 0.12f, 2.5f, 0.12f });
+			Cube placeholder3(0.5f, trans15);
+			placeholder3.draw(shaderProgram);
+
+			//chyba prawy przedni prêt kabiny 
+			Transformation trans16({ -0.44f, 1.4f, -0.26f },
+				18.0f,
+				{ -0.15f, 0.0f, 0.5f },
+				{ 0.12f, 2.5f, 0.12f });
+			Cube placeholder4(0.5f, trans16);
+			placeholder4.draw(shaderProgram);
+
+			//daszek kabiny
+			Transformation trans17({ -0.19f, 2.0f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 2.1f, 0.10f, 1.9f });
+			Cube placeholder5(0.5f, trans17);
+			placeholder5.draw(shaderProgram);
+
+			//chyba prawy tylni prêt kabiny 
+			Transformation trans18({ 0.2f, 1.62f, -0.26f },
+				9.0f,
+				{ -0.5f, 0.0f, 0.0f },
+				{ 0.12f, 1.5f, 0.12f });
+			Cube placeholder6(0.5f, trans18);
+			placeholder6.draw(shaderProgram);
+
+			//chyba lewy tylni prêt kabiny 
+			Transformation trans19({ 0.2f, 1.62f, 0.26f },
+				9.0f,
+				{ 0.5f, 0.0f, 0.0f },
+				{ 0.12f, 1.5f, 0.12f });
+			Cube placeholder7(0.5f, trans19);
+			placeholder7.draw(shaderProgram);
+
+			//rura wydechowa - rura
+			Transformation trans20({ 1.6f, 1.36f, 0.26f },
+				90.0f,
+				{ 0.5f, 0.0f, 0.0f },
+				{ 0.12f, 0.12f, 0.6f });
+			Cylinder placeholder8(0.5f, trans20);
+			placeholder8.draw(shaderProgram);
+
+			//rura wydechowa - puszka na czubku rury
+			Transformation trans21({ 1.6f, 1.56f, 0.26f },
+				90.0f,
+				{ 0.5f, 0.0f, 0.0f },
+				{ 0.32f, 0.32f, 0.2f });
+			Cylinder placeholder9(0.5f, trans21);
+			placeholder9.draw(shaderProgram);
+
+			//rura wydechowa zbo¿owa the base
+			Transformation trans22({ 2.4f, 1.2f, 0.36f },
+				90.0f,
+				{ 0.0f, 0.5f, 0.0f },
+				{ 0.20f, 0.22f, 0.6f });
+			Cylinder placeholder10(1.0f, trans22);
+			placeholder10.draw(shaderProgram);
+
+			//rura wydechowa zbo¿owa the exit
+			Transformation trans23({ 2.59f, 1.1f, 0.32f },
+				90.0f,
+				{ -0.5f, 0.5f, 0.5f },
+				{ 0.20f, 0.16f, 0.20f });
+			Cylinder placeholder11(1.0f, trans23);
+			placeholder11.draw(shaderProgram);
+
+			//big box nadwozie placeholder kube³ na zbo¿e
+			Transformation trans24({ 2.64f, 0.66f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 2.0f, 1.0f, 1.5f });
+			Cube placeholder12(0.5f, trans24);
+			placeholder12.draw(shaderProgram);
+
+			//smaller box podwozie placeholder przód
+			Transformation trans25({ 0.8f, 0.35f, 0.0f },
+				10.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 2.0f, 1.0f, 1.0f });
+			Cube placeholder13(0.5f, trans25);
+			placeholder13.draw(shaderProgram);
+
+			//oœ przednia do kó³ trajktora
+			Transformation trans26({ 0.4f, 0.1f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 40.0f });
+			Cylinder placeholder14(0.03f, trans26);
+			placeholder14.draw(shaderProgram);
+
+			//lewego przedniego ko³a
+			Transformation trans27({ 0.4f, 0.1f, 0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Wheel placeholder15(0.5f, trans27);
+			placeholder15.draw(shaderProgram);
+
+			//prawego przedniego ko³a
+			Transformation trans28({ 0.4f, 0.1f, -0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Wheel placeholder16(0.5f, trans28);
+			placeholder16.draw(shaderProgram);
+
+			//smaller box podwozie placeholder ty³
+			Transformation trans29({ 1.8f, 0.35f, 0.0f },
+				8.0f,
+				{ 0.0f, 0.0f, -3.0f },
+				{ 2.4f, 1.0f, 1.0f });
+			Cube placeholder17(0.5f, trans29);
+			placeholder17.draw(shaderProgram);
+
+			//oœ tylnia do kó³ trokatora
+			Transformation trans30({ 2.2f, 0.03f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 30.0f });
+			Cylinder placeholder18(0.03f, trans30);
+			placeholder18.draw(shaderProgram);
+
+			//test lewego tylnego ko³a
+			Transformation trans31({ 2.2f, 0.03f, 0.4f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.7f, 0.7f, 0.7f });
+			Wheel placeholder19(0.5f, trans31);
+			placeholder19.draw(shaderProgram);
+
+			//test prawego tylnego ko³a
+			Transformation trans32({ 2.2f, 0.03f, -0.4f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.7f, 0.7f, 0.7f });
+			Wheel placeholder20(0.5f, trans32);
+			placeholder20.draw(shaderProgram);
+
 
 			//transformacja m³ócarki
 			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },

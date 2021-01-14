@@ -48,13 +48,13 @@
     <ClCompile Include="Pyramid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cylinder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Wheel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,13 +108,13 @@
     <ClInclude Include="headers\Pyramid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\Cylinder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\Wheel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Cylinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
