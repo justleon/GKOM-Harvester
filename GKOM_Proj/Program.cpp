@@ -223,21 +223,21 @@ int main()
 			Cylinder cylinder(0.03f, trans5);
 			cylinder.draw(shaderProgram);
 
-			//test sfery
-			Transformation trans6({ 1.0f, 1.0f, 1.0f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Sphere spheretest(0.5f, trans6);
-			spheretest.draw(shaderProgram);
+			////test sfery
+			//Transformation trans6({ 1.0f, 1.0f, 1.0f },
+			//	0.0f,
+			//	{ 0.0f, 0.0f, 3.0f },
+			//	{ 1.0f, 1.0f, 1.0f });
+			//Sphere spheretest(0.5f, trans6);
+			//spheretest.draw(shaderProgram);
 
-			//test ko³a
-			Transformation trans7({ -0.5f, 1.0f, 1.0f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Wheel wheeltest(0.5f, trans7);
-			wheeltest.draw(shaderProgram);
+			////test ko³a
+			//Transformation trans7({ -0.5f, 1.0f, 1.0f },
+			//	0.0f,
+			//	{ 0.0f, 0.0f, 3.0f },
+			//	{ 1.0f, 1.0f, 1.0f });
+			//Wheel wheeltest(0.5f, trans7);
+			//wheeltest.draw(shaderProgram);
 
 			//uchwyt na zêby
 			Transformation trans8({ -0.65f, -0.11f, 0.0f },
@@ -442,6 +442,61 @@ int main()
 			Wheel placeholder20(0.5f, trans32);
 			placeholder20.draw(shaderProgram);
 
+			//prêt pomiêdzy pod³og¹ kabiny a najwy¿szym schodkiem
+			Transformation trans33({ -0.18f, 0.7f, 0.22f },
+				18.0f,
+				{ -0.15f, 0.0f, 0.5f },
+				{ 0.06f, 0.4f, 0.06f });
+			Cube placeholder21(0.5f, trans33);
+			placeholder21.draw(shaderProgram);
+
+			//najwy¿szy schodek
+			Transformation trans34({ -0.01f, 0.6f, 0.23f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.6f, 0.06f, 0.12f });
+			Cube placeholder22(0.5f, trans34);
+			placeholder22.draw(shaderProgram);
+
+			//rurka drabinkowa bli¿sza wykaszarce
+			Transformation trans35({ -0.1f, 0.37f, 0.23f },
+				90.0f,
+				{ 0.5f, 0.0f, 0.0f },
+				{ 0.12f, 0.12f, 1.6f });
+			Cylinder placeholder23(0.3f, trans35);
+			placeholder23.draw(shaderProgram);
+
+			//rurka drabinkowa bli¿sza korpusowi
+			Transformation trans36({ 0.1f, 0.37f, 0.23f },
+				90.0f,
+				{ 0.5f, 0.0f, 0.0f },
+				{ 0.12f, 0.12f, 1.6f });
+			Cylinder placeholder24(0.3f, trans36);
+			placeholder24.draw(shaderProgram);
+
+			//schodek drugi od góry
+			Transformation trans37({ 0.0f, 0.5f, 0.23f },
+				90.0f,
+				{ 0.0f, 0.5f, 0.0f },
+				{ 0.12f, 0.12f, 0.8f });
+			Cylinder placeholder25(0.3f, trans37);
+			placeholder25.draw(shaderProgram);
+
+			//schodek trzeci od góry
+			Transformation trans38({ 0.0f, 0.4f, 0.23f },
+				90.0f,
+				{ 0.0f, 0.5f, 0.0f },
+				{ 0.12f, 0.12f, 0.8f });
+			Cylinder placeholder26(0.3f, trans38);
+			placeholder26.draw(shaderProgram);
+
+			//schodek czwarty od góry
+			Transformation trans39({ 0.0f, 0.3f, 0.23f },
+				90.0f,
+				{ 0.0f, 0.5f, 0.0f },
+				{ 0.12f, 0.12f, 0.8f });
+			Cylinder placeholder27(0.3f, trans39);
+			placeholder27.draw(shaderProgram);
 
 			//transformacja m³ócarki
 			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },
