@@ -1,4 +1,4 @@
-# Projekt GKOM 20Z
+﻿# Projekt GKOM 20Z
 __Temat projektu:__ Kombajn (Harvester)
 
 ### Członkowie zespołu:
@@ -53,4 +53,4 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
 ### Aktualny stan projektu (10.11.20r):
-![alt text](Images/project.gif "Projekt")
+![alt text](Images/projekt.png "Projekt")

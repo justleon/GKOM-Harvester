@@ -203,7 +203,7 @@ int main()
 			Transformation trans3({ -0.20f, 0.12f, 0.0f },
 				35.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 0.9f, 0.1f, 0.25f });
+				{ 0.9f, 0.1f, 0.4f });
 			Cube hoeHolder2(0.8f, trans3);
 			hoeHolder2.draw(shaderProgram);
 
@@ -211,7 +211,7 @@ int main()
 			Transformation trans4({ 0.12f, 0.35f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 0.3f, 0.3f, 0.5f });
+				{ 0.5f, 0.5f, 0.7f });
 			Cylinder hoeHolder3(0.6f, trans4);
 			hoeHolder3.draw(shaderProgram);
 
@@ -222,22 +222,6 @@ int main()
 				{ 1.0f, 1.0f, 40.0f });
 			Cylinder cylinder(0.03f, trans5);
 			cylinder.draw(shaderProgram);
-
-			//test sfery
-			Transformation trans6({ 1.0f, 1.0f, 1.0f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Sphere spheretest(0.5f, trans6);
-			spheretest.draw(shaderProgram);
-
-			//test ko³a
-			Transformation trans7({ -0.5f, 1.0f, 1.0f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Wheel wheeltest(0.5f, trans7);
-			wheeltest.draw(shaderProgram);
 
 			//uchwyt na zêby
 			Transformation trans8({ -0.65f, -0.11f, 0.0f },
@@ -456,7 +440,6 @@ int main()
 				
 				transformationMlocarka.pos[0] = ((posX + 0.8f)*cosf(angle*i)) - (posY*sinf(angle*i)) - 0.8f;
 				transformationMlocarka.pos[1] = ((posX + 0.8f) * sinf(angle*i)) + (posY*cosf(angle*i));
-				cout << "New coords x:  " << posX << " y: " << posY << endl;
 				transformationMlocarka.angle = angleInDegrees*i;
 				//m³ócarka generowana proceduralnie
 				Cube mlocarkaElement1(1.0f, transformationMlocarka);

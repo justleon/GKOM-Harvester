@@ -18,9 +18,9 @@ std::unique_ptr<VertexBuffer> Sphere::initVertices()
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
 		// coordinates						// color			// texture
-		0.0f,		0.0f,	halfSize,						0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //sphere north pole
+		0.0f,		0.0f,	halfSize,						0.0f, 0.0f, 1.0f,	1.0f,  1.0f, //sphere north pole
 
-		0.0f,		0.5f * halfSize,	0.866f * halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //second ring above center
+		0.0f,		0.5f * halfSize,	0.866f * halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  0.0f, //second ring above center
 		0.25f * halfSize,	0.433f * halfSize,  0.866f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		0.433f * halfSize,	0.25f * halfSize,  0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
 		0.5f * halfSize,	0.0f,  0.866f * halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
@@ -31,48 +31,48 @@ std::unique_ptr<VertexBuffer> Sphere::initVertices()
 		-0.433f * halfSize, -0.25f * halfSize,  0.866f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
 		-0.5f * halfSize,	0.0f,	0.866f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		-0.433f * halfSize,	0.25f * halfSize,	0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.25f * halfSize,  0.433f * halfSize,  0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.25f * halfSize,  0.433f * halfSize,  0.866f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
 
-		0.0f,		0.866f * halfSize,	0.5f * halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //first ring above center
-		0.433f * halfSize,	0.75f * halfSize,  0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		0.75f * halfSize,	0.433f * halfSize,  0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.866f * halfSize,	0.0f,  0.5f * halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.75f * halfSize,	-0.433f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.433f * halfSize,	-0.75f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.0f,	-0.866f * halfSize,	0.5f * halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.433f * halfSize,	-0.75f * halfSize,	0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.75f * halfSize, -0.433f * halfSize,  0.5f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.866f * halfSize,	0.0f,	0.5f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.75f * halfSize,	0.433f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.433f * halfSize,  0.75f * halfSize,  0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.0f,		0.866f * halfSize,	0.5f * halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  1.0f, //first ring above center
+		0.433f * halfSize,	0.75f * halfSize,  0.5f * halfSize,				1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		0.75f * halfSize,	0.433f * halfSize,  0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.866f * halfSize,	0.0f,  0.5f * halfSize,							0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.75f * halfSize,	-0.433f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.433f * halfSize,	-0.75f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.0f,	-0.866f * halfSize,	0.5f * halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-0.433f * halfSize,	-0.75f * halfSize,	0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.75f * halfSize, -0.433f * halfSize,  0.5f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-0.866f * halfSize,	0.0f,	0.5f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.75f * halfSize,	0.433f * halfSize,	0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.433f * halfSize,  0.75f * halfSize,  0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
 
-		0.0f,		halfSize,	0.0f,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f, // center ring
-		0.5f * halfSize,	0.866f * halfSize,  0.0f,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		0.866f * halfSize,	0.5f * halfSize,  0.0f,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		halfSize,	0.0f,  0.0f,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.866f * halfSize,	-0.5f * halfSize,	0.0f,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.5f * halfSize,	-0.866f * halfSize,	0.0f,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.0f,	-halfSize,	0.0f,						1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.5f * halfSize,	-0.866f * halfSize,	0.0f,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.866f * halfSize, -0.5f * halfSize,  0.0f,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize,	0.0f,	0.0f,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.866f * halfSize,	0.5f * halfSize,	0.0f,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.5f * halfSize,  0.866f * halfSize,  0.0f,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.0f,		halfSize,	0.0f,										0.0f, 0.0f, 1.0f,	1.0f,  0.0f, // center ring
+		0.5f * halfSize,	0.866f * halfSize,  0.0f,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
+		0.866f * halfSize,	0.5f * halfSize,  0.0f,							0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
+		halfSize,	0.0f,  0.0f,											0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
+		0.866f * halfSize,	-0.5f * halfSize,	0.0f,						0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
+		0.5f * halfSize,	-0.866f * halfSize,	0.0f,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
+		0.0f,	-halfSize,	0.0f,											1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		-0.5f * halfSize,	-0.866f * halfSize,	0.0f,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
+		-0.866f * halfSize, -0.5f * halfSize,  0.0f,						1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		-halfSize,	0.0f,	0.0f,											1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
+		-0.866f * halfSize,	0.5f * halfSize,	0.0f,						0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
+		-0.5f * halfSize,  0.866f * halfSize,  0.0f,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
 
-		0.0f,		0.866f * halfSize,	-0.5f * halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //first ring below center
-		0.433f * halfSize,	0.75f * halfSize,  -0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		0.75f * halfSize,	0.433f * halfSize,  -0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.866f * halfSize,	0.0f,  -0.5f * halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.75f * halfSize,	-0.433f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		0.433f * halfSize,	-0.75f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		0.0f,	-0.866f * halfSize,	-0.5f * halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.433f * halfSize,	-0.75f * halfSize,	-0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.75f * halfSize, -0.433f * halfSize,  -0.5f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.866f * halfSize,	0.0f,	-0.5f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
-		-0.75f * halfSize,	0.433f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.433f * halfSize,  0.75f * halfSize,  -0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.0f,		0.866f * halfSize,	-0.5f * halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  1.0f, //first ring below center
+		0.433f * halfSize,	0.75f * halfSize,  -0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		0.75f * halfSize,	0.433f * halfSize,  -0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.866f * halfSize,	0.0f,  -0.5f * halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.75f * halfSize,	-0.433f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		0.433f * halfSize,	-0.75f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		0.0f,	-0.866f * halfSize,	-0.5f * halfSize,						1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-0.433f * halfSize,	-0.75f * halfSize,	-0.5f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.75f * halfSize, -0.433f * halfSize,  -0.5f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		-0.866f * halfSize,	0.0f,	-0.5f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
+		-0.75f * halfSize,	0.433f * halfSize,	-0.5f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.433f * halfSize,  0.75f * halfSize,  -0.5f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
 
-		0.0f,		0.5f * halfSize,	-0.866f * halfSize,					0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //second ring below center
+		0.0f,		0.5f * halfSize,	-0.866f * halfSize,					0.0f, 0.0f, 1.0f,	1.0f,  0.0f, //second ring below center
 		0.25f * halfSize,	0.433f * halfSize,  -0.866f * halfSize,			1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		0.433f * halfSize,	0.25f * halfSize,  -0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
 		0.5f * halfSize,	0.0f,  -0.866f * halfSize,						0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
@@ -83,9 +83,9 @@ std::unique_ptr<VertexBuffer> Sphere::initVertices()
 		-0.433f * halfSize, -0.25f * halfSize,  -0.866f * halfSize,			1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
 		-0.5f * halfSize,	0.0f,	-0.866f * halfSize,						1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
 		-0.433f * halfSize,	0.25f * halfSize,	-0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-0.25f * halfSize,  0.433f * halfSize,  -0.866f * halfSize,			0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
+		-0.25f * halfSize,  0.433f * halfSize,  -0.866f * halfSize,			0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
 
-		0.0f,		0.0f,	-halfSize,						0.0f, 0.0f, 1.0f,	0.0f,  1.0f, //sphere south pole
+		0.0f,		0.0f,	-halfSize,						0.0f, 0.0f, 1.0f,	1.0f,  1.0f, //sphere south pole
 	};
 
 	return std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
