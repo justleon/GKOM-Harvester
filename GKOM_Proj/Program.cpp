@@ -62,6 +62,19 @@ glm::vec3 cubePositions[] = {
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+glm::vec3 teethPositions[] = {
+	glm::vec3(-0.8f, -0.11f, 0.5f),
+	glm::vec3(-0.8f, -0.11f, 0.4f),
+	glm::vec3(-0.8f, -0.11f, 0.3f),
+	glm::vec3(-0.8f, -0.11f, 0.2f),
+	glm::vec3(-0.8f, -0.11f, 0.1f),
+	glm::vec3(-0.8f, -0.11f, 0.0f),
+	glm::vec3(-0.8f, -0.11f, -0.1f),
+	glm::vec3(-0.8f, -0.11f, -0.2f),
+	glm::vec3(-0.8f, -0.11f, -0.3f),
+	glm::vec3(-0.8f, -0.11f, -0.4f),
+};
+
 int main()
 {
 	if (glfwInit() != GL_TRUE)
@@ -144,18 +157,20 @@ int main()
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
-			/*
 			for (unsigned int i = 0; i < 10; i++)
 			{
-				Transformation transformationMatrix(cubePositions[i],
-					20.0f * (i + 1) * currentFrame,
-					{ 1.0f, 0.3f, 0.5f },
-					{ 1.0f, 1.0f, 1.0f });
-				Pyramid testCube(1.0f, transformationMatrix);
-				testCube.draw(shaderProgram);	
+				Transformation transformationMatrix({ -0.8f, -0.11f, -0.5f + i*0.1f },
+					//miejsce na animcaje lewo-prawo zêbów
+				90.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.03f, 0.15f, 0.1f });
+
+
+				Pyramid teeth(0.5f, transformationMatrix);
+				teeth.draw(shaderProgram);	
 			}
-			*/
-			
+
+			//pod³o¿e
 			Transformation trans1({ 0.0f, -0.5f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.5f, 0.0f },
@@ -163,6 +178,7 @@ int main()
 			Cube platform(2.0f, trans1);
 			platform.draw(shaderProgram);
 
+			//ty³ nagarniacza
 			Transformation trans2({ -0.5f, 0.0f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.0f, 0.0f },
@@ -170,6 +186,7 @@ int main()
 			Cube hoeHolder(0.5f, trans2);
 			hoeHolder.draw(shaderProgram);
 
+			//wysiêgnik
 			Transformation trans3({ -0.16f, 0.06f, 0.0f },
 				15.0f,
 				{ 0.0f, 0.0f, 3.0f },
@@ -177,6 +194,7 @@ int main()
 			Cube hoeHolder2(0.8f, trans3);
 			hoeHolder2.draw(shaderProgram);
 
+			//cylinder trzymaj¹cy wysiêgnik
 			Transformation trans4({ 0.2f, 0.15f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
@@ -184,14 +202,15 @@ int main()
 			Cylinder hoeHolder3(0.6f, trans4);
 			hoeHolder3.draw(shaderProgram);
 
-			Transformation trans5({ -0.7f, 0.0f, 0.0f },
+			//cylinder obracaj¹cy maszyn¹ do m³ócenia
+			Transformation trans5({ -0.8f, 0.0f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 17.0f });
 			Cylinder cylinder(0.07f, trans5);
 			cylinder.draw(shaderProgram);
 
-
+			//test sfery
 			Transformation trans6({ 1.0f, 1.0f, 1.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
@@ -199,12 +218,53 @@ int main()
 			Sphere spheretest(0.5f, trans6);
 			spheretest.draw(shaderProgram);
 
+			//test ko³a
 			Transformation trans7({ -0.5f, 1.0f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
 			Wheel wheeltest(0.5f, trans7);
 			wheeltest.draw(shaderProgram);
+
+			//uchwyt na zêby
+			Transformation trans8({ -0.65f, -0.11f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 0.35f, 0.025f, 1.7f });
+			Cube hoeteethholderbottom(0.7f, trans8);
+			hoeteethholderbottom.draw(shaderProgram);
+
+			//lewa œciana nagarnaicza - cube
+			Transformation trans9({ -0.65f, 0.0f, 0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.8f, 1.2f, 0.3f });
+			Cube leftWallNagarniacz(0.2f, trans9);
+			leftWallNagarniacz.draw(shaderProgram);
+
+			//lewa œciana nagarnaicza - cylinder
+			Transformation trans10({ -0.8f, 0.0f, 0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 0.95f, 0.23f });
+			Cylinder leftCornerNagarniacz(0.25f, trans10);
+			leftCornerNagarniacz.draw(shaderProgram);
+
+			//prawa œciana nagarnaicza - cube
+			Transformation trans11({ -0.65f, 0.0f, -0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.8f, 1.2f, 0.3f });
+			Cube rightWallNagarniacz(0.2f, trans11);
+			rightWallNagarniacz.draw(shaderProgram);
+
+			//prawa œciana nagarnaicza - cylinder
+			Transformation trans12({ -0.8f, 0.0f, -0.6f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 0.95f, 0.23f });
+			Cylinder rightCornerNagarniacz(0.25f, trans12);
+			rightCornerNagarniacz.draw(shaderProgram);
 
 
 
