@@ -2,15 +2,14 @@
 
 #include "ObjectPrimitive.h"
 
-class Cylinder : public ObjectPrimitive
+class Pyramid : public ObjectPrimitive
 {
 	GLfloat size;
 
 public:
-
-	Cylinder(GLfloat size, Transformation transMat);
+	//x, y, z, transformation
+	Pyramid(GLfloat size, Transformation transMat); 
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();
 };
-
