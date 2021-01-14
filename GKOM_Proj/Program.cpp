@@ -11,6 +11,7 @@
 #include "headers/Cylinder.h"
 #include "headers/Sphere.h"
 #include "headers/Wheel.h"
+#include "headers/Trapezoid.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -552,6 +553,13 @@ int main()
 				mlocarkaElementPoprzeczka.draw(shaderProgram);
 			}
 			
+			//trapezoid test
+			Transformation transformationTrapezoid({ 0.0f, -3.0f, 0.0f },
+				0.0f,
+				{ 0.0f, 0.0f, 3.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Trapezoid trapezoidTest(1.0f, transformationTrapezoid);
+			trapezoidTest.draw(shaderProgram);
 
 
 			// Swap the screen buffers
