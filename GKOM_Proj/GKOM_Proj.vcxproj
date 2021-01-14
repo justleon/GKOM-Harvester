@@ -94,6 +94,7 @@
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Trapezoid.cpp" />
+    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="headers\VertexBufferLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
     <ClInclude Include="headers\Wheel.h" />
+    <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg" />

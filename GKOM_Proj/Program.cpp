@@ -12,6 +12,7 @@
 #include "headers/Sphere.h"
 #include "headers/Wheel.h"
 #include "headers/Trapezoid.h"
+#include "headers/Triangle.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -509,6 +510,40 @@ int main()
 				{ 0.12f, 0.12f, 0.8f });
 			Cylinder placeholder27(0.3f, trans39);
 			placeholder27.draw(shaderProgram);
+
+			//drzwi kombonojaju lewe
+			Transformation trans40({ -0.06f, 1.0f, 0.22f },
+				180.0f,
+				{ 0.0f, 0.0f, 0.5f },
+				{ 1.6f, 1.2f, 0.12f });
+			Trapezoid placeholder28(0.3f, trans40);
+			placeholder28.draw(shaderProgram);
+
+
+			//drzwi kombonojaju prawe
+			Transformation trans41({ -0.06f, 1.0f, -0.22f },
+				180.0f,
+				{ 0.0f, 0.0f, 0.5f },
+				{ 1.6f, 1.2f, 0.12f });
+			Trapezoid placeholder29(0.3f, trans41);
+			placeholder29.draw(shaderProgram);
+
+			//drzwi kombonojaju prawe trójkąt
+			Transformation trans42({ -0.3f, 1.26f, -0.22f },
+				50.0f,
+				{ 0.0f, 0.0f, 0.5f },
+				{ 0.9f, 2.0f, 0.12f });
+			Triangle placeholder30(0.3f, trans42);
+			placeholder30.draw(shaderProgram);
+
+			//drzwi kombonojaju lewe trójkąt
+			Transformation trans43({ -0.3f, 1.26f, 0.22f },
+				50.0f,
+				{ 0.0f, 0.0f, 0.5f },
+				{ 0.9f, 2.0f, 0.12f });
+			Triangle placeholder31(0.3f, trans43);
+			placeholder31.draw(shaderProgram);
+
 
 			//transformacja wykaszarki
 			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },
