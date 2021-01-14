@@ -52,5 +52,5 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Dodanie cieniowania
 * [ ] Oddanie gotowego projektu na spotkaniu nr 7
 
-### Aktualny stan projektu (10.11.20r):
+### Aktualny stan projektu (14.01.21r):
 ![alt text](Images/projekt.png "Projekt")
