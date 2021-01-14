@@ -33,16 +33,16 @@ __Temat projektu:__ Kombajn (Harvester)
 
 ### Punkty kontrolne (milestones):
 * [X] Przygotowanie repozytorium (plik README)
-* [ ] Podział ról i zadań, wstępne omówienie projektu
+* [X] Podział ról i zadań, wstępne omówienie projektu
 * [ ] Zamodelowanie otoczenia
-    * [ ] Podłoże
+    * [X] Podłoże
     * [ ] Tło
 * [ ] Zamodelowanie obiektów
-    * [ ] Kombajn
+    * [X] Kombajn
     * [ ] Otoczenie
         * [ ] Obiekty środowiska
         * [ ] Ozdoby
-* [ ] Zamodelowanie kamery i jej ruchu
+* [X] Zamodelowanie kamery i jej ruchu
 * [ ] Zaprogramowanie ruchu obiektów
 * [ ] Dodanie interakcji od użytkownika
     * [ ] Tryb kamery swobodnej i przypietej do kombajnu
