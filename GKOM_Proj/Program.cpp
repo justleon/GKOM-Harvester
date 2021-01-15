@@ -131,25 +131,32 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		//zmienna określa ilość boków w młócarce
-		int numberOfSidesInMechanism = 6;
+		int numberOfSidesInMechanism = 9;
 		if (numberOfSidesInMechanism < 3) numberOfSidesInMechanism = 3;
 		//zmienna określa ilość elementów w młócarce
 		int numberOfMechanisms = 5;
 		if (numberOfMechanisms < 2) numberOfMechanisms = 2;
-		float distanceBetweenMechanisms = 1.0f / (numberOfMechanisms - 1);
+		float distanceBetweenMechanisms = 2.4f / (numberOfMechanisms - 1);
 
 		float angle = 360.0 / numberOfSidesInMechanism;
 		float angleInDegrees = 360.0 / numberOfSidesInMechanism;
+		float radius = 0.25f;
+		float angleDiffrence = 0.0f;
+		float speedOfMechanism = 1.0f;
 		//konwersja na radiany
 		angle *= (3.1415f / 180.0f);
-		float sideLengthInMechanism = sqrtf(2 * (1 - cosf(angle))) * 0.07f;
+		float sideLengthInMechanism = sqrtf(2 * (1 - cosf(angle))) * radius;
 		cout << "Side length: " << sideLengthInMechanism << endl;
 
-		float heightInMechanism = 0.07f * cosf(angle / 2.0f);
+		float heightInMechanism = radius * cosf(angle / 2.0f);
 		cout << "Height: " << heightInMechanism << endl;
 
 		//zmienna okreśła długość rury zbożowej
 		float lengthOfWheatPipe = 0.8f;
+
+		//zmienna określa kierunek poruszania się zębów
+		bool teethDirection = true;
+		float firstTeethPosition = -1.15f;
 
 		//zmienna określające młyn
 		int numWings = 5;
@@ -187,18 +194,36 @@ int main()
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
-			for (unsigned int i = 0; i < 10; i++)
-			{
-				Transformation transformationMatrix({ -0.8f, -0.11f, -0.5f + i*0.1f },
-					//miejsce na animcaje lewo-prawo z�b�w
+			Transformation transformationMatrix({ -1.18f, -0.1f, -1.15f },
 				90.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 0.03f, 0.15f, 0.1f });
+				{ 0.03f, 0.25f, 0.1f });
 
+			for (unsigned int i = 0; i < 20; i++)
+			{
+				transformationMatrix.pos[2] = firstTeethPosition + i * 0.1f;
 
 				Pyramid teeth(0.5f, transformationMatrix);
-				teeth.draw(shaderProgram);	
+				teeth.draw(shaderProgram);
 			}
+
+			//animacja ruchu zębów
+			if (teethDirection) {
+				firstTeethPosition += 0.015f;
+			}
+			else {
+				firstTeethPosition -= 0.015f;
+			}
+
+			if (firstTeethPosition > -0.75f)
+			{
+				teethDirection = false;
+			}
+			if (firstTeethPosition < -1.15f)
+			{
+				teethDirection = true;
+			}
+
 
 			//bryła młyna
 			Transformation t1({ -5.0f, 6.0f, -8.0f },
@@ -242,18 +267,18 @@ int main()
 			platform.draw(shaderProgram);
 
 			//ty� nagarniacza
-			Transformation trans2({ -0.5f, 0.0f, 0.0f },
+			Transformation trans2({ -0.5f, 0.2f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.0f, 0.0f },
-				{ 0.1f, 0.5f, 2.5f });
+				{ 0.1f, 1.2f, 5.0f });
 			Cube hoeHolder(0.5f, trans2);
 			hoeHolder.draw(shaderProgram);
 
 			//wysi�gnik
-			Transformation trans3({ -0.20f, 0.12f, 0.0f },
-				35.0f,
+			Transformation trans3({ -0.18f, 0.15f, 0.0f },
+				30.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 0.9f, 0.1f, 0.4f });
+				{ 0.9f, 0.15f, 0.4f });
 			Cube hoeHolder2(0.8f, trans3);
 			hoeHolder2.draw(shaderProgram);
 
@@ -266,52 +291,53 @@ int main()
 			hoeHolder3.draw(shaderProgram);
 
 			//cylinder obracaj�cy maszyn� do m��cenia
-			Transformation trans5({ -0.8f, 0.0f, 0.0f },
+			Transformation trans5({ -1.17f, 0.2f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 40.0f });
-			Cylinder cylinder(0.03f, trans5);
+				{ 1.5f, 1.5f, 50.0f });
+			Cylinder cylinder(0.05f, trans5);
 			cylinder.draw(shaderProgram);
 
 			//uchwyt na z�by
-			Transformation trans8({ -0.65f, -0.11f, 0.0f },
+			Transformation trans8({ -0.82f, -0.1f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 1.0f },
-				{ 0.35f, 0.025f, 1.7f });
+				{ 0.9f, 0.025f, 3.6f });
 			Cube hoeteethholderbottom(0.7f, trans8);
 			hoeteethholderbottom.draw(shaderProgram);
 
 			//lewa �ciana nagarnaicza - cube
-			Transformation trans9({ -0.65f, 0.0f, 0.6f },
+			Transformation trans9({ -0.82f, 0.2f, 1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.8f, 1.2f, 0.3f });
-			Cube leftWallNagarniacz(0.2f, trans9);
+				{ 1.4f, 1.2f, 0.1f });
+			Cube leftWallNagarniacz(0.5f, trans9);
 			leftWallNagarniacz.draw(shaderProgram);
 
 			//lewa �ciana nagarnaicza - cylinder
-			Transformation trans10({ -0.8f, 0.0f, 0.6f },
+			Transformation trans10({ -1.17f, 0.2f, 1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 0.95f, 0.23f });
-			Cylinder leftCornerNagarniacz(0.25f, trans10);
+				{ 1.2f, 1.2f, 0.12f });
+			Cylinder leftCornerNagarniacz(0.5f, trans10);
 			leftCornerNagarniacz.draw(shaderProgram);
 
 			//prawa �ciana nagarnaicza - cube
-			Transformation trans11({ -0.65f, 0.0f, -0.6f },
+			Transformation trans11({ -0.82f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.8f, 1.2f, 0.3f });
-			Cube rightWallNagarniacz(0.2f, trans11);
+				{ 1.4f, 1.2f, 0.1f });
+			Cube rightWallNagarniacz(0.5f, trans11);
 			rightWallNagarniacz.draw(shaderProgram);
 
 			//prawa �ciana nagarnaicza - cylinder
-			Transformation trans12({ -0.8f, 0.0f, -0.6f },
+			Transformation trans12({ -1.17f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 0.95f, 0.23f });
-			Cylinder rightCornerNagarniacz(0.25f, trans12);
+				{ 1.2f, 1.2f, 0.12f });
+			Cylinder rightCornerNagarniacz(0.5f, trans12);
 			rightCornerNagarniacz.draw(shaderProgram);
+
 
 
 
@@ -583,13 +609,17 @@ int main()
 			placeholder31.draw(shaderProgram);
 
 
+			speedOfMechanism += 0.01f;
+
+
 			//transformacja wykaszarki
-			Transformation transformationMlocarka({ -0.8f, heightInMechanism, 0.0f },
+			Transformation transformationMlocarka({ trans5.pos[0], heightInMechanism + trans5.pos[1], 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ sideLengthInMechanism, 0.01f, 0.01f });
 
-			float posX = -0.8f, posY = heightInMechanism, posZ = -0.5f;
+			float posX = trans5.pos[0], posY = heightInMechanism + trans5.pos[1], posZ = -1.2f;
+
 
 			//obliczenie pozycji wykaszarki/młócarki
 			for (int j = 0; j < numberOfMechanisms; j++)
@@ -597,10 +627,9 @@ int main()
 				transformationMlocarka.pos[2] = posZ + j * distanceBetweenMechanisms;
 				for (int i = 0; i < numberOfSidesInMechanism; i++)
 				{
-
-					transformationMlocarka.pos[0] = ((posX + 0.8f) * cosf(angle * i)) - (posY * sinf(angle * i)) - 0.8f;
-					transformationMlocarka.pos[1] = ((posX + 0.8f) * sinf(angle * i)) + (posY * cosf(angle * i));
-					transformationMlocarka.angle = angleInDegrees * i;
+					transformationMlocarka.pos[0] = ((posX + 1.17f) * cosf((angle * i) + speedOfMechanism)) - ((posY - 0.2f) * sinf((angle * i) + speedOfMechanism)) - 1.17f;
+					transformationMlocarka.pos[1] = ((posX + 1.17f) * sinf((angle * i) + speedOfMechanism)) + ((posY - 0.2f) * cosf((angle * i) + speedOfMechanism)) + 0.2f;
+					transformationMlocarka.angle = angleDiffrence + (angleInDegrees * (i + ((numberOfSidesInMechanism * 0.5f) - 1.0f)));
 					//młócarka generowana proceduralnie
 					Cube mlocarkaElement1(1.0f, transformationMlocarka);
 					mlocarkaElement1.draw(shaderProgram);
@@ -608,31 +637,49 @@ int main()
 				}
 			}
 
-			posX -= (sideLengthInMechanism / 2.0f);
+			posX = trans5.pos[0] - (sideLengthInMechanism / 2.0f);
+			posY = heightInMechanism + trans5.pos[1];
 			posZ = 0.0f;
 
-			Transformation transformationMlocarkaPoprzeczka({ posX, heightInMechanism, 0.0f },
-				angleInDegrees / 2.0f,
+			Transformation transformationMlocarkaPoprzeczka({ trans5.pos[0] - (sideLengthInMechanism / 2.0f), heightInMechanism + trans5.pos[1], 0.0f },
+				(angleInDegrees / 2.0f) + angleDiffrence,
 				{ 0.0f, 0.0f, 3.0f },
-				{ 0.01f, 0.01f, 1.01f });
+				{ 0.01f, 0.01f, 2.4f });
 
 			for (int i = 0; i < numberOfSidesInMechanism; i++)
 			{
-				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 0.8f) * cosf(angle * i)) - (posY * sinf(angle * i)) - 0.8f;
-				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 0.8f) * sinf(angle * i)) + (posY * cosf(angle * i));
-				transformationMlocarkaPoprzeczka.angle += i * angleInDegrees;
+				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 1.17f) * cosf((angle * i) + speedOfMechanism)) - ((posY - 0.2f) * sinf((angle * i) + speedOfMechanism)) - 1.17f;
+				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 1.17f) * sinf((angle * i) + speedOfMechanism)) + ((posY - 0.2f) * cosf((angle * i) + speedOfMechanism)) + 0.2f;
 				//element poprzeczny generowany proceduralnie
 				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka);
 				mlocarkaElementPoprzeczka.draw(shaderProgram);
 			}
-			
+
+			posX = trans5.pos[0];
+			posY = heightInMechanism + trans5.pos[1];
+			float nextposX = ((posX + 1.17f) * cosf((angle)+speedOfMechanism)) - ((posY - 0.2f) * sinf((angle)+speedOfMechanism)) - 1.17f;
+			float nextposY = ((posX + 1.17f) * sinf((angle)+speedOfMechanism)) + ((posY - 0.2f) * cosf((angle)+speedOfMechanism)) + 0.2f;
+			cout << "x: " << posX << " newX: " << nextposX << " y: " << posY << " newY: " << nextposY << endl;
+			angleDiffrence = ((nextposX - posX) * (nextposX - posX)) + ((nextposY - posY) * (nextposY - posY));
+			//cout << angleDiffrence << endl;
+			angleDiffrence = ((2.0f * heightInMechanism * heightInMechanism) - angleDiffrence) / (2.0f * heightInMechanism * heightInMechanism);
+			//cout << angleDiffrence << endl;
+			angleDiffrence = acosf(angleDiffrence);
+			//cout << angleDiffrence << endl;
+			angleDiffrence *= (180.0f / 3.1415f);
+			if (nextposX > posX) angleDiffrence = 360.0f - angleDiffrence;
+			cout << angleDiffrence << endl;
+
+
 			//trapezoid test
+			/*
 			Transformation transformationTrapezoid({ 0.0f, -3.0f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
 			Trapezoid trapezoidTest(1.0f, transformationTrapezoid);
 			trapezoidTest.draw(shaderProgram);
+			*/
 
 
 			// Swap the screen buffers
