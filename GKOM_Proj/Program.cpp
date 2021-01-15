@@ -151,6 +151,11 @@ int main()
 		//zmienna okreśła długość rury zbożowej
 		float lengthOfWheatPipe = 0.8f;
 
+		//zmienna określające młyn
+		int numWings = 5;
+		float wingSpeed = 10.0f;
+		float wingAngle = 180 / numWings;
+
 		if (lengthOfWheatPipe < 0.2f) lengthOfWheatPipe = 0.4f;
 
 		// main event loop
@@ -211,9 +216,6 @@ int main()
 			Pyramid dach(6.50f, t2);
 			dach.draw(shaderProgram);
 
-			int numWings = 5;
-			float wingAngle = 180 / numWings;
-			float wingSpeed = 10.0f;
 
 			//wal młyna
 			Transformation t3({ -5.0f, 8.0f, -5.0f },
