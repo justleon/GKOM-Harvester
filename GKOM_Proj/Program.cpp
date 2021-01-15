@@ -151,6 +151,11 @@ int main()
 		//zmienna okreśła długość rury zbożowej
 		float lengthOfWheatPipe = 0.8f;
 
+		//zmienna określające młyn
+		int numWings = 5;
+		float wingSpeed = 10.0f;
+		float wingAngle = 180 / numWings;
+
 		if (lengthOfWheatPipe < 0.2f) lengthOfWheatPipe = 0.4f;
 
 		// main event loop
@@ -194,6 +199,55 @@ int main()
 				Pyramid teeth(0.5f, transformationMatrix);
 				teeth.draw(shaderProgram);	
 			}
+
+			//bryła młyna
+			Transformation t1({ -5.0f, 6.0f, -8.0f },
+				90.0f,
+				{ 1.0f, 0.0f, 0.0f },
+				{ 1.0f, 1.0f, 2.5f });
+			Cylinder bryla(5.0f, t1);
+			bryla.draw(shaderProgram);
+
+			//dach mlyna
+			Transformation t2({ -5.0f, 14.0f, -8.0f },
+				0.0f,
+				{ 1.0f, 0.0f, 1.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Pyramid dach(6.50f, t2);
+			dach.draw(shaderProgram);
+
+
+			//wal młyna
+			Transformation t3({ -5.0f, 8.0f, -5.0f },
+				wingSpeed*currentFrame,
+				{ 0.0f, 0.0f, 1.0f },
+				{ 1.0f, 1.0f, 3.0f });
+			Cylinder wal(0.6f, t3);
+			wal.draw(shaderProgram);
+
+			for (int i = 0; i < numWings; i++) {
+				Transformation t3({ -5.0f, 8.0f, -4.3f + i*0.001f },
+					i*wingAngle + wingSpeed*currentFrame,
+					{ 0.0f, 0.0f, 1.0f },
+					{ 2.0f, 40.0f, 0.2f });
+				Cube wing(0.3f, t3);
+				wing.draw(shaderProgram);
+			}
+
+			//Transformation transformationMlocarkaPoprzeczka({ posX, heightInMechanism, 0.0f },
+			//	angleInDegrees / 2.0f,
+			//	{ 0.0f, 0.0f, 3.0f },
+			//	{ 0.01f, 0.01f, 1.01f });
+
+			//for (int i = 0; i < numberOfSidesInMechanism; i++)
+			//{
+			//	transformationMlocarkaPoprzeczka.pos[0] = ((posX + 0.8f) * cosf(angle * i)) - (posY * sinf(angle * i)) - 0.8f;
+			//	transformationMlocarkaPoprzeczka.pos[1] = ((posX + 0.8f) * sinf(angle * i)) + (posY * cosf(angle * i));
+			//	transformationMlocarkaPoprzeczka.angle += i * angleInDegrees;
+			//	//element poprzeczny generowany proceduralnie
+			//	Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka);
+			//	mlocarkaElementPoprzeczka.draw(shaderProgram);
+			//}
 
 			//pod�o�e
 			Transformation trans1({ 0.0f, -0.19f, 0.0f },
