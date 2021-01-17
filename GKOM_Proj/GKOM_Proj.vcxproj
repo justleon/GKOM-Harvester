@@ -89,6 +89,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Harvester.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="Pyramid.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\Cube.h" />
     <ClInclude Include="headers\Cylinder.h" />
+    <ClInclude Include="headers\Harvester.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
     <ClInclude Include="headers\ObjectInterface.h" />
     <ClInclude Include="headers\ObjectPrimitive.h" />
@@ -117,11 +119,11 @@
     <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="headers\Sphere.h" />
     <ClInclude Include="headers\Trapezoid.h" />
+    <ClInclude Include="headers\Triangle.h" />
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexBufferLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
     <ClInclude Include="headers\Wheel.h" />
-    <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg" />

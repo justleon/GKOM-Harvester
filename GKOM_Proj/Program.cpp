@@ -13,6 +13,7 @@
 #include "headers/Wheel.h"
 #include "headers/Trapezoid.h"
 #include "headers/Triangle.h"
+#include "headers/Harvester.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -64,18 +65,6 @@ glm::vec3 cubePositions[] = {
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
-glm::vec3 teethPositions[] = {
-	glm::vec3(-0.8f, -0.11f, 0.5f),
-	glm::vec3(-0.8f, -0.11f, 0.4f),
-	glm::vec3(-0.8f, -0.11f, 0.3f),
-	glm::vec3(-0.8f, -0.11f, 0.2f),
-	glm::vec3(-0.8f, -0.11f, 0.1f),
-	glm::vec3(-0.8f, -0.11f, 0.0f),
-	glm::vec3(-0.8f, -0.11f, -0.1f),
-	glm::vec3(-0.8f, -0.11f, -0.2f),
-	glm::vec3(-0.8f, -0.11f, -0.3f),
-	glm::vec3(-0.8f, -0.11f, -0.4f),
-};
 
 int main()
 {
@@ -132,38 +121,18 @@ int main()
 
 		//zmienna określa ilość boków w młócarce
 		int numberOfSidesInMechanism = 9;
-		if (numberOfSidesInMechanism < 3) numberOfSidesInMechanism = 3;
 		//zmienna określa ilość elementów w młócarce
 		int numberOfMechanisms = 5;
-		if (numberOfMechanisms < 2) numberOfMechanisms = 2;
-		float distanceBetweenMechanisms = 2.4f / (numberOfMechanisms - 1);
-
-		float angle = 360.0 / numberOfSidesInMechanism;
-		float angleInDegrees = 360.0 / numberOfSidesInMechanism;
-		float radius = 0.25f;
-		float angleDiffrence = 0.0f;
-		float speedOfMechanism = 1.0f;
-		//konwersja na radiany
-		angle *= (3.1415f / 180.0f);
-		float sideLengthInMechanism = sqrtf(2 * (1 - cosf(angle))) * radius;
-		cout << "Side length: " << sideLengthInMechanism << endl;
-
-		float heightInMechanism = radius * cosf(angle / 2.0f);
-		cout << "Height: " << heightInMechanism << endl;
-
 		//zmienna okreśła długość rury zbożowej
 		float lengthOfWheatPipe = 0.8f;
 
-		//zmienna określa kierunek poruszania się zębów
-		bool teethDirection = true;
-		float firstTeethPosition = -1.15f;
+		Harvester harvester(numberOfSidesInMechanism, numberOfMechanisms, lengthOfWheatPipe);
 
 		//zmienna określające młyn
 		int numWings = 5;
 		float wingSpeed = 10.0f;
 		float wingAngle = 180 / numWings;
 
-		if (lengthOfWheatPipe < 0.2f) lengthOfWheatPipe = 0.4f;
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -201,27 +170,27 @@ int main()
 
 			for (unsigned int i = 0; i < 20; i++)
 			{
-				transformationMatrix.pos[2] = firstTeethPosition + i * 0.1f;
+				transformationMatrix.pos[2] = harvester.firstTeethPosition + i * 0.1f;
 
 				Pyramid teeth(0.5f, transformationMatrix);
 				teeth.draw(shaderProgram);
 			}
 
 			//animacja ruchu zębów
-			if (teethDirection) {
-				firstTeethPosition += 0.015f;
+			if (harvester.teethDirection) {
+				harvester.firstTeethPosition += 0.015f;
 			}
 			else {
-				firstTeethPosition -= 0.015f;
+				harvester.firstTeethPosition -= 0.015f;
 			}
 
-			if (firstTeethPosition > -0.75f)
+			if (harvester.firstTeethPosition > -0.75f)
 			{
-				teethDirection = false;
+				harvester.teethDirection = false;
 			}
-			if (firstTeethPosition < -1.15f)
+			if (harvester.firstTeethPosition < -1.15f)
 			{
-				teethDirection = true;
+				harvester.teethDirection = true;
 			}
 
 
@@ -609,27 +578,27 @@ int main()
 			placeholder31.draw(shaderProgram);
 
 
-			speedOfMechanism += 0.01f;
+			harvester.speedOfMechanism += 0.01f;
 
 
 			//transformacja wykaszarki
-			Transformation transformationMlocarka({ trans5.pos[0], heightInMechanism + trans5.pos[1], 0.0f },
+			Transformation transformationMlocarka({ trans5.pos[0], harvester.heightInMechanism + trans5.pos[1], 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
-				{ sideLengthInMechanism, 0.01f, 0.01f });
+				{ harvester.sideLengthInMechanism, 0.01f, 0.01f });
 
-			float posX = trans5.pos[0], posY = heightInMechanism + trans5.pos[1], posZ = -1.2f;
+			float posX = trans5.pos[0], posY = harvester.heightInMechanism + trans5.pos[1], posZ = -1.2f;
 
 
 			//obliczenie pozycji wykaszarki/młócarki
 			for (int j = 0; j < numberOfMechanisms; j++)
 			{
-				transformationMlocarka.pos[2] = posZ + j * distanceBetweenMechanisms;
+				transformationMlocarka.pos[2] = posZ + j * harvester.distanceBetweenMechanisms;
 				for (int i = 0; i < numberOfSidesInMechanism; i++)
 				{
-					transformationMlocarka.pos[0] = ((posX + 1.17f) * cosf((angle * i) + speedOfMechanism)) - ((posY - 0.2f) * sinf((angle * i) + speedOfMechanism)) - 1.17f;
-					transformationMlocarka.pos[1] = ((posX + 1.17f) * sinf((angle * i) + speedOfMechanism)) + ((posY - 0.2f) * cosf((angle * i) + speedOfMechanism)) + 0.2f;
-					transformationMlocarka.angle = angleDiffrence + (angleInDegrees * (i + ((numberOfSidesInMechanism * 0.5f) - 1.0f)));
+					transformationMlocarka.pos[0] = ((posX + 1.17f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) - 1.17f;
+					transformationMlocarka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
+					transformationMlocarka.angle = harvester.angleDiffrence + (harvester.angleInDegrees * (i + ((numberOfSidesInMechanism * 0.5f) - 1.0f)));
 					//młócarka generowana proceduralnie
 					Cube mlocarkaElement1(1.0f, transformationMlocarka);
 					mlocarkaElement1.draw(shaderProgram);
@@ -637,38 +606,38 @@ int main()
 				}
 			}
 
-			posX = trans5.pos[0] - (sideLengthInMechanism / 2.0f);
-			posY = heightInMechanism + trans5.pos[1];
+			posX = trans5.pos[0] - (harvester.sideLengthInMechanism / 2.0f);
+			posY = harvester.heightInMechanism + trans5.pos[1];
 			posZ = 0.0f;
 
-			Transformation transformationMlocarkaPoprzeczka({ trans5.pos[0] - (sideLengthInMechanism / 2.0f), heightInMechanism + trans5.pos[1], 0.0f },
-				(angleInDegrees / 2.0f) + angleDiffrence,
+			Transformation transformationMlocarkaPoprzeczka({ trans5.pos[0] - (harvester.sideLengthInMechanism / 2.0f), harvester.heightInMechanism + trans5.pos[1], 0.0f },
+				(harvester.angleInDegrees / 2.0f) + harvester.angleDiffrence,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.01f, 0.01f, 2.4f });
 
 			for (int i = 0; i < numberOfSidesInMechanism; i++)
 			{
-				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 1.17f) * cosf((angle * i) + speedOfMechanism)) - ((posY - 0.2f) * sinf((angle * i) + speedOfMechanism)) - 1.17f;
-				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 1.17f) * sinf((angle * i) + speedOfMechanism)) + ((posY - 0.2f) * cosf((angle * i) + speedOfMechanism)) + 0.2f;
+				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 1.17f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) - 1.17f;
+				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
 				//element poprzeczny generowany proceduralnie
 				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka);
 				mlocarkaElementPoprzeczka.draw(shaderProgram);
 			}
 
 			posX = trans5.pos[0];
-			posY = heightInMechanism + trans5.pos[1];
-			float nextposX = ((posX + 1.17f) * cosf((angle)+speedOfMechanism)) - ((posY - 0.2f) * sinf((angle)+speedOfMechanism)) - 1.17f;
-			float nextposY = ((posX + 1.17f) * sinf((angle)+speedOfMechanism)) + ((posY - 0.2f) * cosf((angle)+speedOfMechanism)) + 0.2f;
-			cout << "x: " << posX << " newX: " << nextposX << " y: " << posY << " newY: " << nextposY << endl;
-			angleDiffrence = ((nextposX - posX) * (nextposX - posX)) + ((nextposY - posY) * (nextposY - posY));
+			posY = harvester.heightInMechanism + trans5.pos[1];
+			float nextposX = ((posX + 1.17f) * cosf((harvester.angle)+ harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle)+ harvester.speedOfMechanism)) - 1.17f;
+			float nextposY = ((posX + 1.17f) * sinf((harvester.angle)+harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle)+ harvester.speedOfMechanism)) + 0.2f;
+			//cout << "x: " << posX << " newX: " << nextposX << " y: " << posY << " newY: " << nextposY << endl;
+			harvester.angleDiffrence = ((nextposX - posX) * (nextposX - posX)) + ((nextposY - posY) * (nextposY - posY));
 			//cout << angleDiffrence << endl;
-			angleDiffrence = ((2.0f * heightInMechanism * heightInMechanism) - angleDiffrence) / (2.0f * heightInMechanism * heightInMechanism);
+			harvester.angleDiffrence = ((2.0f * harvester.heightInMechanism * harvester.heightInMechanism) - harvester.angleDiffrence) / (2.0f * harvester.heightInMechanism * harvester.heightInMechanism);
 			//cout << angleDiffrence << endl;
-			angleDiffrence = acosf(angleDiffrence);
+			harvester.angleDiffrence = acosf(harvester.angleDiffrence);
 			//cout << angleDiffrence << endl;
-			angleDiffrence *= (180.0f / 3.1415f);
-			if (nextposX > posX) angleDiffrence = 360.0f - angleDiffrence;
-			cout << angleDiffrence << endl;
+			harvester.angleDiffrence *= (180.0f / 3.1415f);
+			if (nextposX > posX) harvester.angleDiffrence = 360.0f - harvester.angleDiffrence;
+			//cout << angleDiffrence << endl;
 
 
 			//trapezoid test
