@@ -38,6 +38,8 @@ float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 
+
+
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
@@ -113,9 +115,42 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+		//point light parameters
+		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+		GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+		GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+		GLfloat light_position[] = { 3.0, 3.0, 3.0, 1.0 };
+
+		//prepare point light test
+		glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+		//prepare directional light test
+		GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+		GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+		GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+		GLfloat light1_position[] = { -2.0, 2.0, 1.0, 1.0 };
+		GLfloat spot_direction[] = { -1.0, -1.0, 0.0 };
+
+		glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+		glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+		glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+		glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.5);
+		glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5);
+		glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.2);
+
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "textures/harv_side.png");
 		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE1, "textures/harv_side.png");
+
+		//enabling lights
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+		glEnable(GL_COLOR_MATERIAL);
 
 		glEnable(GL_DEPTH_TEST);
 
