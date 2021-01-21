@@ -1,4 +1,6 @@
 ﻿#define GLEW_STATIC
+
+
 #include <GL/glew.h>
 #include "headers/VertexBuffer.h"
 #include "headers/VertexBufferLayout.h"
@@ -22,6 +24,18 @@
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
+
+#define LIGHT_POSITION 3.2f, 4.0f, -1.0f
+#define LIGHT_AMBIENT 0.1f, 0.1f, 0.1f
+#define LIGHT_DIFFUSE 0.5f, 0.5f, 0.5f
+#define LIGHT_SPECULAR 0.4f, 0.5f, 0.44f
+#define LIGHT_COLOR 1.0f, 1.0f, 1.0f
+
+glm::vec3 lightPos(LIGHT_POSITION);
+glm::vec3 light_ambient(LIGHT_AMBIENT);
+glm::vec3 light_diffuse(LIGHT_DIFFUSE);
+glm::vec3 light_specular(LIGHT_SPECULAR);
+glm::vec3 light_color(LIGHT_COLOR);
 
 const GLuint WIDTH = 1280, HEIGHT = 800;
 
@@ -67,6 +81,49 @@ glm::vec3 cubePositions[] = {
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+GLfloat light[] = {
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+};
 
 int main()
 {
@@ -107,6 +164,7 @@ int main()
 
 		// Build, compile and link shader program
 		ShaderProgram shaderProgram("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
+		ShaderProgram lampShader("lampShader.vertex", "lampShader.frag");
 
 		// Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
@@ -115,44 +173,32 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		//point light parameters
-		GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-		GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-		GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-		GLfloat light_position[] = { 3.0, 3.0, 3.0, 1.0 };
-
-		//prepare point light test
-		glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-		glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-		//prepare directional light test
-		GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-		GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-		GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-		GLfloat light1_position[] = { -2.0, 2.0, 1.0, 1.0 };
-		GLfloat spot_direction[] = { -1.0, -1.0, 0.0 };
-
-		glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
-		glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
-		glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
-		glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
-		glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.5);
-		glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.5);
-		glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.2);
-
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "textures/harv_side.png");
 		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE1, "textures/harv_side.png");
 
 		//enabling lights
+		GLfloat lm_ambient[] = { 0.5, 0.5, 0.5, 1 };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 		glEnable(GL_COLOR_MATERIAL);
 
+		glColorMaterial(GL_FRONT, GL_AMBIENT);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glDepthFunc(GL_LESS);
+
+
 		glEnable(GL_DEPTH_TEST);
+
+		glEnable(GL_NORMALIZE);
+
+		glCullFace(GL_FRONT);
+		glShadeModel(GL_SMOOTH);
 
 		//zmienna określa ilość boków w młócarce
 		int numberOfSidesInMechanism = 9;
@@ -168,6 +214,17 @@ int main()
 		float wingSpeed = 10.0f;
 		float wingAngle = 180 / numWings;
 
+		//idk test inicjalizacji swiatla
+		GLuint lightVAO, lightVBO;
+		glGenVertexArrays(1, &lightVAO);
+		glGenBuffers(1, &lightVBO);
+
+		glBindVertexArray(lightVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, lightVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(light), light, GL_STATIC_DRAW);;
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(0);
+		glBindVertexArray(0);
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -193,6 +250,29 @@ int main()
 			// Draw our first box
 			shaderProgram.Use();
 
+			glUniform1i(glGetUniformLocation(shaderProgram.get_programID(), "material.diffuse"), 0);			//setting shader uniforms and uniforms in structs
+
+			GLint lightColorLoc = glGetUniformLocation(shaderProgram.get_programID(), "lightColor");
+			GLint lightPosLoc = glGetUniformLocation(shaderProgram.get_programID(), "lightPos");
+			GLint viewPosLoc = glGetUniformLocation(shaderProgram.get_programID(), "viewPos");
+
+			GLint matAmbientLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.ambient");
+			GLint matDiffuseLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.diffuse");
+			GLint matSpecularLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.specular");
+			GLint matShineLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.shininess");
+
+			GLint lightAmbientLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.ambient");
+			GLint lightDiffuseLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.diffuse");
+			GLint lightSpecularLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.specular");
+
+			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.ambient"), light_ambient.x, light_ambient.y, light_ambient.z);
+			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.diffuse"), light_diffuse.x, light_diffuse.y, light_diffuse.z);
+			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.specular"), light_specular.x, light_specular.y, light_specular.z);
+
+			glUniform3f(lightColorLoc, light_color.x, light_color.y, light_color.z);
+			glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+			glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
+
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
 
@@ -202,6 +282,23 @@ int main()
 				90.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.03f, 0.25f, 0.1f });
+
+			glm::mat4 model;
+			GLint modelLoc = glGetUniformLocation(shaderProgram.get_programID(), "model");
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+			lampShader.Use();
+			model = glm::mat4();
+			model = glm::translate(model, lightPos);
+			model = glm::scale(model, glm::vec3(0.1f));
+			modelLoc = glGetUniformLocation(lampShader.get_programID(), "model");
+			lightColorLoc = glGetUniformLocation(lampShader.get_programID(), "lightColor");
+			GLint objectColorLoc = glGetUniformLocation(lampShader.get_programID(), "objectColor");
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+			glUniform3f(lightColorLoc, light_color.x, light_color.y, light_color.z);
+			glUniform3f(objectColorLoc, light_color.x, light_color.y, light_color.z);
+
+			glBindVertexArray(lightVAO);
 
 			for (unsigned int i = 0; i < 20; i++)
 			{
@@ -685,6 +782,7 @@ int main()
 			trapezoidTest.draw(shaderProgram);
 			*/
 
+			glBindVertexArray(0);
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);

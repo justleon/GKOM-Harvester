@@ -104,6 +104,8 @@
     <ClCompile Include="Wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="lampShader.frag" />
+    <None Include="lampShader.vertex" />
     <None Include="shaders\fragmentShader.frag" />
     <None Include="shaders\vertexShader.vert" />
   </ItemGroup>

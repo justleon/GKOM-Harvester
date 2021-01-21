@@ -74,6 +74,12 @@
     <None Include="shaders\vertexShader.vert">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="lampShader.frag">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="lampShader.vertex">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg">
