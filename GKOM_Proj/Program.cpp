@@ -1,6 +1,5 @@
 ﻿#define GLEW_STATIC
 
-
 #include <GL/glew.h>
 #include "headers/VertexBuffer.h"
 #include "headers/VertexBufferLayout.h"
@@ -26,10 +25,10 @@
 
 using namespace std;
 
-#define LIGHT_POSITION 3.2f, 4.0f, -1.0f
-#define LIGHT_AMBIENT 0.1f, 0.1f, 0.1f
-#define LIGHT_DIFFUSE 0.5f, 0.5f, 0.5f
-#define LIGHT_SPECULAR 0.4f, 0.5f, 0.44f
+#define LIGHT_POSITION 23.2f, 24.0f, -1.0f
+#define LIGHT_AMBIENT 0.9f, 0.9f, 0.9f
+#define LIGHT_DIFFUSE 1.5f, 1.5f, 1.5f
+#define LIGHT_SPECULAR 0.9f, 0.9f, 0.9f
 #define LIGHT_COLOR 1.0f, 1.0f, 1.0f
 
 glm::vec3 lightPos(LIGHT_POSITION);
@@ -65,63 +64,6 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 	}
 	return os;
 }
-
-glm::vec3 cubePositions[] = {
-			glm::vec3(0.0f,  0.0f,  0.0f),
-			glm::vec3(2.0f,  5.0f, -15.0f),
-			glm::vec3(-1.5f, -2.2f, -2.5f),
-			glm::vec3(-3.8f, -2.0f, -12.3f),
-			glm::vec3(2.4f, -0.4f, -3.5f),
-			glm::vec3(-1.7f,  3.0f, -7.5f),
-			glm::vec3(1.3f, -2.0f, -2.5f),
-			glm::vec3(1.5f,  2.0f, -2.5f),
-			glm::vec3(1.5f,  0.2f, -1.5f),
-			glm::vec3(-1.3f,  1.0f, -1.5f)
-};
-
-GLfloat light[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
 
 int main()
 {
@@ -162,7 +104,7 @@ int main()
 
 		// Build, compile and link shader program
 		ShaderProgram shaderProgram("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
-		ShaderProgram lampShader("lampShader.vertex", "lampShader.frag");
+		ShaderProgram lampShader("shaders/lampShader.vert", "shaders/lampShader.frag");
 
 		// Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
@@ -173,7 +115,6 @@ int main()
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "textures/harv_side.png");
-		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE1, "textures/harv_side.png");
 
 		//enabling lights
 		GLfloat lm_ambient[] = { 0.5, 0.5, 0.5, 1 };
@@ -211,20 +152,6 @@ int main()
 		float wingSpeed = 10.0f;
 		float wingAngle = 180 / numWings;
 
-		//idk test inicjalizacji swiatla
-		GLuint lightVAO, lightVBO;
-		glGenVertexArrays(1, &lightVAO);
-		glGenBuffers(1, &lightVBO);
-
-		glBindVertexArray(lightVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, lightVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(light), light, GL_STATIC_DRAW);;
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-		glEnableVertexAttribArray(0);
-		glBindVertexArray(0);
-
-		auto skybox = Skybox();
-
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -235,45 +162,34 @@ int main()
 			lastFrame = currentFrame;
 
 			// Clear the colorbuffer
-			glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
-			shaderProgram.setUniformInt("Texture0", 0);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, texture1);
-			shaderProgram.setUniformInt("Texture1", 1);
-
-			// Draw our first box
-			shaderProgram.Use();
-
-			glUniform1i(glGetUniformLocation(shaderProgram.get_programID(), "material.diffuse"), 0);			//setting shader uniforms and uniforms in structs
-
-			GLint lightColorLoc = glGetUniformLocation(shaderProgram.get_programID(), "lightColor");
-			GLint lightPosLoc = glGetUniformLocation(shaderProgram.get_programID(), "lightPos");
-			GLint viewPosLoc = glGetUniformLocation(shaderProgram.get_programID(), "viewPos");
-
-			GLint matAmbientLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.ambient");
-			GLint matDiffuseLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.diffuse");
-			GLint matSpecularLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.specular");
-			GLint matShineLoc = glGetUniformLocation(shaderProgram.get_programID(), "material.shininess");
-
-			GLint lightAmbientLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.ambient");
-			GLint lightDiffuseLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.diffuse");
-			GLint lightSpecularLoc = glGetUniformLocation(shaderProgram.get_programID(), "light.specular");
-
-			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.ambient"), light_ambient.x, light_ambient.y, light_ambient.z);
-			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.diffuse"), light_diffuse.x, light_diffuse.y, light_diffuse.z);
-			glUniform3f(glGetUniformLocation(shaderProgram.get_programID(), "light.specular"), light_specular.x, light_specular.y, light_specular.z);
-
-			glUniform3f(lightColorLoc, light_color.x, light_color.y, light_color.z);
-			glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
-			glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
+			shaderProgram.setUniformInt("tex", 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
+
+			lampShader.Use();
+			lampShader.setUniformMat4("view", view);
+			lampShader.setUniformMat4("projection", projection);
+			lampShader.setUniformFloat("intensity", 1.0f);
+			lampShader.setUniformVec3f("lightColor", light_color);
+
+			// Draw our first box
+			shaderProgram.Use();
+			shaderProgram.setUniformVec3f("light.position", lightPos);
+			shaderProgram.setUniformVec3f("viewPos", camera.Position);
+
+			shaderProgram.setUniformVec3f("light.ambient", light_ambient);
+			shaderProgram.setUniformVec3f("light.diffuse", light_diffuse);
+			shaderProgram.setUniformVec3f("light.specular", light_specular);
+
+			shaderProgram.setUniformVec3f("material.specular", light_specular);
+			shaderProgram.setUniformFloat("material.shininess", 64.0f);
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
@@ -281,23 +197,6 @@ int main()
 				90.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.03f, 0.25f, 0.1f });
-
-			glm::mat4 model;
-			GLint modelLoc = glGetUniformLocation(shaderProgram.get_programID(), "model");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-			lampShader.Use();
-			model = glm::mat4();
-			model = glm::translate(model, lightPos);
-			model = glm::scale(model, glm::vec3(0.1f));
-			modelLoc = glGetUniformLocation(lampShader.get_programID(), "model");
-			lightColorLoc = glGetUniformLocation(lampShader.get_programID(), "lightColor");
-			GLint objectColorLoc = glGetUniformLocation(lampShader.get_programID(), "objectColor");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glUniform3f(lightColorLoc, light_color.x, light_color.y, light_color.z);
-			glUniform3f(objectColorLoc, light_color.x, light_color.y, light_color.z);
-
-			glBindVertexArray(lightVAO);
 
 			for (unsigned int i = 0; i < 20; i++)
 			{
@@ -323,7 +222,13 @@ int main()
 			{
 				harvester.teethDirection = true;
 			}
-
+			
+			Transformation light(lightPos,
+				0.0f,
+				{ 1.0f, 1.0f, 1.0f },
+				{ 1.0f, 1.0f, 1.0f });
+			Lamp lightSource(5.0f, light);
+			lightSource.draw(lampShader);
 
 			//bryła młyna
 			Transformation t1({ -5.0f, 6.0f, -8.0f },

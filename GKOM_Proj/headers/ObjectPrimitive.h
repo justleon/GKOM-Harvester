@@ -27,7 +27,7 @@ struct Transformation
 
 class ObjectPrimitive : public Object
 {
-private:
+protected:
 	std::unique_ptr<VertexArray> vertexArray;
 	std::unique_ptr<VertexBuffer> vertexBuffer;
 	std::unique_ptr<IndexBuffer> indexBuffer;
@@ -37,7 +37,6 @@ private:
 	glm::mat4 modelMat;
 	Transformation transform;
 
-protected:
 	virtual std::unique_ptr<VertexBuffer> initVertices() = 0;
 	virtual std::unique_ptr<IndexBuffer> initIndices() = 0;
 

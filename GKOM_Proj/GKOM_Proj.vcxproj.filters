@@ -80,10 +80,10 @@
     <None Include="shaders\vertexShader.vert">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="lampShader.frag">
+    <None Include="shaders\lampShader.frag">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="lampShader.vertex">
+    <None Include="shaders\lampShader.vert">
       <Filter>Shader Files</Filter>
     </None>
     <None Include="shaders\skybox.frag">

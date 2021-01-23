@@ -24,8 +24,8 @@ void ObjectPrimitive::initObject()
 void ObjectPrimitive::draw(ShaderProgram shader)
 {
 	useModel();
-
 	shader.Use();
+
 	shader.setUniformMat4("model", modelMat);
 
 	vertexArray->Bind();

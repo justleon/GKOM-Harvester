@@ -91,6 +91,7 @@
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Harvester.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="ObjectCollection.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="Pyramid.cpp" />
@@ -106,8 +107,6 @@
     <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lampShader.frag" />
-    <None Include="lampShader.vertex" />
     <None Include="shaders\fragmentShader.frag" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
@@ -119,6 +118,7 @@
     <ClInclude Include="headers\Cylinder.h" />
     <ClInclude Include="headers\Harvester.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
+    <ClInclude Include="headers\Lamp.h" />
     <ClInclude Include="headers\ObjectCollection.h" />
     <ClInclude Include="headers\ObjectInterface.h" />
     <ClInclude Include="headers\ObjectPrimitive.h" />

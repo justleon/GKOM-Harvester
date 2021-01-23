@@ -23,5 +23,6 @@ public:
 	void setUniformBool(const std::string &name, bool value) const;
 	void setUniformInt(const std::string &name, int value) const;
 	void setUniformFloat(const std::string &name, float value) const;
+	void setUniformVec3f(const std::string &name, glm::vec3& value) const;
 	void setUniformMat4(const std::string &name, glm::mat4& value) const;
 };
