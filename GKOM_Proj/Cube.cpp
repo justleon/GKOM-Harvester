@@ -17,36 +17,36 @@ std::unique_ptr<VertexBuffer> Cube::initVertices()
 {
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
-		// coordinates						// color			// texture
-		 halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize,  halfSize,  halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
+		// coordinates						// normals			// texture
+		 halfSize,  halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		-halfSize,  halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
 		-halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 halfSize, -halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
 
-		 halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		 halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		 halfSize, -halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 halfSize, -halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 halfSize,  halfSize,  halfSize,	0.0f, 0.0f, -1.0f,	1.0f,  0.0f,
+		 halfSize,  halfSize, -halfSize,	0.0f, 0.0f, -1.0f,	0.0f,  0.0f,
+		 halfSize, -halfSize, -halfSize,	0.0f, 0.0f, -1.0f,	0.0f,  1.0f,
+		 halfSize, -halfSize,  halfSize,	0.0f, 0.0f, -1.0f,	1.0f,  1.0f,
 
-		 halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		 halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
 		-halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		-halfSize, -halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 halfSize, -halfSize, -halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		-halfSize, -halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		 halfSize, -halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
 
-		-halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize,  halfSize,  halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		-halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-halfSize, -halfSize, -halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		-halfSize,  halfSize, -halfSize,	0.0f, -1.0f, 0.0f,	1.0f,  0.0f,
+		-halfSize,  halfSize,  halfSize,	0.0f, -1.0f, 0.0f,	0.0f,  0.0f,
+		-halfSize, -halfSize,  halfSize,	0.0f, -1.0f, 0.0f,	0.0f,  1.0f,
+		-halfSize, -halfSize, -halfSize,	0.0f, -1.0f, 0.0f,	1.0f,  1.0f,
 
 		 halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-		 halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize,  halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		-halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		-halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
+		-halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
 
-		 halfSize, -halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-		 halfSize, -halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,
-		-halfSize, -halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		-halfSize, -halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 halfSize, -halfSize,  halfSize,	-1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		 halfSize, -halfSize, -halfSize,	-1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		-halfSize, -halfSize, -halfSize,	-1.0f, 0.0f, 0.0f,	0.0f,  0.0f,
+		-halfSize, -halfSize,  halfSize,	-1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
 	};
 
 	return std::make_unique<VertexBuffer>(vertices, sizeof(vertices));

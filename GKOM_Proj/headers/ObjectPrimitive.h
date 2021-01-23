@@ -33,6 +33,7 @@ private:
 	std::unique_ptr<IndexBuffer> indexBuffer;
 	std::unique_ptr<VertexBufferLayout> bufferLayout;
 
+	unsigned int textureID;
 	glm::mat4 modelMat;
 	Transformation transform;
 
@@ -47,8 +48,12 @@ public:
 	
 	void draw(ShaderProgram shader);
 
-	void transformModel();
+	void useModel();
 	void translate(const glm::vec3& vec);
 	void rotate(GLfloat angle, const glm::vec3& axis);
 	void resize(const glm::vec3& vec);
+
+	void translateWorld(const glm::vec3& vec);
+	void rotateWorld(GLfloat angle, const glm::vec3& axis);
+	void resizeWorld(const glm::vec3& vec);
 };

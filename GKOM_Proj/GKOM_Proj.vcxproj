@@ -91,6 +91,7 @@
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Harvester.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="ObjectCollection.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="headers\Cylinder.h" />
     <ClInclude Include="headers\Harvester.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
+    <ClInclude Include="headers\ObjectCollection.h" />
     <ClInclude Include="headers\ObjectInterface.h" />
     <ClInclude Include="headers\ObjectPrimitive.h" />
     <ClInclude Include="headers\Pyramid.h" />

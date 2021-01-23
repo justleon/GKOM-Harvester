@@ -17,14 +17,14 @@ std::unique_ptr<VertexBuffer> Triangle::initVertices()
 {
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
-		// coordinates							// color			// texture
-		 0.8f * halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		 0.8f * halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-0.8f * halfSize,  0.001f * halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		// coordinates										// normals			// texture
+		 0.8f * halfSize,  halfSize,			halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
+		 0.8f * halfSize, -halfSize,			halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.8f * halfSize,  0.001f * halfSize,	halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
 
-		 0.8f * halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-		 0.8f * halfSize, -halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
-		-0.8f * halfSize,  0.001f * -halfSize, -halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.8f * halfSize,  halfSize,			-halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
+		 0.8f * halfSize, -halfSize,			-halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
+		-0.8f * halfSize,  0.001f * -halfSize,	-halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  0.0f,
 	};
 
 	return std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
