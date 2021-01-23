@@ -16,6 +16,7 @@
 #include "headers/Trapezoid.h"
 #include "headers/Triangle.h"
 #include "headers/Harvester.h"
+#include "headers/Skybox.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -221,6 +222,8 @@ int main()
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(0);
+
+		auto skybox = Skybox();
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -767,6 +770,7 @@ int main()
 			if (nextposX > posX) harvester.angleDiffrence = 360.0f - harvester.angleDiffrence;
 			//cout << angleDiffrence << endl;
 
+			skybox.draw(glm::perspective(glm::radians(70.0f), 4.5f / 3.0f, 0.1f, 100.0f), camera.GetViewMatrix());
 
 			//trapezoid test
 			/*
