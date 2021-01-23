@@ -69,6 +69,9 @@
     <ClCompile Include="ObjectCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag">
@@ -81,6 +84,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="lampShader.vertex">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
@@ -145,6 +154,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\ObjectCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

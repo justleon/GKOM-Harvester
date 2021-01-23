@@ -103,11 +103,14 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Wheel.cpp" />
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lampShader.frag" />
     <None Include="lampShader.vertex" />
     <None Include="shaders\fragmentShader.frag" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
     <None Include="shaders\vertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +124,7 @@
     <ClInclude Include="headers\ObjectPrimitive.h" />
     <ClInclude Include="headers\Pyramid.h" />
     <ClInclude Include="headers\ShaderProgram.h" />
+    <ClInclude Include="headers\Skybox.h" />
     <ClInclude Include="headers\Sphere.h" />
     <ClInclude Include="headers\Trapezoid.h" />
     <ClInclude Include="headers\Triangle.h" />
