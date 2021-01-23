@@ -14,8 +14,8 @@ struct Light {
     vec3 specular;
 };
 
-in vec3 vecNormal;
 in vec3 FragPos;
+in vec3 vecNormals;
 in vec2 TexCoord;
 
 uniform vec3 viewPos;
@@ -28,9 +28,9 @@ void main()
 {
     vec3 ambient = light.ambient * texture(material.tex, TexCoord).rgb;
     
-    vec3 norm = normalize(vecNormal);
+    vec3 norm = normalize(vecNormals);
     vec3 lightDir = normalize(light.position - FragPos);
-    float diff = max(dot(vecNormal, lightDir), 0.0);
+    float diff = max(dot(vecNormals, lightDir), 0.0);
     vec3 diffuse = light.diffuse * diff * texture(material.tex, TexCoord).rgb;
 
     vec3 viewDir = normalize(viewPos - FragPos);

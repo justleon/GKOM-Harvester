@@ -15,6 +15,7 @@
 #include "headers/Trapezoid.h"
 #include "headers/Triangle.h"
 #include "headers/Harvester.h"
+#include "headers/Lamp.h"
 #include "headers/Skybox.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
@@ -25,17 +26,18 @@
 
 using namespace std;
 
-#define LIGHT_POSITION 23.2f, 24.0f, -1.0f
-#define LIGHT_AMBIENT 0.9f, 0.9f, 0.9f
-#define LIGHT_DIFFUSE 1.5f, 1.5f, 1.5f
-#define LIGHT_SPECULAR 0.9f, 0.9f, 0.9f
-#define LIGHT_COLOR 1.0f, 1.0f, 1.0f
+#define LIGHT_POSITION 20.0f, 15.0f, 50.0f
+#define LIGHT_AMBIENT 0.2f, 0.2f, 0.2f
+#define LIGHT_DIFFUSE 0.9f, 0.9f, 0.9f
+#define LIGHT_SPECULAR 1.0f, 1.0f, 1.0f
+#define LIGHT_COLOR 1.0f, 1.0f, 0.8f
 
 glm::vec3 lightPos(LIGHT_POSITION);
 glm::vec3 light_ambient(LIGHT_AMBIENT);
 glm::vec3 light_diffuse(LIGHT_DIFFUSE);
 glm::vec3 light_specular(LIGHT_SPECULAR);
 glm::vec3 light_color(LIGHT_COLOR);
+glm::vec3 light_spec_half(0.5f, 0.5f, 0.5f);
 
 const GLuint WIDTH = 1280, HEIGHT = 800;
 
@@ -116,27 +118,7 @@ int main()
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "textures/harv_side.png");
 
-		//enabling lights
-		GLfloat lm_ambient[] = { 0.5, 0.5, 0.5, 1 };
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		glEnable(GL_LIGHT1);
-		glEnable(GL_COLOR_MATERIAL);
-
-		glColorMaterial(GL_FRONT, GL_AMBIENT);
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glDepthFunc(GL_LESS);
-
 		glEnable(GL_DEPTH_TEST);
-
-		glEnable(GL_NORMALIZE);
-
-		glCullFace(GL_FRONT);
-		glShadeModel(GL_SMOOTH);
 
 		//zmienna określa ilość boków w młócarce
 		int numberOfSidesInMechanism = 9;
@@ -151,6 +133,8 @@ int main()
 		int numWings = 5;
 		float wingSpeed = 10.0f;
 		float wingAngle = 180 / numWings;
+
+		auto skybox = Skybox();
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -168,7 +152,7 @@ int main()
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
-			shaderProgram.setUniformInt("tex", 0);
+			shaderProgram.setUniformInt("material.tex", 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
@@ -188,8 +172,8 @@ int main()
 			shaderProgram.setUniformVec3f("light.diffuse", light_diffuse);
 			shaderProgram.setUniformVec3f("light.specular", light_specular);
 
-			shaderProgram.setUniformVec3f("material.specular", light_specular);
-			shaderProgram.setUniformFloat("material.shininess", 64.0f);
+			shaderProgram.setUniformVec3f("material.specular", light_spec_half);
+			shaderProgram.setUniformFloat("material.shininess", 50.0f);
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
@@ -229,7 +213,7 @@ int main()
 				{ 1.0f, 1.0f, 1.0f });
 			Lamp lightSource(5.0f, light);
 			lightSource.draw(lampShader);
-
+			
 			//bryła młyna
 			Transformation t1({ -5.0f, 6.0f, -8.0f },
 				90.0f,
@@ -638,7 +622,6 @@ int main()
 					//młócarka generowana proceduralnie
 					Cube mlocarkaElement1(1.0f, transformationMlocarka);
 					mlocarkaElement1.draw(shaderProgram);
-
 				}
 			}
 

@@ -1,5 +1,8 @@
 #include <iostream>
 #include "headers/Cylinder.h"
+#define SIDES 38 //does not work for 64 and higher
+#define POINT_VALUES 8
+#define TEXTURE_RAD_OFFSET 0.005f
 
 Cylinder::Cylinder(GLfloat size, Transformation transMat) 
 	: ObjectPrimitive(transMat), size(size)
@@ -12,6 +15,7 @@ Cylinder::Cylinder(GLfloat size, Transformation transMat)
 		initObject();
 	}
 }
+
 
 std::unique_ptr<VertexBuffer> Cylinder::initVertices()
 {
