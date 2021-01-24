@@ -61,11 +61,10 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset)
 // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
 void Camera::ProcessMouseScroll(float yoffset)
 {
-    Zoom -= (float)yoffset;
-    if (Zoom < 1.0f)
-        Zoom = 1.0f;
-    if (Zoom > 45.0f)
-        Zoom = 45.0f;
+    MovementSpeed += (float)yoffset;
+    
+    if (MovementSpeed < 0.0f)
+        MovementSpeed = 0.0f;
 }
 
 void Camera::updateCameraVectors()
