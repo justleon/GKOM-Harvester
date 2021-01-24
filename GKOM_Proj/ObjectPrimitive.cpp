@@ -3,7 +3,10 @@
 ObjectPrimitive::ObjectPrimitive(Transformation transformMatrix, GLuint texID)
 	: transform(transformMatrix), textureID(texID)
 {
-	
+	modelMat = glm::mat4(1.0f);
+	translate(transform.pos);
+	rotate(transform.angle, transform.rot);
+	resize(transform.size);	
 }
 
 void ObjectPrimitive::initObject()
@@ -23,7 +26,7 @@ void ObjectPrimitive::initObject()
 
 void ObjectPrimitive::draw(ShaderProgram shader)
 {
-	useModel();
+	//useModel();
 	shader.Use();
 
 	shader.setUniformMat4("model", modelMat);

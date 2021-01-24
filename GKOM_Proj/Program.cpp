@@ -18,6 +18,7 @@
 #include "headers/Lamp.h"
 #include "headers/Skybox.h"
 #include "headers/TextureManager.h"
+#include "headers/ObjectCollection.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -41,6 +42,7 @@ using namespace std;
 #define GRILL_RUST_HALF "textures/grill_half_rusted.png"
 #define GRILL_RUST_SHI "textures/grill_rusted_shiny.png"
 #define GRILL_RUST "textures/grill_very_rusted.png"
+#define GROUND "textures/ground.png"
 
 glm::vec3 lightPos(LIGHT_POSITION);
 glm::vec3 light_ambient(LIGHT_AMBIENT);
@@ -218,47 +220,83 @@ int main()
 				{ 1.0f, 1.0f, 1.0f });
 			Lamp lightSource(15.0f, light);
 			lightSource.draw(lampShader);
-			
+
+			ObjectCollection mlyn;
+
 			//bryła młyna
-			Transformation t1({ -5.0f, 6.0f, -8.0f },
+			Transformation t1({ 0.0f, 6.0f, 0.0f },
 				90.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 1.0f, 1.0f, 2.5f });
-			Cylinder bryla(5.0f, t1, texManager.getTextureID(BRICKS));
-			bryla.draw(shaderProgram);
+			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(5.0f, t1, texManager.getTextureID(BRICKS))));
 
 			//dach mlyna
-			Transformation t2({ -5.0f, 14.0f, -8.0f },
+			Transformation t2({ 0.0f, 14.0f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.0f, 1.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Pyramid dach(6.50f, t2, texManager.getTextureID(WOOD_CONT));
-			dach.draw(shaderProgram);
-
+			mlyn.addObject(std::shared_ptr<Object>(new Pyramid(6.50f, t2, texManager.getTextureID(WOOD_CONT))));
+		
 			//wal młyna
-			Transformation t3({ -5.0f, 8.0f, -5.0f },
+			Transformation t3({ 0.0f, 8.0f, 3.0f },
 				wingSpeed * currentFrame,
 				{ 0.0f, 0.0f, 1.0f },
 				{ 1.0f, 1.0f, 3.0f });
-			Cylinder wal(0.6f, t3, texManager.getTextureID(WOOD_CONT));
-			wal.draw(shaderProgram);
+			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(0.6f, t3, texManager.getTextureID(WOOD_CONT))));
 
 			for (int i = 0; i < numWings; i++) {
-				Transformation t3({ -5.0f, 8.0f, -4.3f + i * 0.001f },
+				Transformation t3({ 0.0f, 8.0f, 3.7f + i * 0.001f },
 					i * wingAngle + wingSpeed * currentFrame,
 					{ 0.0f, 0.0f, 1.0f },
 					{ 2.0f, 40.0f, 0.2f });
-				Cube wing(0.3f, t3, texManager.getTextureID(WOOD_CONT));
-				wing.draw(shaderProgram);
+				mlyn.addObject(std::shared_ptr<Object>(new 	Cube(0.3f, t3, texManager.getTextureID(WOOD_CONT))));
 			}
+
+			mlyn.translateWorld(glm::vec3(-8.0f, 0.0f, -5.0f));
+			mlyn.draw(shaderProgram);
+
+			
+			////bryła młyna
+			//Transformation t1({ -5.0f, 6.0f, -8.0f },
+			//	90.0f,
+			//	{ 1.0f, 0.0f, 0.0f },
+			//	{ 1.0f, 1.0f, 2.5f });
+			//Cylinder bryla(5.0f, t1, texManager.getTextureID(BRICKS));
+			//bryla.draw(shaderProgram);
+
+			////dach mlyna
+			//Transformation t2({ -5.0f, 14.0f, -8.0f },
+			//	0.0f,
+			//	{ 1.0f, 0.0f, 1.0f },
+			//	{ 1.0f, 1.0f, 1.0f });
+			//Pyramid dach(6.50f, t2, texManager.getTextureID(WOOD_CONT));
+			//dach.draw(shaderProgram);
+
+			////wal młyna
+			//Transformation t3({ -5.0f, 8.0f, -5.0f },
+			//	wingSpeed * currentFrame,
+			//	{ 0.0f, 0.0f, 1.0f },
+			//	{ 1.0f, 1.0f, 3.0f });
+			//Cylinder wal(0.6f, t3, texManager.getTextureID(WOOD_CONT));
+			//wal.draw(shaderProgram);
+
+			//for (int i = 0; i < numWings; i++) {
+			//	Transformation t3({ -5.0f, 8.0f, -4.3f + i * 0.001f },
+			//		i * wingAngle + wingSpeed * currentFrame,
+			//		{ 0.0f, 0.0f, 1.0f },
+			//		{ 2.0f, 40.0f, 0.2f });
+			//	Cube wing(0.3f, t3, texManager.getTextureID(WOOD_CONT));
+			//	wing.draw(shaderProgram);
+			//}
 
 			//pod�o�e
 			Transformation trans1({ 0.0f, -0.19f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.5f, 0.0f },
 				{ 10.0f, 0.05f, 10.0f });
-			Cube platform(2.0f, trans1, texManager.getTextureID(HARV_SIDE));
+			Cube platform(2.0f, trans1, texManager.getTextureID(GROUND));
 			platform.draw(shaderProgram);
+
 
 			//ty� nagarniacza
 			Transformation trans2({ -0.5f, 0.2f, 0.0f },
@@ -331,9 +369,6 @@ int main()
 				{ 1.2f, 1.2f, 0.12f });
 			Cylinder rightCornerNagarniacz(0.5f, trans12, texManager.getTextureID(HARV_SIDE));
 			rightCornerNagarniacz.draw(shaderProgram);
-
-
-
 
 
 			//big box nadwozie placeholder
@@ -706,6 +741,7 @@ void LoadTextures()
 	texManager.addTexture(GRILL_RUST_HALF);		//5
 	texManager.addTexture(GRILL_RUST_SHI);		//6
 	texManager.addTexture(GRILL_RUST);			//7
+	texManager.addTexture(GROUND);				//8
 }
 
 void processInput(GLFWwindow* window)
