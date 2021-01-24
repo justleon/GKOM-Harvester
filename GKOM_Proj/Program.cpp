@@ -48,7 +48,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 GLuint LoadMipmapTexture(GLuint texId, const char* fname);
 
 //camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -152,7 +152,7 @@ int main()
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
-			shaderProgram.setUniformInt("material.tex", 0);
+			shaderProgram.setUniformInt("tex", 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
@@ -173,7 +173,7 @@ int main()
 			shaderProgram.setUniformVec3f("light.specular", light_specular);
 
 			shaderProgram.setUniformVec3f("material.specular", light_spec_half);
-			shaderProgram.setUniformFloat("material.shininess", 50.0f);
+			shaderProgram.setUniformFloat("material.shininess", 64.0f);
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
