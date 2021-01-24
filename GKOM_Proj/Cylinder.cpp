@@ -16,7 +16,6 @@ Cylinder::Cylinder(GLfloat size, Transformation transMat)
 	}
 }
 
-
 std::unique_ptr<VertexBuffer> Cylinder::initVertices()
 {
 	GLfloat halfSize = size / 2.0f;

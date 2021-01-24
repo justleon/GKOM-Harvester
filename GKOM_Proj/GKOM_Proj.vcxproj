@@ -96,6 +96,7 @@
     <ClCompile Include="ObjectPrimitive.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Trapezoid.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="headers\Skybox.h" />
     <ClInclude Include="headers\Sphere.h" />
+    <ClInclude Include="headers\TextureManager.h" />
     <ClInclude Include="headers\Trapezoid.h" />
     <ClInclude Include="headers\Triangle.h" />
     <ClInclude Include="headers\VertexArray.h" />

@@ -75,6 +75,9 @@
     <ClCompile Include="Lamp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag">
@@ -181,6 +184,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\Lamp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
