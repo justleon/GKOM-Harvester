@@ -1,8 +1,8 @@
 #include <iostream>
 #include "headers\Wheel.h"
 
-Wheel::Wheel(GLfloat size, Transformation transMat)
-	: ObjectPrimitive(transMat), size(size)
+Wheel::Wheel(GLfloat size, Transformation transMat, GLuint texID)
+	: ObjectPrimitive(transMat, texID), size(size)
 {
 	if (size <= 0.0f)
 		std::cout << "Dimension can't be <= 0!" << std::endl;

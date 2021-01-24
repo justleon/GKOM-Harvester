@@ -8,7 +8,7 @@ class Pyramid : public ObjectPrimitive
 
 public:
 	//x, y, z, transformation
-	Pyramid(GLfloat size, Transformation transMat); 
+	Pyramid(GLfloat size, Transformation transMat, GLuint texID); 
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

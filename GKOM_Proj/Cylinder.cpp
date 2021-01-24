@@ -4,8 +4,8 @@
 #define POINT_VALUES 8
 #define TEXTURE_RAD_OFFSET 0.005f
 
-Cylinder::Cylinder(GLfloat size, Transformation transMat) 
-	: ObjectPrimitive(transMat), size(size)
+Cylinder::Cylinder(GLfloat size, Transformation transMat, GLuint texID) 
+	: ObjectPrimitive(transMat, texID), size(size)
 {
 	if (size <= 0.0f)
 		std::cout << "Dimension can't be <= 0!" << std::endl;

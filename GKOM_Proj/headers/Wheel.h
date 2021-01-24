@@ -8,7 +8,7 @@ class Wheel : public ObjectPrimitive
 
 public:
 
-	Wheel(GLfloat size, Transformation transMat);
+	Wheel(GLfloat size, Transformation transMat, GLuint texID);
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

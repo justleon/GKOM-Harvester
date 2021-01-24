@@ -1,8 +1,8 @@
 #include <iostream>
 #include "headers/Trapezoid.h"
 
-Trapezoid::Trapezoid(GLfloat size, Transformation transMat)
-	: ObjectPrimitive(transMat), size(size)
+Trapezoid::Trapezoid(GLfloat size, Transformation transMat, GLuint texID)
+	: ObjectPrimitive(transMat, texID), size(size)
 {
 	if (size <= 0.0f)
 		std::cout << "Dimension can't be <= 0!" << std::endl;
@@ -18,25 +18,25 @@ std::unique_ptr<VertexBuffer> Trapezoid::initVertices()
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
 		// coordinates							// color			// texture
-		 0.8f*halfSize,  halfSize,  halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  0.0f,
-		-0.8f*halfSize,  halfSize,  halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		-1.2f*halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 1.2f*halfSize, -halfSize,  halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.8f*halfSize,  halfSize,  halfSize,  1.0f,  1.0f,  1.0f,	1.0f,  0.0f,
+		-0.8f*halfSize,  halfSize,  halfSize, -1.0f,  1.0f,  1.0f,	0.0f,  0.0f,
+		-1.2f*halfSize, -halfSize,  halfSize, -1.0f, -1.0f,  1.0f,	0.0f,  1.0f,
+		 1.2f*halfSize, -halfSize,  halfSize,  1.0f, -1.0f,  1.0f,	1.0f,  1.0f,
 
-		 0.8f*halfSize,  halfSize, -halfSize,	1.0f, 0.0f, 0.0f,	1.0f,  1.0f,
-		-0.8f*halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
-		-1.2f*halfSize, -halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		 1.2f*halfSize, -halfSize, -halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.8f*halfSize,  halfSize, -halfSize,  1.0f,  1.0f, -1.0f,	1.0f,  1.0f,
+		-0.8f*halfSize,  halfSize, -halfSize, -1.0f,  1.0f, -1.0f,	0.0f,  1.0f,
+		-1.2f*halfSize, -halfSize, -halfSize, -1.0f, -1.0f, -1.0f,	0.0f,  0.0f,
+		 1.2f*halfSize, -halfSize, -halfSize,  1.0f, -1.0f, -1.0f,	1.0f,  0.0f,
 
-		 0.8f * halfSize,  halfSize, halfSize,	1.0f, 0.0f, 0.0f,	0.0f,  1.0f,
-		 1.2f * halfSize, -halfSize,  halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  0.0f,
-		 0.8f * halfSize,  halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 1.2f * halfSize, -halfSize, -halfSize,	1.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.8f*halfSize,  halfSize, halfSize,   1.0f,  1.0f,  1.0f,	0.0f,  1.0f,
+		 1.2f*halfSize, -halfSize,  halfSize,  1.0f, -1.0f,  1.0f,	0.0f,  0.0f,
+		 0.8f*halfSize,  halfSize, -halfSize,  1.0f,  1.0f, -1.0f,	1.0f,  1.0f,
+		 1.2f*halfSize, -halfSize, -halfSize,  1.0f, -1.0f, -1.0f,	1.0f,  0.0f,
 
-		-0.8f * halfSize,  halfSize,  halfSize,	0.0f, 1.0f, 0.0f,	1.0f,  1.0f,
-		-1.2f * halfSize, -halfSize,  halfSize,	0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		-0.8f * halfSize,  halfSize, -halfSize,	0.0f, 1.0f, 0.0f,	0.0f,  1.0f,
-		-1.2f * halfSize, -halfSize, -halfSize,	0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.8f*halfSize,  halfSize,  halfSize, -1.0f,  1.0f,  1.0f,	1.0f,  1.0f,
+		-1.2f*halfSize, -halfSize,  halfSize, -1.0f, -1.0f,  1.0f,	1.0f,  0.0f,
+		-0.8f*halfSize,  halfSize, -halfSize, -1.0f,  1.0f, -1.0f,	0.0f,  1.0f,
+		-1.2f*halfSize, -halfSize, -halfSize, -1.0f, -1.0f, -1.0f,	0.0f,  0.0f,
 
 	};
 

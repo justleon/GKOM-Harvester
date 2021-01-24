@@ -17,6 +17,7 @@
 #include "headers/Harvester.h"
 #include "headers/Lamp.h"
 #include "headers/Skybox.h"
+#include "headers/TextureManager.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -26,18 +27,27 @@
 
 using namespace std;
 
-#define LIGHT_POSITION 20.0f, 15.0f, 50.0f
+#define LIGHT_POSITION 25.0f, 35.0f, 45.0f
 #define LIGHT_AMBIENT 0.2f, 0.2f, 0.2f
-#define LIGHT_DIFFUSE 0.9f, 0.9f, 0.9f
-#define LIGHT_SPECULAR 1.0f, 1.0f, 1.0f
+#define LIGHT_DIFFUSE 1.f, 1.0f, 1.0f
+#define LIGHT_SPECULAR 0.9f, 0.9f, 0.9f
 #define LIGHT_COLOR 1.0f, 1.0f, 0.8f
+
+#define HARV_SIDE "textures/harv_side.png"
+#define LADDER "textures/ladder.png"
+#define BRICKS "textures/bricks_tileable.png"
+#define WOOD_CONT "textures/container.jpg"
+#define GRILL "textures/grill.png"
+#define GRILL_RUST_HALF "textures/grill_half_rusted.png"
+#define GRILL_RUST_SHI "textures/grill_rusted_shiny.png"
+#define GRILL_RUST "textures/grill_very_rusted.png"
 
 glm::vec3 lightPos(LIGHT_POSITION);
 glm::vec3 light_ambient(LIGHT_AMBIENT);
 glm::vec3 light_diffuse(LIGHT_DIFFUSE);
 glm::vec3 light_specular(LIGHT_SPECULAR);
 glm::vec3 light_color(LIGHT_COLOR);
-glm::vec3 light_spec_half(0.5f, 0.5f, 0.5f);
+glm::vec3 light_spec_half(0.3f, 0.3f, 0.3f);
 
 const GLuint WIDTH = 1280, HEIGHT = 800;
 
@@ -45,7 +55,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-GLuint LoadMipmapTexture(GLuint texId, const char* fname);
+void LoadTextures();
 
 //camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -55,6 +65,8 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
+
+TextureManager texManager;
 
 ostream& operator<<(ostream& os, const glm::mat4& mx)
 {
@@ -107,16 +119,8 @@ int main()
 		// Build, compile and link shader program
 		ShaderProgram shaderProgram("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
 		ShaderProgram lampShader("shaders/lampShader.vert", "shaders/lampShader.frag");
-
-		// Set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// Set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		// prepare textures
-		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "textures/harv_side.png");
+		
+		LoadTextures();
 
 		glEnable(GL_DEPTH_TEST);
 
@@ -150,9 +154,10 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Bind Textures using texture units
+			//texManager.useTexture("textures/container.jpg");
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture0);
-			shaderProgram.setUniformInt("tex", 0);
+			//glBindTexture(GL_TEXTURE_2D, texManager.getTextureID("textures/bricks_tileable.png"));
+			//shaderProgram.setUniformInt("material.tex", 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
@@ -173,7 +178,7 @@ int main()
 			shaderProgram.setUniformVec3f("light.specular", light_specular);
 
 			shaderProgram.setUniformVec3f("material.specular", light_spec_half);
-			shaderProgram.setUniformFloat("material.shininess", 64.0f);
+			shaderProgram.setUniformFloat("material.shininess", 70.0f);
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
@@ -186,7 +191,7 @@ int main()
 			{
 				transformationMatrix.pos[2] = harvester.firstTeethPosition + i * 0.1f;
 
-				Pyramid teeth(0.5f, transformationMatrix);
+				Pyramid teeth(0.5f, transformationMatrix, texManager.getTextureID(GRILL_RUST));
 				teeth.draw(shaderProgram);
 			}
 
@@ -211,7 +216,7 @@ int main()
 				0.0f,
 				{ 1.0f, 1.0f, 1.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Lamp lightSource(5.0f, light);
+			Lamp lightSource(15.0f, light);
 			lightSource.draw(lampShader);
 			
 			//bryła młyna
@@ -219,7 +224,7 @@ int main()
 				90.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 1.0f, 1.0f, 2.5f });
-			Cylinder bryla(5.0f, t1);
+			Cylinder bryla(5.0f, t1, texManager.getTextureID(BRICKS));
 			bryla.draw(shaderProgram);
 
 			//dach mlyna
@@ -227,7 +232,7 @@ int main()
 				0.0f,
 				{ 1.0f, 0.0f, 1.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Pyramid dach(6.50f, t2);
+			Pyramid dach(6.50f, t2, texManager.getTextureID(WOOD_CONT));
 			dach.draw(shaderProgram);
 
 			//wal młyna
@@ -235,7 +240,7 @@ int main()
 				wingSpeed * currentFrame,
 				{ 0.0f, 0.0f, 1.0f },
 				{ 1.0f, 1.0f, 3.0f });
-			Cylinder wal(0.6f, t3);
+			Cylinder wal(0.6f, t3, texManager.getTextureID(WOOD_CONT));
 			wal.draw(shaderProgram);
 
 			for (int i = 0; i < numWings; i++) {
@@ -243,7 +248,7 @@ int main()
 					i * wingAngle + wingSpeed * currentFrame,
 					{ 0.0f, 0.0f, 1.0f },
 					{ 2.0f, 40.0f, 0.2f });
-				Cube wing(0.3f, t3);
+				Cube wing(0.3f, t3, texManager.getTextureID(WOOD_CONT));
 				wing.draw(shaderProgram);
 			}
 
@@ -252,7 +257,7 @@ int main()
 				0.0f,
 				{ 1.0f, 0.5f, 0.0f },
 				{ 10.0f, 0.05f, 10.0f });
-			Cube platform(2.0f, trans1);
+			Cube platform(2.0f, trans1, texManager.getTextureID(HARV_SIDE));
 			platform.draw(shaderProgram);
 
 			//ty� nagarniacza
@@ -260,7 +265,7 @@ int main()
 				0.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 0.1f, 1.2f, 5.0f });
-			Cube hoeHolder(0.5f, trans2);
+			Cube hoeHolder(0.5f, trans2, texManager.getTextureID(HARV_SIDE));
 			hoeHolder.draw(shaderProgram);
 
 			//wysi�gnik
@@ -268,7 +273,7 @@ int main()
 				30.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.9f, 0.15f, 0.4f });
-			Cube hoeHolder2(0.8f, trans3);
+			Cube hoeHolder2(0.8f, trans3, texManager.getTextureID(HARV_SIDE));
 			hoeHolder2.draw(shaderProgram);
 
 			//cylinder trzymaj�cy wysi�gnik
@@ -276,7 +281,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.5f, 0.5f, 0.7f });
-			Cylinder hoeHolder3(0.6f, trans4);
+			Cylinder hoeHolder3(0.6f, trans4, texManager.getTextureID(HARV_SIDE));
 			hoeHolder3.draw(shaderProgram);
 
 			//cylinder obracaj�cy maszyn� do m��cenia
@@ -284,7 +289,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.5f, 1.5f, 50.0f });
-			Cylinder cylinder(0.05f, trans5);
+			Cylinder cylinder(0.05f, trans5, texManager.getTextureID(HARV_SIDE));
 			cylinder.draw(shaderProgram);
 
 			//uchwyt na z�by
@@ -292,7 +297,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 1.0f },
 				{ 0.9f, 0.025f, 3.6f });
-			Cube hoeteethholderbottom(0.7f, trans8);
+			Cube hoeteethholderbottom(0.7f, trans8, texManager.getTextureID(GRILL_RUST));
 			hoeteethholderbottom.draw(shaderProgram);
 
 			//lewa �ciana nagarnaicza - cube
@@ -300,7 +305,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			Cube leftWallNagarniacz(0.5f, trans9);
+			Cube leftWallNagarniacz(0.5f, trans9, texManager.getTextureID(HARV_SIDE));
 			leftWallNagarniacz.draw(shaderProgram);
 
 			//lewa �ciana nagarnaicza - cylinder
@@ -308,7 +313,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			Cylinder leftCornerNagarniacz(0.5f, trans10);
+			Cylinder leftCornerNagarniacz(0.5f, trans10, texManager.getTextureID(HARV_SIDE));
 			leftCornerNagarniacz.draw(shaderProgram);
 
 			//prawa �ciana nagarnaicza - cube
@@ -316,7 +321,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			Cube rightWallNagarniacz(0.5f, trans11);
+			Cube rightWallNagarniacz(0.5f, trans11, texManager.getTextureID(HARV_SIDE));
 			rightWallNagarniacz.draw(shaderProgram);
 
 			//prawa �ciana nagarnaicza - cylinder
@@ -324,7 +329,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			Cylinder rightCornerNagarniacz(0.5f, trans12);
+			Cylinder rightCornerNagarniacz(0.5f, trans12, texManager.getTextureID(HARV_SIDE));
 			rightCornerNagarniacz.draw(shaderProgram);
 
 
@@ -336,7 +341,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 4.0f, 2.0f, 2.0f });
-			Cube placeholder1(0.5f, trans13);
+			Cube placeholder1(0.5f, trans13, texManager.getTextureID(HARV_SIDE));
 			placeholder1.draw(shaderProgram);
 
 			//pod�oga w kabinie
@@ -344,7 +349,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 0.15f, 1.0f });
-			Cube placeholder2(0.5f, trans14);
+			Cube placeholder2(0.5f, trans14, texManager.getTextureID(HARV_SIDE));
 			placeholder2.draw(shaderProgram);
 
 			//chyba lewy przedni pr�t kabiny 
@@ -352,7 +357,7 @@ int main()
 				18.0f,
 				{ 0.15f, 0.0f, 0.5f },
 				{ 0.12f, 2.5f, 0.12f });
-			Cube placeholder3(0.5f, trans15);
+			Cube placeholder3(0.5f, trans15, texManager.getTextureID(HARV_SIDE));
 			placeholder3.draw(shaderProgram);
 
 			//chyba prawy przedni pr�t kabiny 
@@ -360,7 +365,7 @@ int main()
 				18.0f,
 				{ -0.15f, 0.0f, 0.5f },
 				{ 0.12f, 2.5f, 0.12f });
-			Cube placeholder4(0.5f, trans16);
+			Cube placeholder4(0.5f, trans16, texManager.getTextureID(HARV_SIDE));
 			placeholder4.draw(shaderProgram);
 
 			//daszek kabiny
@@ -368,7 +373,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.1f, 0.10f, 1.9f });
-			Cube placeholder5(0.5f, trans17);
+			Cube placeholder5(0.5f, trans17, texManager.getTextureID(HARV_SIDE));
 			placeholder5.draw(shaderProgram);
 
 			//chyba prawy tylni pr�t kabiny 
@@ -376,7 +381,7 @@ int main()
 				9.0f,
 				{ -0.5f, 0.0f, 0.0f },
 				{ 0.12f, 1.5f, 0.12f });
-			Cube placeholder6(0.5f, trans18);
+			Cube placeholder6(0.5f, trans18, texManager.getTextureID(HARV_SIDE));
 			placeholder6.draw(shaderProgram);
 
 			//chyba lewy tylni pr�t kabiny 
@@ -384,7 +389,7 @@ int main()
 				9.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 1.5f, 0.12f });
-			Cube placeholder7(0.5f, trans19);
+			Cube placeholder7(0.5f, trans19, texManager.getTextureID(HARV_SIDE));
 			placeholder7.draw(shaderProgram);
 
 			//rura wydechowa - rura
@@ -392,7 +397,7 @@ int main()
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 0.6f });
-			Cylinder placeholder8(0.5f, trans20);
+			Cylinder placeholder8(0.5f, trans20, texManager.getTextureID(GRILL_RUST_SHI));
 			placeholder8.draw(shaderProgram);
 
 			//rura wydechowa - puszka na czubku rury
@@ -400,7 +405,7 @@ int main()
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.32f, 0.32f, 0.2f });
-			Cylinder placeholder9(0.5f, trans21);
+			Cylinder placeholder9(0.5f, trans21, texManager.getTextureID(GRILL_RUST_SHI));
 			placeholder9.draw(shaderProgram);
 
 			//rura wydechowa zbożowa podstawa 1
@@ -408,15 +413,15 @@ int main()
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
 				{ 0.15f, 0.15f, 0.4f });
-			Cylinder cylinderPlaceholder1(1.0f, trans222);
+			Cylinder cylinderPlaceholder1(1.0f, trans222, texManager.getTextureID(HARV_SIDE));
 			cylinderPlaceholder1.draw(shaderProgram);
 
 			//rura wydechowa zbożowa łącznik
 			Transformation trans223({ 2.5f, 1.2f, 0.0f },
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
-				{ 0.2f, 0.2f, 0.2f });
-			Sphere spherePlaceholder1(1.0f, trans223);
+				{ 0.12f, 0.12f, 0.12f });
+			Sphere spherePlaceholder1(1.0f, trans223, texManager.getTextureID(HARV_SIDE));
 			spherePlaceholder1.draw(shaderProgram);
 
 			//trans22 i trans23 do animacji obrotu rury zbożowej
@@ -425,7 +430,7 @@ int main()
 				90.0f,
 				{ 0.0f, 2.0f, 0.0f },
 				{ 0.15f, 0.15f, lengthOfWheatPipe });
-			Cylinder placeholder10(1.0f, trans22);
+			Cylinder placeholder10(1.0f, trans22, texManager.getTextureID(HARV_SIDE));
 			placeholder10.draw(shaderProgram);
 
 			//rura wydechowa zbo�owa the exit
@@ -433,7 +438,7 @@ int main()
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
 				{ 0.20f, 0.2f, 0.20f });
-			Cylinder placeholder11(1.0f, trans23);
+			Cylinder placeholder11(1.0f, trans23, texManager.getTextureID(GRILL_RUST_HALF));
 			placeholder11.draw(shaderProgram);
 
 			//big box nadwozie placeholder kube� na zbo�e
@@ -441,7 +446,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.0f, 1.0f, 1.5f });
-			Cube placeholder12(0.5f, trans24);
+			Cube placeholder12(0.5f, trans24, texManager.getTextureID(HARV_SIDE));
 			placeholder12.draw(shaderProgram);
 
 			//smaller box podwozie placeholder prz�d
@@ -449,7 +454,7 @@ int main()
 				10.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.0f, 1.0f, 1.0f });
-			Cube placeholder13(0.5f, trans25);
+			Cube placeholder13(0.5f, trans25, texManager.getTextureID(HARV_SIDE));
 			placeholder13.draw(shaderProgram);
 
 			//o� przednia do k� trajktora
@@ -457,7 +462,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 40.0f });
-			Cylinder placeholder14(0.03f, trans26);
+			Cylinder placeholder14(0.03f, trans26, texManager.getTextureID(GRILL));
 			placeholder14.draw(shaderProgram);
 
 			//lewego przedniego ko�a
@@ -465,7 +470,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Wheel placeholder15(0.5f, trans27);
+			Wheel placeholder15(0.5f, trans27, texManager.getTextureID(HARV_SIDE));
 			placeholder15.draw(shaderProgram);
 
 			//prawego przedniego ko�a
@@ -473,7 +478,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Wheel placeholder16(0.5f, trans28);
+			Wheel placeholder16(0.5f, trans28, texManager.getTextureID(HARV_SIDE));
 			placeholder16.draw(shaderProgram);
 
 			//smaller box podwozie placeholder ty�
@@ -481,7 +486,7 @@ int main()
 				8.0f,
 				{ 0.0f, 0.0f, -3.0f },
 				{ 2.4f, 1.0f, 1.0f });
-			Cube placeholder17(0.5f, trans29);
+			Cube placeholder17(0.5f, trans29, texManager.getTextureID(HARV_SIDE));
 			placeholder17.draw(shaderProgram);
 
 			//o� tylnia do k� trokatora
@@ -489,7 +494,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 30.0f });
-			Cylinder placeholder18(0.03f, trans30);
+			Cylinder placeholder18(0.03f, trans30, texManager.getTextureID(GRILL));
 			placeholder18.draw(shaderProgram);
 
 			//test lewego tylnego ko�a
@@ -497,7 +502,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			Wheel placeholder19(0.5f, trans31);
+			Wheel placeholder19(0.5f, trans31, texManager.getTextureID(HARV_SIDE));
 			placeholder19.draw(shaderProgram);
 
 			//test prawego tylnego ko�a
@@ -505,7 +510,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			Wheel placeholder20(0.5f, trans32);
+			Wheel placeholder20(0.5f, trans32, texManager.getTextureID(HARV_SIDE));
 			placeholder20.draw(shaderProgram);
 
 			//pr�t pomi�dzy pod�og� kabiny a najwy�szym schodkiem
@@ -513,7 +518,7 @@ int main()
 				18.0f,
 				{ -0.15f, 0.0f, 0.5f },
 				{ 0.06f, 0.4f, 0.06f });
-			Cube placeholder21(0.5f, trans33);
+			Cube placeholder21(0.5f, trans33, texManager.getTextureID(LADDER));
 			placeholder21.draw(shaderProgram);
 
 			//najwy�szy schodek
@@ -521,7 +526,7 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.6f, 0.06f, 0.12f });
-			Cube placeholder22(0.5f, trans34);
+			Cube placeholder22(0.5f, trans34, texManager.getTextureID(LADDER));
 			placeholder22.draw(shaderProgram);
 
 			//rurka drabinkowa bli�sza wykaszarce
@@ -529,7 +534,7 @@ int main()
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 1.6f });
-			Cylinder placeholder23(0.3f, trans35);
+			Cylinder placeholder23(0.3f, trans35, texManager.getTextureID(LADDER));
 			placeholder23.draw(shaderProgram);
 
 			//rurka drabinkowa bli�sza korpusowi
@@ -537,7 +542,7 @@ int main()
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 1.6f });
-			Cylinder placeholder24(0.3f, trans36);
+			Cylinder placeholder24(0.3f, trans36, texManager.getTextureID(LADDER));
 			placeholder24.draw(shaderProgram);
 
 			//schodek drugi od g�ry
@@ -545,7 +550,7 @@ int main()
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder25(0.3f, trans37);
+			Cylinder placeholder25(0.3f, trans37, texManager.getTextureID(LADDER));
 			placeholder25.draw(shaderProgram);
 
 			//schodek trzeci od g�ry
@@ -553,7 +558,7 @@ int main()
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder26(0.3f, trans38);
+			Cylinder placeholder26(0.3f, trans38, texManager.getTextureID(LADDER));
 			placeholder26.draw(shaderProgram);
 
 			//schodek czwarty od g�ry
@@ -561,7 +566,7 @@ int main()
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder27(0.3f, trans39);
+			Cylinder placeholder27(0.3f, trans39, texManager.getTextureID(LADDER));
 			placeholder27.draw(shaderProgram);
 
 			//drzwi kombonojaju lewe
@@ -569,7 +574,7 @@ int main()
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			Trapezoid placeholder28(0.3f, trans40);
+			Trapezoid placeholder28(0.3f, trans40, texManager.getTextureID(HARV_SIDE));
 			placeholder28.draw(shaderProgram);
 
 
@@ -578,7 +583,7 @@ int main()
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			Trapezoid placeholder29(0.3f, trans41);
+			Trapezoid placeholder29(0.3f, trans41, texManager.getTextureID(HARV_SIDE));
 			placeholder29.draw(shaderProgram);
 
 			//drzwi kombonojaju prawe trójkąt
@@ -586,7 +591,7 @@ int main()
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			Triangle placeholder30(0.3f, trans42);
+			Triangle placeholder30(0.3f, trans42, texManager.getTextureID(HARV_SIDE));
 			placeholder30.draw(shaderProgram);
 
 			//drzwi kombonojaju lewe trójkąt
@@ -594,7 +599,7 @@ int main()
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			Triangle placeholder31(0.3f, trans43);
+			Triangle placeholder31(0.3f, trans43, texManager.getTextureID(HARV_SIDE));
 			placeholder31.draw(shaderProgram);
 
 
@@ -620,7 +625,7 @@ int main()
 					transformationMlocarka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
 					transformationMlocarka.angle = harvester.angleDiffrence + (harvester.angleInDegrees * (i + ((numberOfSidesInMechanism * 0.5f) - 1.0f)));
 					//młócarka generowana proceduralnie
-					Cube mlocarkaElement1(1.0f, transformationMlocarka);
+					Cube mlocarkaElement1(1.0f, transformationMlocarka, texManager.getTextureID(GRILL));
 					mlocarkaElement1.draw(shaderProgram);
 				}
 			}
@@ -639,7 +644,7 @@ int main()
 				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 1.17f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) - 1.17f;
 				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
 				//element poprzeczny generowany proceduralnie
-				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka);
+				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka, texManager.getTextureID(GRILL));
 				mlocarkaElementPoprzeczka.draw(shaderProgram);
 			}
 
@@ -691,23 +696,16 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-GLuint LoadMipmapTexture(GLuint texId, const char* fname)
+void LoadTextures()
 {
-	int width, height;
-	unsigned char* image = SOIL_load_image(fname, &width, &height, 0, SOIL_LOAD_RGBA);
-	if (image == nullptr)
-		throw exception("Failed to load texture file");
-
-	GLuint texture;
-	glGenTextures(1, &texture);
-
-	glActiveTexture(texId);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	return texture;
+	texManager.addTexture(HARV_SIDE);			//0
+	texManager.addTexture(LADDER);				//1
+	texManager.addTexture(BRICKS);				//2
+	texManager.addTexture(WOOD_CONT);			//3
+	texManager.addTexture(GRILL);				//4
+	texManager.addTexture(GRILL_RUST_HALF);		//5
+	texManager.addTexture(GRILL_RUST_SHI);		//6
+	texManager.addTexture(GRILL_RUST);			//7
 }
 
 void processInput(GLFWwindow* window)

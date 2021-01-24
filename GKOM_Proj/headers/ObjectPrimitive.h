@@ -33,7 +33,7 @@ protected:
 	std::unique_ptr<IndexBuffer> indexBuffer;
 	std::unique_ptr<VertexBufferLayout> bufferLayout;
 
-	unsigned int textureID;
+	GLuint textureID;
 	glm::mat4 modelMat;
 	Transformation transform;
 
@@ -43,7 +43,7 @@ protected:
 	void initObject();
 
 public:
-	ObjectPrimitive(Transformation transformMatrix);
+	ObjectPrimitive(Transformation transformMatrix, GLuint texID);
 	
 	void draw(ShaderProgram shader);
 

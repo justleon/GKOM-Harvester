@@ -8,7 +8,7 @@ class Trapezoid : public ObjectPrimitive
 
 public:
 	//x, y, z, transformation
-	Trapezoid(GLfloat size, Transformation transMat);
+	Trapezoid(GLfloat size, Transformation transMat, GLuint texID);
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

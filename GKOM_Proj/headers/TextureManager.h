@@ -14,16 +14,20 @@ struct Texture {
 	int width;
 	int height;
 	int channels;
-	unsigned int textureID;
+	GLuint textureID;
 };
 
 class TextureManager
 {
 private:
-	std::vector<Texture> textures;
+	std::vector<Texture*> textures;
 public:
-	void addTexture(std::string& path);
-	unsigned int useTexture(std::string& path);
-	unsigned int useTexture(int index);
+	TextureManager() {};
+	~TextureManager();
+
+	void addTexture(std::string path);
+	GLuint getTextureID(std::string path);
+	GLuint useTexture(std::string path);
+	GLuint useTexture(int index);
 
 };

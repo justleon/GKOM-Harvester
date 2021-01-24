@@ -8,7 +8,7 @@ class Cylinder : public ObjectPrimitive
 
 public:
 
-	Cylinder(GLfloat size, Transformation transMat);
+	Cylinder(GLfloat size, Transformation transMat, GLuint texID);
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

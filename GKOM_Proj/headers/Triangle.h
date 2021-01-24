@@ -8,7 +8,7 @@ class Triangle : public ObjectPrimitive
 
 public:
 	//x, y, z, transformation
-	Triangle(GLfloat size, Transformation transMat);
+	Triangle(GLfloat size, Transformation transMat, GLuint texID);
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

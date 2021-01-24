@@ -8,7 +8,7 @@ class Cube : public ObjectPrimitive
 
 public:
 	//x, y, z, transformation
-	Cube(GLfloat size, Transformation transMat);
+	Cube(GLfloat size, Transformation transMat, GLuint texID);
 
 	std::unique_ptr<VertexBuffer> initVertices();
 	std::unique_ptr<IndexBuffer> initIndices();

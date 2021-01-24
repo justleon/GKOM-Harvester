@@ -1,7 +1,7 @@
 #include "headers/ObjectPrimitive.h"
 
-ObjectPrimitive::ObjectPrimitive(Transformation transformMatrix)
-	: transform(transformMatrix)
+ObjectPrimitive::ObjectPrimitive(Transformation transformMatrix, GLuint texID)
+	: transform(transformMatrix), textureID(texID)
 {
 	
 }
@@ -27,6 +27,9 @@ void ObjectPrimitive::draw(ShaderProgram shader)
 	shader.Use();
 
 	shader.setUniformMat4("model", modelMat);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->textureID);
+	//shader.setUniformInt("material.tex", textureID);
 
 	vertexArray->Bind();
 	indexBuffer->Bind();
