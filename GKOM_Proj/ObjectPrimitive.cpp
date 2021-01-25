@@ -67,15 +67,15 @@ void ObjectPrimitive::resize(const glm::vec3& vec)
 
 void ObjectPrimitive::translateWorld(const glm::vec3& vec)
 {
-	modelMat = glm::translate(modelMat, vec) * modelMat;
+	modelMat = glm::translate(glm::mat4(1.0f), vec) * modelMat;
 }
 
 void ObjectPrimitive::rotateWorld(GLfloat angle, const glm::vec3& axis)
 {
-	modelMat = glm::rotate(modelMat, glm::radians(angle), axis) * modelMat;
+	modelMat = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis) * modelMat;
 }
 
 void ObjectPrimitive::resizeWorld(const glm::vec3& vec)
 {
-	modelMat = glm::scale(modelMat, vec) * modelMat;
+	modelMat = glm::scale(glm::mat4(1.0f), vec) * modelMat;
 }
