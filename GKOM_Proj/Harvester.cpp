@@ -37,8 +37,6 @@ Harvester::Harvester(int numOfSides, int numOfMechanisms, float lengthOfWPipe)
 }
 
 
-
-
 void Harvester::accelerate(float deltaTime){
 	speed += acceleration * deltaTime;
 	if (speed > maxSpeed)
