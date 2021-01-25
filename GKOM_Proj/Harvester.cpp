@@ -27,11 +27,50 @@ Harvester::Harvester(int numOfSides, int numOfMechanisms, float lengthOfWPipe)
 	heightInMechanism = radius * cosf(angle / 2.0f);
 	teethDirection = true;
 	firstTeethPosition = -1.15f;
-	angleKompoj = 0.0f;
+	Position = glm::vec3(0.0f, 0.0f, 0.0f);
+	Front = glm::vec3(-1.0f, 0.0f, 0.0f);
+	maxSpeed = 10.0f;
+	acceleration = 1.0f;
+	rotSpeed = 20.0f;
+	speed = 0.0f;
+	rotation = 0.0f;
 }
 
 
-void Harvester::DrawHarvester()
-{
-	
+
+
+void Harvester::accelerate(float deltaTime){
+	speed += acceleration * deltaTime;
+	if (speed > maxSpeed)
+		speed = maxSpeed;
+	std::cout << speed << std::endl;
+}
+
+void Harvester::decelerate(float a, float deltaTime) {
+	speed -= a * deltaTime;
+	if (speed < 0.0f)
+		speed = 0.0f;
+}
+
+void Harvester::move(float deltaTime) {
+	if(speed > 0.01f)
+		Position += Front * speed * deltaTime;
+}
+
+void Harvester::turnRight(float deltaTime) {
+	rotation -= rotSpeed * speed * deltaTime;
+	updateFront();
+}
+
+void Harvester::turnLeft(float deltaTime) {
+	rotation += rotSpeed * speed * deltaTime;
+	updateFront();
+}
+
+void Harvester::updateFront() {
+	glm::vec3 front;
+	front.x = -cos(glm::radians(rotation));
+	front.y = sin(glm::radians(0.0f));
+	front.z = sin(glm::radians(rotation));
+	Front = glm::normalize(front);
 }

@@ -1,4 +1,8 @@
 #pragma once
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 class Harvester
 {
 public:
@@ -19,12 +23,21 @@ public:
 	//zmienna okreœla kierunek poruszania siê zêbów
 	bool teethDirection;
 	float firstTeethPosition;
-	//zmienna okreœla obrót ca³ego kombajnu
-	float angleKompoj;
-	
+	glm::vec3 Position;
+	glm::vec3 Front;
+	float maxSpeed;
+	float acceleration;
+	float rotSpeed;
+	float speed;
+	float rotation;
 
 	Harvester(int numOfSides, int numOfMechanisms, float lengthOfWheatPipe);
-	void DrawHarvester();
+	void accelerate(float deltaTime);
+	void decelerate(float a, float deltaTime);
+	void turnRight(float deltaTime);
+	void turnLeft(float deltaTime);
+	void move(float deltaTime);
+	void updateFront();
 
 };
 
