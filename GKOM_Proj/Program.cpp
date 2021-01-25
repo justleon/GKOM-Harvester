@@ -59,6 +59,23 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void LoadTextures();
 
+//zmienne określające kombajn
+int numberOfSidesInMechanism = 9;
+int numberOfMechanisms = 5;
+float lengthOfWheatPipe = 0.8f;
+
+//parametry ruchu kombajnu
+float maxSpeed = 10.0f;
+float acceleration = 1.0f;
+float rotSpeed = 10.0f;
+
+Harvester harvester(numberOfSidesInMechanism, numberOfMechanisms, lengthOfWheatPipe);
+
+//zmienna określające młyn
+int numWings = 5;
+float wingSpeed = 10.0f;
+float wingAngle = 180 / numWings;
+
 //camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 float lastX = WIDTH / 2.0f;
@@ -125,20 +142,6 @@ int main()
 		LoadTextures();
 
 		glEnable(GL_DEPTH_TEST);
-
-		//zmienna określa ilość boków w młócarce
-		int numberOfSidesInMechanism = 9;
-		//zmienna określa ilość elementów w młócarce
-		int numberOfMechanisms = 5;
-		//zmienna okreśła długość rury zbożowej
-		float lengthOfWheatPipe = 0.8f;
-
-		Harvester harvester(numberOfSidesInMechanism, numberOfMechanisms, lengthOfWheatPipe);
-
-		//zmienna określające młyn
-		int numWings = 5;
-		float wingSpeed = 10.0f;
-		float wingAngle = 180 / numWings;
 
 		auto skybox = Skybox();
 
@@ -241,11 +244,11 @@ int main()
 			mlyn.addObject(std::shared_ptr<Object>(new Pyramid(6.50f, t2, texManager.getTextureID(WOOD_CONT))));
 
 			//wal młyna
-			Transformation t3({ 0.0f, 8.0f, 3.0f },
+			Transformation t4({ 0.0f, 8.0f, 3.0f },
 				wingSpeed * currentFrame,
 				{ 0.0f, 0.0f, 1.0f },
 				{ 1.0f, 1.0f, 3.0f });
-			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(0.6f, t3, texManager.getTextureID(WOOD_CONT))));
+			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(0.6f, t4, texManager.getTextureID(WOOD_CONT))));
 
 			for (int i = 0; i < numWings; i++) {
 				Transformation t3({ 0.0f, 8.0f, 3.7f + i * 0.001f },
@@ -564,9 +567,7 @@ int main()
 				{ 0.9f, 2.0f, 0.12f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans43, texManager.getTextureID(HARV_SIDE))));
 
-
 			harvester.speedOfMechanism += 0.01f;
-
 
 			//transformacja wykaszarki
 			Transformation transformationMlocarka({ trans5.pos[0], harvester.heightInMechanism + trans5.pos[1], 0.0f },
@@ -623,16 +624,15 @@ int main()
 			if (nextposX > posX) harvester.angleDiffrence = 360.0f - harvester.angleDiffrence;
 			//cout << angleDiffrence << endl;
 
-			//Harvester global rotation test
-			if (harvester.angleKompoj >= 360.0f)
-				harvester.angleKompoj = 0.0f;
-			else
-				harvester.angleKompoj += 100.0f;
 
-			kompoj.rotateWorld(harvester.angleKompoj, glm::vec3(0.0f, 1.0f, 0.0f));
+			//kompoj.rotateWorld(45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			
 
 			//global Harvester draw
+			harvester.move(deltaTime);
+			kompoj.rotateWorld(harvester.rotation, glm::vec3(0.0f, 1.0f, 0.0f));
+			kompoj.translateWorld(harvester.Position);
+
 			kompoj.draw(shaderProgram);
 
 			skybox.draw(glm::perspective(glm::radians(70.0f), 4.5f / 3.0f, 0.1f, 100.0f), camera.GetViewMatrix());
@@ -676,6 +676,17 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		harvester.accelerate(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		harvester.decelerate(harvester.acceleration * 2.5f, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		harvester.turnLeft(deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		harvester.turnRight(deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
