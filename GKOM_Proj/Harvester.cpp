@@ -27,6 +27,7 @@ Harvester::Harvester(int numOfSides, int numOfMechanisms, float lengthOfWPipe)
 	heightInMechanism = radius * cosf(angle / 2.0f);
 	teethDirection = true;
 	firstTeethPosition = -1.15f;
+	angleKompoj = 0.0f;
 }
 
 

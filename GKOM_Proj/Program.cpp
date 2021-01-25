@@ -184,6 +184,10 @@ int main()
 
 			shaderProgram.setUniformMat4("view", view);
 			shaderProgram.setUniformMat4("projection", projection);
+
+			//Create Collection of objects building a Harvester body.
+			ObjectCollection kompoj;
+
 			Transformation transformationMatrix({ -1.18f, -0.1f, -1.15f },
 				90.0f,
 				{ 0.0f, 0.0f, 3.0f },
@@ -193,8 +197,7 @@ int main()
 			{
 				transformationMatrix.pos[2] = harvester.firstTeethPosition + i * 0.1f;
 
-				Pyramid teeth(0.5f, transformationMatrix, texManager.getTextureID(GRILL_RUST));
-				teeth.draw(shaderProgram);
+				kompoj.addObject(std::shared_ptr<Object>(new 	Pyramid(0.5f, transformationMatrix, texManager.getTextureID(GRILL_RUST))));
 			}
 
 			//animacja ruchu zębów
@@ -257,41 +260,6 @@ int main()
 			mlyn.draw(shaderProgram);
 
 
-			/*
-			////bryła młyna
-			Transformation t1({ -5.0f, 6.0f, -8.0f },
-				90.0f,
-				{ 1.0f, 0.0f, 0.0f },
-				{ 1.0f, 1.0f, 2.5f });
-			Cylinder bryla(5.0f, t1, texManager.getTextureID(BRICKS));
-			bryla.draw(shaderProgram);
-
-			////dach mlyna
-			Transformation t2({ -5.0f, 14.0f, -8.0f },
-				0.0f,
-				{ 1.0f, 0.0f, 1.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Pyramid dach(6.50f, t2, texManager.getTextureID(WOOD_CONT));
-			dach.draw(shaderProgram);
-
-			////wal młyna
-			Transformation t3({ -5.0f, 8.0f, -5.0f },
-				wingSpeed * currentFrame,
-				{ 0.0f, 0.0f, 1.0f },
-				{ 1.0f, 1.0f, 3.0f });
-			Cylinder wal(0.6f, t3, texManager.getTextureID(WOOD_CONT));
-			wal.draw(shaderProgram);
-
-			for (int i = 0; i < numWings; i++) {
-				Transformation t3({ -5.0f, 8.0f, -4.3f + i * 0.001f },
-					i * wingAngle + wingSpeed * currentFrame,
-					{ 0.0f, 0.0f, 1.0f },
-					{ 2.0f, 40.0f, 0.2f });
-				Cube wing(0.3f, t3, texManager.getTextureID(WOOD_CONT));
-				wing.draw(shaderProgram);
-			}
-			*/
-
 			//pod�o�e
 			Transformation trans1({ 0.0f, -0.19f, 0.0f },
 				0.0f,
@@ -300,167 +268,145 @@ int main()
 			Cube platform(2.0f, trans1, texManager.getTextureID(GROUND));
 			platform.draw(shaderProgram);
 
-
 			//ty� nagarniacza
 			Transformation trans2({ -0.5f, 0.2f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 0.1f, 1.2f, 5.0f });
-			Cube hoeHolder(0.5f, trans2, texManager.getTextureID(HARV_SIDE));
-			hoeHolder.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans2, texManager.getTextureID(HARV_SIDE))));
 
 			//wysi�gnik
 			Transformation trans3({ -0.18f, 0.15f, 0.0f },
 				30.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.9f, 0.15f, 0.4f });
-			Cube hoeHolder2(0.8f, trans3, texManager.getTextureID(HARV_SIDE));
-			hoeHolder2.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.8f, trans3, texManager.getTextureID(HARV_SIDE))));
 
 			//cylinder trzymaj�cy wysi�gnik
 			Transformation trans4({ 0.12f, 0.35f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.5f, 0.5f, 0.7f });
-			Cylinder hoeHolder3(0.6f, trans4, texManager.getTextureID(HARV_SIDE));
-			hoeHolder3.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.6f, trans4, texManager.getTextureID(HARV_SIDE))));
 
 			//cylinder obracaj�cy maszyn� do m��cenia
 			Transformation trans5({ -1.17f, 0.2f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.5f, 1.5f, 50.0f });
-			Cylinder cylinder(0.05f, trans5, texManager.getTextureID(HARV_SIDE));
-			cylinder.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.05f, trans5, texManager.getTextureID(HARV_SIDE))));
 
 			//uchwyt na z�by
 			Transformation trans8({ -0.82f, -0.1f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 1.0f },
 				{ 0.9f, 0.025f, 3.6f });
-			Cube hoeteethholderbottom(0.7f, trans8, texManager.getTextureID(GRILL_RUST));
-			hoeteethholderbottom.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.7f, trans8, texManager.getTextureID(GRILL_RUST))));
 
 			//lewa �ciana nagarnaicza - cube
 			Transformation trans9({ -0.82f, 0.2f, 1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			Cube leftWallNagarniacz(0.5f, trans9, texManager.getTextureID(HARV_SIDE));
-			leftWallNagarniacz.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans9, texManager.getTextureID(HARV_SIDE))));
 
 			//lewa �ciana nagarnaicza - cylinder
 			Transformation trans10({ -1.17f, 0.2f, 1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			Cylinder leftCornerNagarniacz(0.5f, trans10, texManager.getTextureID(HARV_SIDE));
-			leftCornerNagarniacz.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans10, texManager.getTextureID(HARV_SIDE))));
 
 			//prawa �ciana nagarnaicza - cube
 			Transformation trans11({ -0.82f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			Cube rightWallNagarniacz(0.5f, trans11, texManager.getTextureID(HARV_SIDE));
-			rightWallNagarniacz.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans11, texManager.getTextureID(HARV_SIDE))));
 
 			//prawa �ciana nagarnaicza - cylinder
 			Transformation trans12({ -1.17f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			Cylinder rightCornerNagarniacz(0.5f, trans12, texManager.getTextureID(HARV_SIDE));
-			rightCornerNagarniacz.draw(shaderProgram);
-
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans12, texManager.getTextureID(HARV_SIDE))));
 
 			//big box nadwozie placeholder
 			Transformation trans13({ 1.14f, 0.86f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 4.0f, 2.0f, 2.0f });
-			Cube placeholder1(0.5f, trans13, texManager.getTextureID(HARV_SIDE));
-			placeholder1.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans13, texManager.getTextureID(HARV_SIDE))));
 
 			//pod�oga w kabinie
 			Transformation trans14({ -0.1f, 0.8f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 0.15f, 1.0f });
-			Cube placeholder2(0.5f, trans14, texManager.getTextureID(HARV_SIDE));
-			placeholder2.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans14, texManager.getTextureID(HARV_SIDE))));
 
 			//chyba lewy przedni pr�t kabiny 
 			Transformation trans15({ -0.44f, 1.4f, 0.26f },
 				18.0f,
 				{ 0.15f, 0.0f, 0.5f },
 				{ 0.12f, 2.5f, 0.12f });
-			Cube placeholder3(0.5f, trans15, texManager.getTextureID(HARV_SIDE));
-			placeholder3.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans15, texManager.getTextureID(HARV_SIDE))));
 
 			//chyba prawy przedni pr�t kabiny 
 			Transformation trans16({ -0.44f, 1.4f, -0.26f },
 				18.0f,
 				{ -0.15f, 0.0f, 0.5f },
 				{ 0.12f, 2.5f, 0.12f });
-			Cube placeholder4(0.5f, trans16, texManager.getTextureID(HARV_SIDE));
-			placeholder4.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans16, texManager.getTextureID(HARV_SIDE))));
 
 			//daszek kabiny
 			Transformation trans17({ -0.19f, 2.0f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.1f, 0.10f, 1.9f });
-			Cube placeholder5(0.5f, trans17, texManager.getTextureID(HARV_SIDE));
-			placeholder5.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans17, texManager.getTextureID(HARV_SIDE))));
 
 			//chyba prawy tylni pr�t kabiny 
 			Transformation trans18({ 0.2f, 1.62f, -0.26f },
 				9.0f,
 				{ -0.5f, 0.0f, 0.0f },
 				{ 0.12f, 1.5f, 0.12f });
-			Cube placeholder6(0.5f, trans18, texManager.getTextureID(HARV_SIDE));
-			placeholder6.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans18, texManager.getTextureID(HARV_SIDE))));
 
 			//chyba lewy tylni pr�t kabiny 
 			Transformation trans19({ 0.2f, 1.62f, 0.26f },
 				9.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 1.5f, 0.12f });
-			Cube placeholder7(0.5f, trans19, texManager.getTextureID(HARV_SIDE));
-			placeholder7.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans19, texManager.getTextureID(HARV_SIDE))));
 
 			//rura wydechowa - rura
 			Transformation trans20({ 1.6f, 1.36f, 0.26f },
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 0.6f });
-			Cylinder placeholder8(0.5f, trans20, texManager.getTextureID(GRILL_RUST_SHI));
-			placeholder8.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans20, texManager.getTextureID(GRILL_RUST_SHI))));
 
 			//rura wydechowa - puszka na czubku rury
 			Transformation trans21({ 1.6f, 1.56f, 0.26f },
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.32f, 0.32f, 0.2f });
-			Cylinder placeholder9(0.5f, trans21, texManager.getTextureID(GRILL_RUST_SHI));
-			placeholder9.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans21, texManager.getTextureID(GRILL_RUST_SHI))));
 
 			//rura wydechowa zbożowa podstawa 1
 			Transformation trans222({ 2.5f, 1.0f, 0.0f },
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
 				{ 0.15f, 0.15f, 0.4f });
-			Cylinder cylinderPlaceholder1(1.0f, trans222, texManager.getTextureID(HARV_SIDE));
-			cylinderPlaceholder1.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(1.0f, trans222, texManager.getTextureID(HARV_SIDE))));
 
 			//rura wydechowa zbożowa łącznik
 			Transformation trans223({ 2.5f, 1.2f, 0.0f },
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 0.12f });
-			Sphere spherePlaceholder1(1.0f, trans223, texManager.getTextureID(HARV_SIDE));
-			spherePlaceholder1.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Sphere(1.0f, trans223, texManager.getTextureID(HARV_SIDE))));
 
 			//trans22 i trans23 do animacji obrotu rury zbożowej
 			//rura wydechowa zbo�owa the base
@@ -468,152 +414,133 @@ int main()
 				90.0f,
 				{ 0.0f, 2.0f, 0.0f },
 				{ 0.15f, 0.15f, lengthOfWheatPipe });
-			Cylinder placeholder10(1.0f, trans22, texManager.getTextureID(HARV_SIDE));
-			placeholder10.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(1.0f, trans22, texManager.getTextureID(HARV_SIDE))));
 
 			//rura wydechowa zbo�owa the exit
 			Transformation trans23({ 2.5f + lengthOfWheatPipe, 1.175f, 0.0f },
 				90.0f,
 				{ 2.0f, 0.0f, 0.0f },
 				{ 0.20f, 0.2f, 0.20f });
-			Cylinder placeholder11(1.0f, trans23, texManager.getTextureID(GRILL_RUST_HALF));
-			placeholder11.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(1.0f, trans23, texManager.getTextureID(GRILL_RUST_HALF))));
 
 			//big box nadwozie placeholder kube� na zbo�e
 			Transformation trans24({ 2.64f, 0.66f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.0f, 1.0f, 1.5f });
-			Cube placeholder12(0.5f, trans24, texManager.getTextureID(HARV_SIDE));
-			placeholder12.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans24, texManager.getTextureID(HARV_SIDE))));
 
 			//smaller box podwozie placeholder prz�d
 			Transformation trans25({ 0.8f, 0.35f, 0.0f },
 				10.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 2.0f, 1.0f, 1.0f });
-			Cube placeholder13(0.5f, trans25, texManager.getTextureID(HARV_SIDE));
-			placeholder13.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans25, texManager.getTextureID(HARV_SIDE))));
 
 			//o� przednia do k� trajktora
 			Transformation trans26({ 0.4f, 0.1f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 40.0f });
-			Cylinder placeholder14(0.03f, trans26, texManager.getTextureID(GRILL));
-			placeholder14.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans26, texManager.getTextureID(GRILL))));
 
 			//lewego przedniego ko�a
 			Transformation trans27({ 0.4f, 0.1f, 0.6f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Wheel placeholder15(0.5f, trans27, texManager.getTextureID(HARV_SIDE));
-			placeholder15.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans27, texManager.getTextureID(HARV_SIDE))));
 
 			//prawego przedniego ko�a
 			Transformation trans28({ 0.4f, 0.1f, -0.6f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			Wheel placeholder16(0.5f, trans28, texManager.getTextureID(HARV_SIDE));
-			placeholder16.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans28, texManager.getTextureID(HARV_SIDE))));
 
 			//smaller box podwozie placeholder ty�
 			Transformation trans29({ 1.8f, 0.35f, 0.0f },
 				8.0f,
 				{ 0.0f, 0.0f, -3.0f },
 				{ 2.4f, 1.0f, 1.0f });
-			Cube placeholder17(0.5f, trans29, texManager.getTextureID(HARV_SIDE));
-			placeholder17.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans29, texManager.getTextureID(HARV_SIDE))));
 
 			//o� tylnia do k� trokatora
 			Transformation trans30({ 2.2f, 0.03f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 30.0f });
-			Cylinder placeholder18(0.03f, trans30, texManager.getTextureID(GRILL));
-			placeholder18.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans30, texManager.getTextureID(GRILL))));
 
 			//test lewego tylnego ko�a
 			Transformation trans31({ 2.2f, 0.03f, 0.4f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			Wheel placeholder19(0.5f, trans31, texManager.getTextureID(HARV_SIDE));
-			placeholder19.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans31, texManager.getTextureID(HARV_SIDE))));
 
 			//test prawego tylnego ko�a
 			Transformation trans32({ 2.2f, 0.03f, -0.4f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			Wheel placeholder20(0.5f, trans32, texManager.getTextureID(HARV_SIDE));
-			placeholder20.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans32, texManager.getTextureID(HARV_SIDE))));
 
 			//pr�t pomi�dzy pod�og� kabiny a najwy�szym schodkiem
 			Transformation trans33({ -0.18f, 0.7f, 0.22f },
 				18.0f,
 				{ -0.15f, 0.0f, 0.5f },
 				{ 0.06f, 0.4f, 0.06f });
-			Cube placeholder21(0.5f, trans33, texManager.getTextureID(LADDER));
-			placeholder21.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans33, texManager.getTextureID(LADDER))));
 
 			//najwy�szy schodek
 			Transformation trans34({ -0.01f, 0.6f, 0.23f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.6f, 0.06f, 0.12f });
-			Cube placeholder22(0.5f, trans34, texManager.getTextureID(LADDER));
-			placeholder22.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans34, texManager.getTextureID(LADDER))));
 
 			//rurka drabinkowa bli�sza wykaszarce
 			Transformation trans35({ -0.1f, 0.37f, 0.23f },
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 1.6f });
-			Cylinder placeholder23(0.3f, trans35, texManager.getTextureID(LADDER));
-			placeholder23.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.3f, trans35, texManager.getTextureID(LADDER))));
 
 			//rurka drabinkowa bli�sza korpusowi
 			Transformation trans36({ 0.1f, 0.37f, 0.23f },
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 1.6f });
-			Cylinder placeholder24(0.3f, trans36, texManager.getTextureID(LADDER));
-			placeholder24.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.3f, trans36, texManager.getTextureID(LADDER))));
 
 			//schodek drugi od g�ry
 			Transformation trans37({ 0.0f, 0.5f, 0.23f },
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder25(0.3f, trans37, texManager.getTextureID(LADDER));
-			placeholder25.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.3f, trans37, texManager.getTextureID(LADDER))));
 
 			//schodek trzeci od g�ry
 			Transformation trans38({ 0.0f, 0.4f, 0.23f },
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder26(0.3f, trans38, texManager.getTextureID(LADDER));
-			placeholder26.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.3f, trans38, texManager.getTextureID(LADDER))));
 
 			//schodek czwarty od g�ry
 			Transformation trans39({ 0.0f, 0.3f, 0.23f },
 				90.0f,
 				{ 0.0f, 0.5f, 0.0f },
 				{ 0.12f, 0.12f, 0.8f });
-			Cylinder placeholder27(0.3f, trans39, texManager.getTextureID(LADDER));
-			placeholder27.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.3f, trans39, texManager.getTextureID(LADDER))));
 
 			//drzwi kombonojaju lewe
 			Transformation trans40({ -0.06f, 1.0f, 0.22f },
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			Trapezoid placeholder28(0.3f, trans40, texManager.getTextureID(HARV_SIDE));
-			placeholder28.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans40, texManager.getTextureID(HARV_SIDE))));
 
 
 			//drzwi kombonojaju prawe
@@ -621,24 +548,21 @@ int main()
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			Trapezoid placeholder29(0.3f, trans41, texManager.getTextureID(HARV_SIDE));
-			placeholder29.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans41, texManager.getTextureID(HARV_SIDE))));
 
 			//drzwi kombonojaju prawe trójkąt
 			Transformation trans42({ -0.3f, 1.26f, -0.22f },
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			Triangle placeholder30(0.3f, trans42, texManager.getTextureID(HARV_SIDE));
-			placeholder30.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans42, texManager.getTextureID(HARV_SIDE))));
 
 			//drzwi kombonojaju lewe trójkąt
 			Transformation trans43({ -0.3f, 1.26f, 0.22f },
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			Triangle placeholder31(0.3f, trans43, texManager.getTextureID(HARV_SIDE));
-			placeholder31.draw(shaderProgram);
+			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans43, texManager.getTextureID(HARV_SIDE))));
 
 
 			harvester.speedOfMechanism += 0.01f;
@@ -663,8 +587,7 @@ int main()
 					transformationMlocarka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
 					transformationMlocarka.angle = harvester.angleDiffrence + (harvester.angleInDegrees * (i + ((numberOfSidesInMechanism * 0.5f) - 1.0f)));
 					//młócarka generowana proceduralnie
-					Cube mlocarkaElement1(1.0f, transformationMlocarka, texManager.getTextureID(GRILL));
-					mlocarkaElement1.draw(shaderProgram);
+					kompoj.addObject(std::shared_ptr<Object>(new 	Cube(1.0f, transformationMlocarka, texManager.getTextureID(GRILL))));
 				}
 			}
 
@@ -682,8 +605,7 @@ int main()
 				transformationMlocarkaPoprzeczka.pos[0] = ((posX + 1.17f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) - 1.17f;
 				transformationMlocarkaPoprzeczka.pos[1] = ((posX + 1.17f) * sinf((harvester.angle * i) + harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle * i) + harvester.speedOfMechanism)) + 0.2f;
 				//element poprzeczny generowany proceduralnie
-				Cube mlocarkaElementPoprzeczka(1.0f, transformationMlocarkaPoprzeczka, texManager.getTextureID(GRILL));
-				mlocarkaElementPoprzeczka.draw(shaderProgram);
+				kompoj.addObject(std::shared_ptr<Object>(new 	Cube(1.0f, transformationMlocarkaPoprzeczka, texManager.getTextureID(GRILL))));
 			}
 
 			posX = trans5.pos[0];
@@ -701,17 +623,20 @@ int main()
 			if (nextposX > posX) harvester.angleDiffrence = 360.0f - harvester.angleDiffrence;
 			//cout << angleDiffrence << endl;
 
+			//Harvester global rotation test
+			if (harvester.angleKompoj >= 360.0f)
+				harvester.angleKompoj = 0.0f;
+			else
+				harvester.angleKompoj += 100.0f;
+
+			kompoj.rotateWorld(harvester.angleKompoj, glm::vec3(0.0f, 1.0f, 0.0f));
+			
+
+			//global Harvester draw
+			kompoj.draw(shaderProgram);
+
 			skybox.draw(glm::perspective(glm::radians(70.0f), 4.5f / 3.0f, 0.1f, 100.0f), camera.GetViewMatrix());
 
-			//trapezoid test
-			/*
-			Transformation transformationTrapezoid({ 0.0f, -3.0f, 0.0f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			Trapezoid trapezoidTest(1.0f, transformationTrapezoid);
-			trapezoidTest.draw(shaderProgram);
-			*/
 
 			glBindVertexArray(0);
 

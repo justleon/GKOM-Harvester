@@ -19,6 +19,8 @@ public:
 	//zmienna okreœla kierunek poruszania siê zêbów
 	bool teethDirection;
 	float firstTeethPosition;
+	//zmienna okreœla obrót ca³ego kombajnu
+	float angleKompoj;
 	
 
 	Harvester(int numOfSides, int numOfMechanisms, float lengthOfWheatPipe);
