@@ -14,6 +14,7 @@
 #include "headers/Wheel.h"
 #include "headers/Trapezoid.h"
 #include "headers/Triangle.h"
+#include "headers/Plane.h"
 #include "headers/Harvester.h"
 #include "headers/Lamp.h"
 #include "headers/Skybox.h"
@@ -267,11 +268,11 @@ int main()
 
 
 			//pod�o�e
-			Transformation trans1({ 0.0f, -0.19f, 0.0f },
-				0.0f,
-				{ 1.0f, 0.5f, 0.0f },
-				{ 10.0f, 0.05f, 10.0f });
-			Cube platform(2.0f, trans1, texManager.getTextureID(GROUND));
+			Transformation trans1({ 0.0f, 9.89f, 0.0f },
+				90.0f,
+				{ 1.0f, 0.0f, 0.0f },
+				{ 2000.0f, 2000.0f, 10.0f });
+			Plane platform(2.0f, trans1, texManager.getTextureID(GROUND));
 			platform.draw(shaderProgram);
 
 			//ty� nagarniacza
@@ -696,25 +697,25 @@ void processInput(GLFWwindow* window)
 		harvester.accelerate(deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		harvester.decelerate(harvester.acceleration * 2.5f, deltaTime);
-
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		harvester.turnLeft(deltaTime);
-
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		harvester.turnRight(deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera.ProcessKeyboard(UP, deltaTime);
-	if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera.ProcessKeyboard(DOWN, deltaTime);
+	if (!camInHarv) {
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			camera.ProcessKeyboard(FORWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			camera.ProcessKeyboard(BACKWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			camera.ProcessKeyboard(LEFT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			camera.ProcessKeyboard(RIGHT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+			camera.ProcessKeyboard(UP, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+			camera.ProcessKeyboard(DOWN, deltaTime);
+	}
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
