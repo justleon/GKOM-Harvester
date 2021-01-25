@@ -17,8 +17,6 @@ Lamp::Lamp(GLfloat size, Transformation transMat)
 
 void Lamp::draw(ShaderProgram shader)
 {
-	useModel();
-
 	shader.Use();
 	shader.setUniformMat4("model", modelMat);
 

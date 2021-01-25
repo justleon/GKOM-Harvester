@@ -26,13 +26,12 @@ void ObjectPrimitive::initObject()
 
 void ObjectPrimitive::draw(ShaderProgram shader)
 {
-	//useModel();
 	shader.Use();
 
 	shader.setUniformMat4("model", modelMat);
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0 + this->textureID);
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
-	//shader.setUniformInt("material.tex", textureID);
+	shader.setUniformInt("material.tex", this->textureID);
 
 	vertexArray->Bind();
 	indexBuffer->Bind();
@@ -40,14 +39,6 @@ void ObjectPrimitive::draw(ShaderProgram shader)
 	glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 	vertexArray->Unbind();
 	indexBuffer->Unbind();
-}
-
-void ObjectPrimitive::useModel()
-{
-	modelMat = glm::mat4(1.0f);
-	translate(transform.pos);
-	rotate(transform.angle, transform.rot);
-	resize(transform.size);
 }
 
 void ObjectPrimitive::translate(const glm::vec3& vec)

@@ -47,7 +47,6 @@ public:
 	
 	void draw(ShaderProgram shader);
 
-	void useModel();
 	void translate(const glm::vec3& vec);
 	void rotate(GLfloat angle, const glm::vec3& axis);
 	void resize(const glm::vec3& vec);

@@ -94,6 +94,7 @@
     <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="ObjectCollection.cpp" />
     <ClCompile Include="ObjectPrimitive.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="headers\ObjectCollection.h" />
     <ClInclude Include="headers\ObjectInterface.h" />
     <ClInclude Include="headers\ObjectPrimitive.h" />
+    <ClInclude Include="headers\Plane.h" />
     <ClInclude Include="headers\Pyramid.h" />
     <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="headers\Skybox.h" />
