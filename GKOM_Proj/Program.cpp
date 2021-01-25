@@ -81,9 +81,12 @@ Camera camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
+bool camInHarv = false;
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
+float currentFrame = 0.0f;
+float framePushed = 0.0f;
 
 TextureManager texManager;
 
@@ -150,7 +153,7 @@ int main()
 		{
 			processInput(window);
 
-			float currentFrame = glfwGetTime();
+			currentFrame = glfwGetTime();
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
 
@@ -630,6 +633,8 @@ int main()
 
 			//global Harvester draw
 			harvester.move(deltaTime);
+			if(camInHarv)
+				camera.Position = harvester.Position + harvester.Front * 0.05f + glm::vec3(0.0f, 1.5f, 0.0f);
 			kompoj.rotateWorld(harvester.rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 			kompoj.translateWorld(harvester.Position);
 
@@ -676,6 +681,16 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && (currentFrame - framePushed) > 0.2f)
+		if (camInHarv) {
+			camInHarv = false;
+			framePushed = currentFrame;		
+		}else {
+			camInHarv = true;
+			framePushed = currentFrame;
+		}
+
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		harvester.accelerate(deltaTime);
