@@ -180,10 +180,10 @@ int main()
 
 			if (flashlightMode)
 			{
-				usedShader.setUniformVec3f("light.position", camera.Position);
-				usedShader.setUniformVec3f("light.direction", camera.Front);
-				usedShader.setUniformFloat("light.cutOff", glm::cos(glm::radians(10.5f)));
-				usedShader.setUniformFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+				usedShader.setUniformVec3f("light.position", harvester.Position + glm::vec3(0.0f, 0.5f, 0.0f));
+				usedShader.setUniformVec3f("light.direction", harvester.Front);
+				usedShader.setUniformFloat("light.cutOff", glm::cos(glm::radians(20.5f)));
+				usedShader.setUniformFloat("light.outerCutOff", glm::cos(glm::radians(25.5f)));
 
 				usedShader.setUniformFloat("light.constant", 1.0f);
 				usedShader.setUniformFloat("light.linear", 0.045f);

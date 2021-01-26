@@ -60,14 +60,14 @@ void Harvester::move(float deltaTime) {
 void Harvester::turnRight(float deltaTime) {
 	wheelRotation = 30.0f;
 	wheelAngle = -90.0f;
-	rotation -= rotSpeed * speed * deltaTime;
+	rotation -= rotSpeed * speed / 2.0f * deltaTime;
 	updateFront();
 }
 
 void Harvester::turnLeft(float deltaTime) {
 	wheelRotation = 30.0f;
 	wheelAngle = 90.0f;
-	rotation += rotSpeed * speed * deltaTime;
+	rotation += rotSpeed * speed / 2.0f * deltaTime;
 	updateFront();
 }
 
