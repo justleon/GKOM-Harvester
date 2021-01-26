@@ -53,5 +53,12 @@ __Temat projektu:__ Kombajn (Harvester)
 * [ ] Dodanie cieniowania
 * [x] Oddanie gotowego projektu na spotkaniu nr 7
 
+### Sterowanie:
+WASD - ruch kamerą swobodną  
+R - zmiana kamery  
+F - tryb oświetlenia  
+Strzałki - poruszanie kombajnem  
+Kółko myszy - zwiększanie/zmniejszanie prędkości ruchu kamery swobodnej
+
 ### Aktualny stan projektu (26.01.21r):
 ![alt text](Images/projekt3.png "Projekt")
