@@ -478,14 +478,14 @@ int main()
 			//test lewego tylnego ko�a
 			Transformation trans31({ 2.2f, 0.03f, 0.4f },
 				harvester.wheelRotation,
-				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
+				{ 0.0f, -harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans31, texManager.getTextureID(WHEEL))));
 
 			//test prawego tylnego ko�a
 			Transformation trans32({ 2.2f, 0.03f, -0.4f },
 				harvester.wheelRotation,
-				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
+				{ 0.0f, -harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans32, texManager.getTextureID(WHEEL))));
 
