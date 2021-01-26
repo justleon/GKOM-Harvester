@@ -21,7 +21,7 @@ std::unique_ptr<VertexBuffer> Sphere::initVertices()
 	GLfloat vertices[8 * (1 + SLICES) * (1 + SLICE_SEGMENTS)];
 	int count = 0;
 
-	int ii = 0;
+	int vi = 0;
 	float x, y, z, xy;
 	float radius = 1.0f;
 	float nx, ny, nz, lengthInv = 1.0f / radius;
@@ -42,27 +42,26 @@ std::unique_ptr<VertexBuffer> Sphere::initVertices()
 		{
 			sectorAngle = j * sectorStep;
 
-
 			x = xy * glm::cos(sectorAngle);
 			y = xy * glm::sin(sectorAngle);
-			vertices[ii] = x;
-			vertices[ii + 1] = y;
-			vertices[ii + 2] = z;
+			vertices[vi] = x;
+			vertices[vi + 1] = y;
+			vertices[vi + 2] = z;
 
 
 			nx = x * lengthInv;
 			ny = y * lengthInv;
 			nz = z * lengthInv;
-			vertices[ii + 3] = nx;
-			vertices[ii + 4] = ny;
-			vertices[ii + 5] = nz;
+			vertices[vi + 3] = nx;
+			vertices[vi + 4] = ny;
+			vertices[vi + 5] = nz;
 
 
 			s = (float)j / SLICES;
 			t = (float)i / SLICE_SEGMENTS;
-			vertices[ii + 6] = s;
-			vertices[ii + 7] = t;
-			ii += 8;
+			vertices[vi + 6] = s;
+			vertices[vi + 7] = t;
+			vi += 8;
 		}
 	}
 
@@ -101,9 +100,7 @@ std::unique_ptr<IndexBuffer> Sphere::initIndices()
 			}
 		}
 	}
-	//std::cout << "ii" << ii << "estimate" << 3 * 2 * (SLICES) * (SLICE_SEGMENTS-1) << '\n';
 
 	auto indexBuffer = std::make_unique<IndexBuffer>(indices, sizeof(indices));
-	//std::cout << "succ\n";
 	return indexBuffer;
 }
