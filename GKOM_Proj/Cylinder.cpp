@@ -30,9 +30,9 @@ std::unique_ptr<VertexBuffer> Cylinder::initVertices()
 		0.432f * size,	-0.25f * size,	halfSize,			1.0f, -1.0f, 1.0f,	1.0f,  0.0f,
 		0.25f * size,	-0.432f * size,	halfSize,			1.0f, -1.0f, 1.0f,	0.0f,  0.0f,
 		0.0f,	-halfSize,	halfSize,						0.0f, -1.0f, 1.0f,	1.0f,  0.0f,
-		-0.25f * size,	-0.432f * size,	halfSize,			-1.0f, 1.0f, 1.0f,	0.0f,  0.0f,
+		-0.25f * size,	-0.432f * size,	halfSize,			-1.0f, -1.0f, 1.0f,	0.0f,  0.0f,
 		-0.432f * size, -0.25f * size,  halfSize,			-1.0f, -1.0f, 1.0f,	1.0f,  0.0f,
-		-halfSize,	0.0f,	halfSize,						-1.0f, 0.0f, -1.0f,	0.0f,  0.0f,
+		-halfSize,	0.0f,	halfSize,						-1.0f, 0.0f, 1.0f,	0.0f,  0.0f,
 		-0.432f * size,	0.25f * size,	halfSize,			-1.0f, 1.0f, 1.0f,	1.0f,  0.0f,
 		-0.25f * size,  0.432f * size,  halfSize,			-1.0f, 1.0f, 1.0f,	0.0f,  0.0f,
 
