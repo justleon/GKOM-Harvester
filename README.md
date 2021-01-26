@@ -26,7 +26,7 @@ __Temat projektu:__ Kombajn (Harvester)
 * Oświetlenie
 
 ### Podział zadań: 
-- Łukasz Pokorzyński: prymitywy graficzne, modelowanie kombajnu, kamera, pliki odpowiedzialne za ładowanie shaderów
+- Łukasz Pokorzyński: prymitywy graficzne, modelowanie kombajnu, kamera, pliki odpowiedzialne za ładowanie shaderów; oświetlenie
 - Adam Steciuk: prymitywy graficzne, zamodelowanie sceny i skyboxa, przygotowanie tekstur (obrazów), kamera
 - Jakub Strawa: prymitywy graficzne, modelowanie kombajnu, elementy ruchome
 - Jarosław Zabuski: nagarniacz, podajnik, zespół tnący; oświetlenie
@@ -51,7 +51,7 @@ __Temat projektu:__ Kombajn (Harvester)
 * [X] Teksturowanie obiektów
 * [X] Dodanie oświetlenia
 * [ ] Dodanie cieniowania
-* [ ] Oddanie gotowego projektu na spotkaniu nr 7
+* [x] Oddanie gotowego projektu na spotkaniu nr 7
 
-### Aktualny stan projektu (14.01.21r):
-![alt text](Images/projekt2.png "Projekt")
+### Aktualny stan projektu (26.01.21r):
+![alt text](Images/projekt3.png "Projekt")
