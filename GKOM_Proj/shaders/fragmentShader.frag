@@ -29,7 +29,8 @@ void main()
     vec3 ambient = light.ambient * texture(material.tex, TexCoord).rgb;
     
     vec3 norm = normalize(vecNormals);
-    vec3 lightDir = normalize(light.position - FragPos);
+    //vec3 lightDir = normalize(light.position - FragPos);
+    vec3 lightDir = normalize(-light.position);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * diff * texture(material.tex, TexCoord).rgb;
 

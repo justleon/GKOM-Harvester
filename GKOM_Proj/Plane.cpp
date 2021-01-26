@@ -17,7 +17,7 @@ std::unique_ptr<VertexBuffer> Plane::initVertices()
 	GLfloat halfSize = size / 2.0f;
 	GLfloat vertices[] = {
 		// coordinates						// normals			// texture
-		 halfSize,  halfSize,  halfSize,   0.0f,  1.0f,  0.0f,	1000.0f,  0.0f,
+		 halfSize,  halfSize,  halfSize,   0.0f,  1.0f,  -1.0f,	1000.0f,  0.0f,
 		-halfSize,  halfSize,  halfSize,   0.0f,  1.0f,  0.0f,	0.0f,   0.0f,
 		-halfSize, -halfSize,  halfSize,   0.0f,  1.0f,  0.0f,	0.0f,  1000.0f,
 		 halfSize, -halfSize,  halfSize,   0.0f,  1.0f,  0.0f,	1000.0f, 1000.0f

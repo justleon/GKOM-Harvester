@@ -30,6 +30,7 @@
 using namespace std;
 
 #define LIGHT_POSITION 25.0f, 35.0f, 45.0f
+#define LIGHT_DIRECTION -25.0f, -35.0f, -45.0f
 #define LIGHT_AMBIENT 0.1f, 0.1f, 0.1f
 #define LIGHT_DIFFUSE 0.8f, 0.8f, 0.8f
 #define LIGHT_SPECULAR 1.0f, 1.0f, 1.0f
@@ -50,7 +51,8 @@ using namespace std;
 #define STEEL1 "textures/steel-scratch1.png"
 #define STEEL2 "textures/steel-scratch2.png"
 
-glm::vec3 lightPos(LIGHT_POSITION);
+glm::vec3 light_position(LIGHT_POSITION);
+glm::vec3 light_direction(LIGHT_DIRECTION);
 glm::vec3 light_ambient(LIGHT_AMBIENT);
 glm::vec3 light_diffuse(LIGHT_DIFFUSE);
 glm::vec3 light_specular(LIGHT_SPECULAR);
@@ -170,7 +172,7 @@ int main()
 			usedShader.Use();
 			usedShader.setUniformVec3f("viewPos", camera.Position);
 
-			usedShader.setUniformVec3f("light.position", lightPos);
+			usedShader.setUniformVec3f("light.position", light_direction);
 			usedShader.setUniformVec3f("light.ambient", light_ambient);
 			usedShader.setUniformVec3f("light.diffuse", light_diffuse);
 			usedShader.setUniformVec3f("light.specular", light_specular);
@@ -225,7 +227,7 @@ int main()
 				harvester.teethDirection = true;
 			}
 			
-			Transformation light(lightPos,
+			Transformation light(light_position,
 				0.0f,
 				{ 1.0f, 1.0f, 1.0f },
 				{ 1.0f, 1.0f, 1.0f });
