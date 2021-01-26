@@ -29,7 +29,7 @@ Harvester::Harvester(int numOfSides, int numOfMechanisms, float lengthOfWPipe)
 	firstTeethPosition = -1.15f;
 	Position = glm::vec3(0.0f, 0.0f, 0.0f);
 	Front = glm::vec3(-1.0f, 0.0f, 0.0f);
-	maxSpeed = 100.0f;
+	maxSpeed = 10.0f;
 	acceleration = 1.0f;
 	rotSpeed = 20.0f;
 	speed = 0.0f;

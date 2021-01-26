@@ -64,6 +64,8 @@ void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void LoadTextures();
+void drawMill(int numWings, float wingSpeed, glm::vec3 position, glm::vec3 rotA, float rot, glm::vec3 scale, ShaderProgram shader);
+
 
 //zmienne określające kombajn
 int numberOfSidesInMechanism = 9;
@@ -73,9 +75,10 @@ float lengthOfWheatPipe = 0.8f;
 Harvester harvester(numberOfSidesInMechanism, numberOfMechanisms, lengthOfWheatPipe);
 
 //zmienna określające młyn
-int numWings = 5;
-float wingSpeed = 10.0f;
-float wingAngle = 180 / numWings;
+int numWings = 1;
+float wingSpeed = 5.0f;
+int numMills = 10;
+int radius = 30;
 
 //camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -91,6 +94,8 @@ float currentFrame = 0.0f;
 float framePushed = 0.0f;
 
 TextureManager texManager;
+
+
 
 int main()
 {
@@ -227,42 +232,12 @@ int main()
 			Lamp lightSource(15.0f, light);
 			lightSource.draw(lampShader);
 		
-			ObjectCollection mlyn;
-
-			//bryła młyna
-			Transformation t1({ 0.0f, 6.0f, 0.0f },
-				90.0f,
-				{ 1.0f, 0.0f, 0.0f },
-				{ 1.0f, 1.0f, 2.5f });
-			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(5.0f, t1, texManager.getTextureID(BRICKS))));
-
-			//dach mlyna
-			Transformation t2({ 0.0f, 14.0f, 0.0f },
-				0.0f,
-				{ 1.0f, 1.0f, 1.0f },
-				{ 1.0f, 1.0f, 1.0f });
-			mlyn.addObject(std::shared_ptr<Object>(new Pyramid(6.50f, t2, texManager.getTextureID(WOOD_CONT))));
-
-			//wal młyna
-			Transformation t4({ 0.0f, 8.0f, 3.0f },
-				wingSpeed * currentFrame,
-				{ 0.0f, 0.0f, 1.0f },
-				{ 1.0f, 1.0f, 3.0f });
-			mlyn.addObject(std::shared_ptr<Object>(new Cylinder(0.6f, t4, texManager.getTextureID(WOOD_CONT))));
-
-			for (int i = 0; i < numWings; i++) {
-				Transformation t3({ 0.0f, 8.0f, 3.7f + i * 0.001f },
-					i * wingAngle + wingSpeed * currentFrame,
-					{ 0.0f, 0.0f, 1.0f },
-					{ 2.0f, 40.0f, 0.2f });
-				mlyn.addObject(std::shared_ptr<Object>(new 	Cube(0.3f, t3, texManager.getTextureID(WOOD_CONT))));
+			float radStep = glm::radians((float)(360 / numMills));
+			for (int i = 0; i < numMills; i++) {
+				drawMill(numWings + i, wingSpeed * (i+1), glm::vec3(radius * cos(radStep * i), 0, radius * sin(radStep * i)), glm::vec3(0.0f, 1.0f, 0.0f), -(float)(360 / numMills)*i - 90.0f, glm::vec3(1.0f, 1.0f, 1.0f), usedShader);
 			}
-
-			mlyn.rotateWorld(35.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-			mlyn.translateWorld(glm::vec3(-7.0f, 0.0f, -8.0f));
-			mlyn.draw(usedShader);
-
-
+			
+			
 			//pod�o�e
 			Transformation podloze({ 0.0f, 9.89f, 0.0f },
 				90.0f,
@@ -742,4 +717,41 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
+}
+
+void drawMill(int numWings, float wingSpeed, glm::vec3 position, glm::vec3 rotA, float rot, glm::vec3 scale, ShaderProgram shader) {
+	ObjectCollection mlyn;
+
+	//bryła młyna
+	Transformation t1({ 0.0f, 6.0f, 0.0f },
+		90.0f,
+		{ 1.0f, 0.0f, 0.0f },
+		{ 1.0f, 1.0f, 2.5f });
+	mlyn.addObject(std::shared_ptr<Object>(new Cylinder(5.0f, t1, texManager.getTextureID(BRICKS))));
+
+	//dach mlyna
+	Transformation t2({ 0.0f, 14.0f, 0.0f },
+		0.0f,
+		{ 1.0f, 1.0f, 1.0f },
+		{ 1.0f, 1.0f, 1.0f });
+	mlyn.addObject(std::shared_ptr<Object>(new Pyramid(6.50f, t2, texManager.getTextureID(WOOD_CONT))));
+
+	//wal młyna
+	Transformation t4({ 0.0f, 8.0f, 3.0f },
+		wingSpeed * currentFrame,
+		{ 0.0f, 0.0f, 1.0f },
+		{ 1.0f, 1.0f, 3.0f });
+	mlyn.addObject(std::shared_ptr<Object>(new Cylinder(0.6f, t4, texManager.getTextureID(WOOD_CONT))));
+
+	for (int i = 0; i < numWings; i++) {
+		Transformation t3({ 0.0f, 8.0f, 3.7f + i * 0.001f },
+			i * (180 / numWings) + wingSpeed * currentFrame,
+			{ 0.0f, 0.0f, 1.0f },
+			{ 2.0f, 40.0f, 0.2f });
+		mlyn.addObject(std::shared_ptr<Object>(new 	Cube(0.3f, t3, texManager.getTextureID(WOOD_CONT))));
+	}
+
+	mlyn.rotateWorld(rot, rotA);
+	mlyn.translateWorld(position);
+	mlyn.draw(shader);
 }
