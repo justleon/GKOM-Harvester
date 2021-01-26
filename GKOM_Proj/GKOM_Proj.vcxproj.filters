@@ -101,6 +101,9 @@
     <None Include="shaders\lampShader.vert">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="shaders\flashlightShader.frag">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg">

@@ -30,10 +30,11 @@
 using namespace std;
 
 #define LIGHT_POSITION 25.0f, 35.0f, 45.0f
-#define LIGHT_AMBIENT 0.2f, 0.2f, 0.2f
-#define LIGHT_DIFFUSE 1.f, 1.0f, 1.0f
-#define LIGHT_SPECULAR 0.9f, 0.9f, 0.9f
+#define LIGHT_AMBIENT 0.1f, 0.1f, 0.1f
+#define LIGHT_DIFFUSE 0.8f, 0.8f, 0.8f
+#define LIGHT_SPECULAR 1.0f, 1.0f, 1.0f
 #define LIGHT_COLOR 1.0f, 1.0f, 0.8f
+#define LIGHT_SPEC_MAT 0.3f, 0.3f, 0.3f
 
 #define HARV_SIDE "textures/harv_side.png"
 #define LADDER "textures/ladder.png"
@@ -44,13 +45,17 @@ using namespace std;
 #define GRILL_RUST_SHI "textures/grill_rusted_shiny.png"
 #define GRILL_RUST "textures/grill_very_rusted.png"
 #define GROUND "textures/ground.png"
+#define WHEEL "textures/wheel.png"
+#define VENT "textures/vent.png"
+#define STEEL1 "textures/steel-scratch1.png"
+#define STEEL2 "textures/steel-scratch2.png"
 
 glm::vec3 lightPos(LIGHT_POSITION);
 glm::vec3 light_ambient(LIGHT_AMBIENT);
 glm::vec3 light_diffuse(LIGHT_DIFFUSE);
 glm::vec3 light_specular(LIGHT_SPECULAR);
 glm::vec3 light_color(LIGHT_COLOR);
-glm::vec3 light_spec_half(0.3f, 0.3f, 0.3f);
+glm::vec3 light_spec_half(LIGHT_SPEC_MAT);
 
 const GLuint WIDTH = 1280, HEIGHT = 800;
 
@@ -65,11 +70,6 @@ int numberOfSidesInMechanism = 9;
 int numberOfMechanisms = 5;
 float lengthOfWheatPipe = 0.8f;
 
-//parametry ruchu kombajnu
-float maxSpeed = 10.0f;
-float acceleration = 1.0f;
-float rotSpeed = 10.0f;
-
 Harvester harvester(numberOfSidesInMechanism, numberOfMechanisms, lengthOfWheatPipe);
 
 //zmienna określające młyn
@@ -83,6 +83,7 @@ float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 bool camInHarv = false;
+bool flashlightMode = false;
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
@@ -90,17 +91,6 @@ float currentFrame = 0.0f;
 float framePushed = 0.0f;
 
 TextureManager texManager;
-
-ostream& operator<<(ostream& os, const glm::mat4& mx)
-{
-	for (int row = 0; row < 4; ++row)
-	{
-		for (int col = 0; col < 4; ++col)
-			cout << mx[row][col] << ' ';
-		cout << endl;
-	}
-	return os;
-}
 
 int main()
 {
@@ -132,17 +122,13 @@ int main()
 		// tell GLFW to capture our mouse
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-		// Let's check what are maximum parameters counts
-		GLint nrAttributes;
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-		cout << "Max vertex attributes allowed: " << nrAttributes << std::endl;
-		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
-		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
-
 		// Build, compile and link shader program
 		ShaderProgram shaderProgram("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
+		ShaderProgram flashlightShader("shaders/vertexShader.vert", "shaders/flashlightShader.frag");
 		ShaderProgram lampShader("shaders/lampShader.vert", "shaders/lampShader.frag");
 		
+		ShaderProgram usedShader = shaderProgram;
+
 		LoadTextures();
 
 		glEnable(GL_DEPTH_TEST);
@@ -161,15 +147,9 @@ int main()
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
 
-			// Clear the colorbuffer
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			// Bind Textures using texture units
-			//texManager.useTexture("textures/container.jpg");
 			glActiveTexture(GL_TEXTURE0);
-			//glBindTexture(GL_TEXTURE_2D, texManager.getTextureID("textures/bricks_tileable.png"));
-			//shaderProgram.setUniformInt("material.tex", 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			glm::mat4 view = camera.GetViewMatrix();
@@ -180,20 +160,33 @@ int main()
 			lampShader.setUniformFloat("intensity", 1.0f);
 			lampShader.setUniformVec3f("lightColor", light_color);
 
-			// Draw our first box
-			shaderProgram.Use();
-			shaderProgram.setUniformVec3f("light.position", lightPos);
-			shaderProgram.setUniformVec3f("viewPos", camera.Position);
+			usedShader = flashlightMode ? flashlightShader : shaderProgram;
 
-			shaderProgram.setUniformVec3f("light.ambient", light_ambient);
-			shaderProgram.setUniformVec3f("light.diffuse", light_diffuse);
-			shaderProgram.setUniformVec3f("light.specular", light_specular);
+			usedShader.Use();
+			usedShader.setUniformVec3f("viewPos", camera.Position);
 
-			shaderProgram.setUniformVec3f("material.specular", light_spec_half);
-			shaderProgram.setUniformFloat("material.shininess", 70.0f);
+			usedShader.setUniformVec3f("light.position", lightPos);
+			usedShader.setUniformVec3f("light.ambient", light_ambient);
+			usedShader.setUniformVec3f("light.diffuse", light_diffuse);
+			usedShader.setUniformVec3f("light.specular", light_specular);
 
-			shaderProgram.setUniformMat4("view", view);
-			shaderProgram.setUniformMat4("projection", projection);
+			usedShader.setUniformVec3f("material.specular", light_spec_half);
+			usedShader.setUniformFloat("material.shininess", 35.0f);
+
+			if (flashlightMode)
+			{
+				usedShader.setUniformVec3f("light.position", camera.Position);
+				usedShader.setUniformVec3f("light.direction", camera.Front);
+				usedShader.setUniformFloat("light.cutOff", glm::cos(glm::radians(10.5f)));
+				usedShader.setUniformFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+
+				usedShader.setUniformFloat("light.constant", 1.0f);
+				usedShader.setUniformFloat("light.linear", 0.045f);
+				usedShader.setUniformFloat("light.quadratic", 0.0075f);
+			}
+
+			usedShader.setUniformMat4("view", view);
+			usedShader.setUniformMat4("projection", projection);
 
 			//Create Collection of objects building a Harvester body.
 			ObjectCollection kompoj;
@@ -267,44 +260,44 @@ int main()
 
 			mlyn.rotateWorld(35.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			mlyn.translateWorld(glm::vec3(-7.0f, 0.0f, -8.0f));
-			mlyn.draw(shaderProgram);
+			mlyn.draw(usedShader);
 
 
 			//pod�o�e
-			Transformation trans1({ 0.0f, 9.89f, 0.0f },
+			Transformation podloze({ 0.0f, 9.89f, 0.0f },
 				90.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 2000.0f, 2000.0f, 10.0f });
-			Plane platform(2.0f, trans1, texManager.getTextureID(GROUND));
-			platform.draw(shaderProgram);
+			Plane platform(2.0f, podloze, texManager.getTextureID(GROUND));
+			platform.draw(usedShader);
 
 			//ty� nagarniacza
 			Transformation trans2({ -0.5f, 0.2f, 0.0f },
 				0.0f,
 				{ 1.0f, 0.0f, 0.0f },
 				{ 0.1f, 1.2f, 5.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans2, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans2, texManager.getTextureID(STEEL1))));
 
 			//wysi�gnik
 			Transformation trans3({ -0.18f, 0.15f, 0.0f },
 				30.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.9f, 0.15f, 0.4f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.8f, trans3, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.8f, trans3, texManager.getTextureID(STEEL2))));
 
 			//cylinder trzymaj�cy wysi�gnik
 			Transformation trans4({ 0.12f, 0.35f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 0.5f, 0.5f, 0.7f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.6f, trans4, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.6f, trans4, texManager.getTextureID(STEEL1))));
 
 			//cylinder obracaj�cy maszyn� do m��cenia
 			Transformation trans5({ -1.17f, 0.2f, 0.0f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.5f, 1.5f, 50.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.05f, trans5, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.05f, trans5, texManager.getTextureID(STEEL2))));
 
 			//uchwyt na z�by
 			Transformation trans8({ -0.82f, -0.1f, 0.0f },
@@ -318,28 +311,28 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans9, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans9, texManager.getTextureID(STEEL1))));
 
 			//lewa �ciana nagarnaicza - cylinder
 			Transformation trans10({ -1.17f, 0.2f, 1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans10, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans10, texManager.getTextureID(STEEL1))));
 
 			//prawa �ciana nagarnaicza - cube
 			Transformation trans11({ -0.82f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.4f, 1.2f, 0.1f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans11, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cube(0.5f, trans11, texManager.getTextureID(STEEL1))));
 
 			//prawa �ciana nagarnaicza - cylinder
 			Transformation trans12({ -1.17f, 0.2f, -1.25f },
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.2f, 1.2f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans12, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans12, texManager.getTextureID(STEEL1))));
 
 			//big box nadwozie placeholder
 			Transformation trans13({ 1.14f, 0.86f, 0.0f },
@@ -395,7 +388,7 @@ int main()
 				90.0f,
 				{ 0.5f, 0.0f, 0.0f },
 				{ 0.12f, 0.12f, 0.6f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans20, texManager.getTextureID(GRILL_RUST_SHI))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.5f, trans20, texManager.getTextureID(STEEL2))));
 
 			//rura wydechowa - puszka na czubku rury
 			Transformation trans21({ 1.6f, 1.56f, 0.26f },
@@ -452,21 +445,21 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 40.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans26, texManager.getTextureID(GRILL))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans26, texManager.getTextureID(STEEL2))));
 
 			//lewego przedniego ko�a
 			Transformation trans27({ 0.4f, 0.1f, 0.6f },
 				harvester.wheelRotation,
 				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f},
 				{ 1.0f, 1.0f, 1.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans27, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans27, texManager.getTextureID(WHEEL))));
 
 			//prawego przedniego ko�a
 			Transformation trans28({ 0.4f, 0.1f, -0.6f },
 				harvester.wheelRotation,
 				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 1.0f, 1.0f, 1.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans28, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans28, texManager.getTextureID(WHEEL))));
 
 			//smaller box podwozie placeholder ty�
 			Transformation trans29({ 1.8f, 0.35f, 0.0f },
@@ -480,21 +473,21 @@ int main()
 				0.0f,
 				{ 0.0f, 0.0f, 3.0f },
 				{ 1.0f, 1.0f, 30.0f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans30, texManager.getTextureID(GRILL))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Cylinder(0.03f, trans30, texManager.getTextureID(STEEL2))));
 
 			//test lewego tylnego ko�a
 			Transformation trans31({ 2.2f, 0.03f, 0.4f },
 				harvester.wheelRotation,
 				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans31, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans31, texManager.getTextureID(WHEEL))));
 
 			//test prawego tylnego ko�a
 			Transformation trans32({ 2.2f, 0.03f, -0.4f },
 				harvester.wheelRotation,
 				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans32, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans32, texManager.getTextureID(WHEEL))));
 
 			//pr�t pomi�dzy pod�og� kabiny a najwy�szym schodkiem
 			Transformation trans33({ -0.18f, 0.7f, 0.22f },
@@ -550,29 +543,28 @@ int main()
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans40, texManager.getTextureID(HARV_SIDE))));
-
+			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans40, texManager.getTextureID(STEEL2))));
 
 			//drzwi kombonojaju prawe
 			Transformation trans41({ -0.06f, 1.0f, -0.22f },
 				180.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 1.6f, 1.2f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans41, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Trapezoid(0.3f, trans41, texManager.getTextureID(STEEL2))));
 
 			//drzwi kombonojaju prawe trójkąt
 			Transformation trans42({ -0.3f, 1.26f, -0.22f },
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans42, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans42, texManager.getTextureID(STEEL2))));
 
 			//drzwi kombonojaju lewe trójkąt
 			Transformation trans43({ -0.3f, 1.26f, 0.22f },
 				50.0f,
 				{ 0.0f, 0.0f, 0.5f },
 				{ 0.9f, 2.0f, 0.12f });
-			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans43, texManager.getTextureID(HARV_SIDE))));
+			kompoj.addObject(std::shared_ptr<Object>(new 	Triangle(0.3f, trans43, texManager.getTextureID(STEEL2))));
 
 			harvester.speedOfMechanism += 0.01f;
 
@@ -620,19 +612,11 @@ int main()
 			posY = harvester.heightInMechanism + trans5.pos[1];
 			float nextposX = ((posX + 1.17f) * cosf((harvester.angle)+ harvester.speedOfMechanism)) - ((posY - 0.2f) * sinf((harvester.angle)+ harvester.speedOfMechanism)) - 1.17f;
 			float nextposY = ((posX + 1.17f) * sinf((harvester.angle)+harvester.speedOfMechanism)) + ((posY - 0.2f) * cosf((harvester.angle)+ harvester.speedOfMechanism)) + 0.2f;
-			//cout << "x: " << posX << " newX: " << nextposX << " y: " << posY << " newY: " << nextposY << endl;
 			harvester.angleDiffrence = ((nextposX - posX) * (nextposX - posX)) + ((nextposY - posY) * (nextposY - posY));
-			//cout << angleDiffrence << endl;
 			harvester.angleDiffrence = ((2.0f * harvester.heightInMechanism * harvester.heightInMechanism) - harvester.angleDiffrence) / (2.0f * harvester.heightInMechanism * harvester.heightInMechanism);
-			//cout << angleDiffrence << endl;
 			harvester.angleDiffrence = acosf(harvester.angleDiffrence);
-			//cout << angleDiffrence << endl;
 			harvester.angleDiffrence *= (180.0f / 3.1415f);
 			if (nextposX > posX) harvester.angleDiffrence = 360.0f - harvester.angleDiffrence;
-			//cout << angleDiffrence << endl;
-
-
-			//kompoj.rotateWorld(45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			
 
 			//global Harvester draw
@@ -642,7 +626,7 @@ int main()
 			kompoj.rotateWorld(harvester.rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 			kompoj.translateWorld(harvester.Position);
 
-			kompoj.draw(shaderProgram);
+			kompoj.draw(usedShader);
 
 			skybox.draw(glm::perspective(glm::radians(70.0f), 4.5f / 3.0f, 0.1f, 100.0f), camera.GetViewMatrix());
 
@@ -679,6 +663,10 @@ void LoadTextures()
 	texManager.addTexture(GRILL_RUST_SHI);		//6
 	texManager.addTexture(GRILL_RUST);			//7
 	texManager.addTexture(GROUND);				//8
+	texManager.addTexture(WHEEL);				//9
+	texManager.addTexture(VENT);				//10
+	texManager.addTexture(STEEL1);				//11
+	texManager.addTexture(STEEL2);				//12
 }
 
 void processInput(GLFWwindow* window)
@@ -695,17 +683,28 @@ void processInput(GLFWwindow* window)
 			framePushed = currentFrame;
 		}
 
-	
-
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		harvester.accelerate(deltaTime);
+	else
+		harvester.decelerate(harvester.acceleration * 1.5f, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		harvester.decelerate(harvester.acceleration * 2.5f, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		harvester.turnLeft(deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		harvester.turnRight(deltaTime);
-	
+
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS && (currentFrame - framePushed) > 0.2f) {
+		if (!flashlightMode) {
+			flashlightMode = true;
+			framePushed = currentFrame;
+		}
+		else {
+			flashlightMode = false;
+			framePushed = currentFrame;
+		}
+	}
+
 	if (!camInHarv) {
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			camera.ProcessKeyboard(FORWARD, deltaTime);
