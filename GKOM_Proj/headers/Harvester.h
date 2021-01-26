@@ -30,6 +30,8 @@ public:
 	float rotSpeed;
 	float speed;
 	float rotation;
+	float wheelAngle;
+	float wheelRotation;
 
 	Harvester(int numOfSides, int numOfMechanisms, float lengthOfWheatPipe);
 	void accelerate(float deltaTime);

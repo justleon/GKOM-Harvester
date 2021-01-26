@@ -152,6 +152,9 @@ int main()
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
+			harvester.wheelAngle = 0.0f;
+			harvester.wheelRotation = 1.0f;
+
 			processInput(window);
 
 			currentFrame = glfwGetTime();
@@ -453,15 +456,15 @@ int main()
 
 			//lewego przedniego ko�a
 			Transformation trans27({ 0.4f, 0.1f, 0.6f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
+				harvester.wheelRotation,
+				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f},
 				{ 1.0f, 1.0f, 1.0f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans27, texManager.getTextureID(HARV_SIDE))));
 
 			//prawego przedniego ko�a
 			Transformation trans28({ 0.4f, 0.1f, -0.6f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
+				harvester.wheelRotation,
+				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 1.0f, 1.0f, 1.0f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans28, texManager.getTextureID(HARV_SIDE))));
 
@@ -481,15 +484,15 @@ int main()
 
 			//test lewego tylnego ko�a
 			Transformation trans31({ 2.2f, 0.03f, 0.4f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
+				harvester.wheelRotation,
+				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans31, texManager.getTextureID(HARV_SIDE))));
 
 			//test prawego tylnego ko�a
 			Transformation trans32({ 2.2f, 0.03f, -0.4f },
-				0.0f,
-				{ 0.0f, 0.0f, 3.0f },
+				harvester.wheelRotation,
+				{ 0.0f, harvester.wheelAngle + 0.5f, 0.0f },
 				{ 0.7f, 0.7f, 0.7f });
 			kompoj.addObject(std::shared_ptr<Object>(new 	Wheel(0.5f, trans32, texManager.getTextureID(HARV_SIDE))));
 
@@ -692,6 +695,7 @@ void processInput(GLFWwindow* window)
 			framePushed = currentFrame;
 		}
 
+	
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		harvester.accelerate(deltaTime);
@@ -701,7 +705,7 @@ void processInput(GLFWwindow* window)
 		harvester.turnLeft(deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		harvester.turnRight(deltaTime);
-
+	
 	if (!camInHarv) {
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			camera.ProcessKeyboard(FORWARD, deltaTime);
