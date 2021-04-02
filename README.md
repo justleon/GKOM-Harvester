@@ -50,7 +50,7 @@ __Temat projektu:__ Kombajn (Harvester)
     * [X] Użytkownik określa długość oraz ilość niektórych elementów
 * [X] Teksturowanie obiektów
 * [X] Dodanie oświetlenia
-* [ ] Dodanie cieniowania
+* [X] Dodanie cieniowania
 * [x] Oddanie gotowego projektu na spotkaniu nr 7
 
 ### Sterowanie:
