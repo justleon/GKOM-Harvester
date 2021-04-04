@@ -1,6 +1,8 @@
 ﻿# Projekt GKOM 20Z
 __Temat projektu:__ Kombajn (Harvester)
 
+**Ocena:** 10/10
+
 ### Członkowie zespołu:
 - Łukasz Pokorzyński
 - Adam Steciuk
